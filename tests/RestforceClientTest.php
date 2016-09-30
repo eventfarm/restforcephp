@@ -53,6 +53,5 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
         $result = $restforceClient->query('SELECT name');
 
         $this->assertSame(self::JSON_RESPONSE, $result);
-        error_log('boink');
     }
 }
