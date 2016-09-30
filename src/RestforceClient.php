@@ -1,11 +1,8 @@
 <?php
-namespace EventFarm\Restforce;
+namespace Jmondi\Restforce;
 
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\RequestException;
-use Psr\Http\Message\StreamInterface;
-use EventFarm\Restforce\Token\TokenRefreshCallbackInterface;
-use Stevenmaguire\OAuth2\Client\Provider\Salesforce;
+use Jmondi\Restforce\Token\TokenRefreshCallbackInterface;
+use Psr\Http\Message\ResponseInterface;
 use Stevenmaguire\OAuth2\Client\Token\AccessToken;
 
 class RestforceClient
@@ -18,16 +15,20 @@ class RestforceClient
     private $clientSecret;
     private $redirectURI;
     private $tokenRefreshObject;
+    private $resourceOwnerUrl;
+    private $client;
 
     public function __construct(
+        RestClientInterface $client,
         string $accessToken,
         string $refreshToken,
         string $instanceUrl,
         string $clientId,
         string $clientSecret,
         string $redirectURI,
+        string $resourceOwnerUrl,
         TokenRefreshCallbackInterface $tokenRefreshObject = null,
-        string $apiVersion = 'v37.0',
+        array $headerOptions = [],
         string $host = 'login.salesforce.com',
         int $retryCount = 4
     )
@@ -35,87 +36,92 @@ class RestforceClient
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->redirectURI = $redirectURI;
+        $this->resourceOwnerUrl = $resourceOwnerUrl;
         $this->tokenRefreshObject = $tokenRefreshObject;
         $this->accessToken = $accessToken;
         $this->refreshToken = $refreshToken;
         $this->host = $host;
         $this->retryCount = $retryCount;
-        $this->baseUrl = $instanceUrl . '/services/data/' . $apiVersion . '/';
+        $this->client = $client;
     }
 
-    public function request(string $method, string $uri, array $options = [])
+    public function userInfo():string
     {
-        $client = new GuzzleClient();
-        $defaultOptions = [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->accessToken
-            ]
-        ];
-        $overrideOptions = array_merge($defaultOptions, $options);
-
-        // Remove leading '/' if it happens to be included.
-        if (strpos($uri, '/') === 0) {
-            $uri = substr($uri, 1);
-        }
-        $fullUrl = $this->baseUrl . $uri;
-
-        $count = 0;
-        do {
-            try {
-                $response = $client->request($method, $fullUrl, $overrideOptions);
-            } catch (RequestException $e) {
-                $success = $this->isResponseAuthorized($e->getCode());
-            }
-            $count += 1;
-        } while(!$success || $count > $this->retryCount);
-
-        return $response->getBody();
+        $request = $this->request('GET', $this->resourceOwnerUrl);
+        return $request->getBody()->__toString();
     }
 
-    public function query(string $queryString):StreamInterface
+    public function query(string $queryString):string
     {
         $uri = 'query?q=' . urlencode($queryString);
-        return $this->request('GET', $uri);
+        $response = $this->request('GET', $uri);
+        return $response->getBody()->__toString();
     }
 
-    public function find(string $type, string $id):StreamInterface
+    public function find(string $type, string $id):string
     {
         $uri = '/sobjects/' . $type . '/' . $id;
-        return $this->request('GET', $uri);
+        $request = $this->request('GET', $uri);
+        return $request->getBody()->__toString();
     }
 
-    public function userInfo():StreamInterface
+    public function limits():string
     {
-        $uri = '/sobjects/Account';
-        return $this->request('GET', $uri);
+        $request = $this->request('GET', '/limits');
+        return $request->getBody()->__toString();
+
     }
 
-    private function isResponseAuthorized(int $statusCode):bool
+    public function create(string $type, array $data):string
     {
-        if ($statusCode === 401) {
-            $this->refreshAccessToken();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private function refreshAccessToken():AccessToken
-    {
-        $salesforce = new Salesforce([
-            'clientId' => $this->clientId,
-            'clientSecret' => $this->clientSecret,
-            'redirectUri' => $this->redirectURI,
+        $uri = '/sobjects/' . $type;
+        $request = $this->request('POST', $uri, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'json' => $data,
         ]);
+        return $request->getBody()->__toString();
+    }
 
-        $accessToken = $salesforce->getAccessToken('refresh_token', [
-            'refresh_token' => $this->refreshToken
+    public function update(string $type, string $id, array $data)
+    {
+        $uri = '/sobjects/' . $type . '/' . $id;
+        $request = $this->request('PATCH', $uri, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'json' => $data,
         ]);
+//        if ($request->getStatusCode() > 299) {
+            dd($request->getReasonPhrase());
+//        }
+    }
 
-        if (!empty($this->tokenRefreshObject)) {
-            $this->tokenRefreshObject->tokenRefreshCallback($accessToken);
+    private function request(string $method, string $uri, array $options = []):ResponseInterface
+    {
+        $url = $this->cleanRequestUrl($uri);
+        $response = $this->client->request($method, $url, $options);
+        return $response;
+    }
+
+    private function cleanRequestUrl(string $uri):string
+    {
+        if ($uri[0] === '/') {
+            $uri = substr($uri, 1);
         }
 
-        return $accessToken;
+        return $uri;
     }
+//
+//
+//    private function getProvider():Salesforce
+//    {
+//        $salesforce = new Salesforce([
+//            'clientId' => $this->clientId,
+//            'clientSecret' => $this->clientSecret,
+//            'redirectUri' => $this->redirectURI,
+//        ]);
+//        return $salesforce;
+//    }
 }

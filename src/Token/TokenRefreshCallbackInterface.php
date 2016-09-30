@@ -1,9 +1,9 @@
 <?php
-namespace EventFarm\Restforce\Token;
+namespace Jmondi\Restforce\Token;
 
 use Stevenmaguire\OAuth2\Client\Token\AccessToken;
 
 interface TokenRefreshCallbackInterface
 {
-    public function tokenRefreshCallback(AccessToken $accessToken):bool;
+    public function tokenRefreshCallback(AccessToken $accessToken);
 }
