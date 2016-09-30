@@ -76,25 +76,38 @@ class DemoClient implements TokenRefreshCallbackInterface
 #### Query
 ```
 $salesforce = new DemoClient();
-$salesforce->query('SELECT Id, Name FROM Account);
+$restforce = $salesforceClient->getClient();
+$restforce->query('SELECT Id, Name FROM Account);
 ```
 
 
 #### UserInfo
 ```
 $salesforce = new DemoClient();
-$salesforce->userInfo();
+$restforce = $salesforceClient->getClient();
+$restforce->userInfo();
 ```
 
 #### Find
 ```
 $salesforce = new DemoClient();
-$salesforce->find('Account', '001410000056Kf0AAE');
+$restforce = $salesforceClient->getClient();
+$restforce->find('Account', '001410000056Kf0AAE');
 ```
 
 
 #### Limits
 ```
 $salesforce = new DemoClient();
-$salesforce->limits();
+$restforce = $salesforceClient->getClient();
+$restforce->limits();
+```
+
+#### Create
+```
+$salesforce = new DemoClient();
+$restforce = $salesforceClient->getClient();
+$restforce->create('Account', [
+    'Name' => 'Foo Bar'
+]);
 ```
