@@ -79,6 +79,7 @@ class DemoClient implements TokenRefreshCallbackInterface
 
 #### Limits
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_limits.htm?search_text=limits) Returns a list of daily API limits for the salesforce api. Refer to the docs for the full list of options.
+
 `public function limits():stdClass`
 
 ```
