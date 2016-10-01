@@ -31,8 +31,8 @@ class RestforceClient
         array $headerOptions = [],
         string $host = 'login.salesforce.com',
         int $retryCount = 4
-    )
-    {
+    ) {
+    
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->redirectURI = $redirectURI;
@@ -91,7 +91,6 @@ class RestforceClient
     {
         $response = $this->request('GET', '/limits');
         return $this->getBodyObjectFromResponse($response);
-
     }
 
     public function create(string $type, array $data):string

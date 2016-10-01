@@ -36,8 +36,8 @@ class SalesforceProviderRestClient implements RestClientInterface
         AccessToken $accessToken,
         TokenRefreshCallbackInterface $tokenRefreshCallback = null,
         int $maxRetry = 2
-    )
-    {
+    ) {
+    
         $this->client = $client;
         $this->salesforceProvider = $salesforceProvider;
         $this->accessToken = $accessToken;

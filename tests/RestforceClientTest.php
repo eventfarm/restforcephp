@@ -38,15 +38,15 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
                 ->once();
 
         $restforceClient = new RestforceClient(
-                $client,
-                self::ACCESS_TOKEN,
-                self::REFRESH_TOKEN,
-                self::INSTANCE_URI,
-                self::SALESFORCE_CLIENT_ID,
-                self::SALESFORCE_CLIENT_SECRET,
-                self::SALESFORCE_CALLBACK,
-                self::RESOURCE_OWNER_ID,
-                $tokenRefreshCallback
+            $client,
+            self::ACCESS_TOKEN,
+            self::REFRESH_TOKEN,
+            self::INSTANCE_URI,
+            self::SALESFORCE_CLIENT_ID,
+            self::SALESFORCE_CLIENT_SECRET,
+            self::SALESFORCE_CALLBACK,
+            self::RESOURCE_OWNER_ID,
+            $tokenRefreshCallback
         );
 
         $result = $restforceClient->query('SELECT name');
