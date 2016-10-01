@@ -1,5 +1,8 @@
 # Restforce PHP
 
+[![Downloads](https://img.shields.io/packagist/dt/jasonraimondi/restforcephp.svg)](https://packagist.org/packages/jasonraimondi/restforcephp)
+[![License](https://img.shields.io/packagist/l/jasonraimondi/restforcephp.svg)](https://github.com/jasonraimondi/restforcephp/blob/master/LICENSE.txt)
+
 This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejholmes/restforce) is doing.
 
 ## Example Client Implementation
