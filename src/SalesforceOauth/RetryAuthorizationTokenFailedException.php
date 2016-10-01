@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce\Http;
+namespace Jmondi\Restforce\SalesforceOauth;
 
 /**
  * An exception for when the max retry limit

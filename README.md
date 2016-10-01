@@ -13,8 +13,12 @@ This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejh
 <?php
 namespace App;
 
+use Jmondi\Restforce\RestClient\GuzzleRestClient;
+use Jmondi\Restforce\RestforceClient;
+use Jmondi\Restforce\SalesforceOauth\SalesforceProviderRestClient;
+use Jmondi\Restforce\SalesforceOauth\TokenRefreshCallbackInterface;
+use Stevenmaguire\OAuth2\Client\Provider\Salesforce as SalesforceProvider;
 use Stevenmaguire\OAuth2\Client\Token\AccessToken;
-use Jmondi\Restforce\Token\TokenRefreshCallbackInterface;
 
 class DemoSalesforceClient implements TokenRefreshCallbackInterface
 {

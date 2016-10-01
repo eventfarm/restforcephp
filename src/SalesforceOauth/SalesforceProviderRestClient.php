@@ -1,15 +1,15 @@
 <?php
-namespace Jmondi\Restforce\Http;
+namespace Jmondi\Restforce\SalesforceOauth;
 
 use GuzzleHttp\Client as GuzzleClient;
-use Jmondi\Restforce\Http\RestClientInterface;
-use Jmondi\Restforce\Http\RetryAuthorizationTokenFailedException;
-use Jmondi\Restforce\Token\TokenRefreshCallbackInterface;
+use Jmondi\Restforce\RestClient\RestClientInterface;
+use Jmondi\Restforce\SalesforceOauth\RetryAuthorizationTokenFailedException;
+use Jmondi\Restforce\SalesforceOauth\TokenRefreshCallbackInterface;
 use Psr\Http\Message\ResponseInterface;
 use Stevenmaguire\OAuth2\Client\Provider\Salesforce as SalesforceProvider;
 use Stevenmaguire\OAuth2\Client\Token\AccessToken;
 
-class SalesforceProviderRestClient implements RestClientInterface
+class SalesforceProviderRestClient implements \Jmondi\Restforce\RestClient\RestClientInterface
 {
     /**
      * @var GuzzleClient
@@ -33,7 +33,7 @@ class SalesforceProviderRestClient implements RestClientInterface
     private $maxRetry;
 
     public function __construct(
-        RestClientInterface $client,
+        \Jmondi\Restforce\RestClient\RestClientInterface $client,
         SalesforceProvider $salesforceProvider,
         AccessToken $accessToken,
         TokenRefreshCallbackInterface $tokenRefreshCallback = null,

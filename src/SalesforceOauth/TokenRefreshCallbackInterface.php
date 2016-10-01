@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce\Token;
+namespace Jmondi\Restforce\SalesforceOauth;
 
 use Stevenmaguire\OAuth2\Client\Token\AccessToken;
 

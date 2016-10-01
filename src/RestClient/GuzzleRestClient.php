@@ -1,8 +1,8 @@
 <?php
-namespace Jmondi\Restforce\Http;
+namespace Jmondi\Restforce\RestClient;
 
 use GuzzleHttp\Client as GuzzleClient;
-use Jmondi\Restforce\Http\RestClientInterface;
+use Jmondi\Restforce\RestClient\RestClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class GuzzleRestClient implements RestClientInterface

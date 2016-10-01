@@ -2,8 +2,8 @@
 namespace Jmondi\Restforce;
 
 use GuzzleHttp\Psr7\Response;
-use Jmondi\Restforce\Http\RestClientInterface;
-use Jmondi\Restforce\Token\TokenRefreshCallbackInterface;
+use Jmondi\Restforce\RestClient\RestClientInterface;
+use Jmondi\Restforce\SalesforceOauth\TokenRefreshCallbackInterface;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;
 
