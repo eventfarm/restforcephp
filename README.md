@@ -74,72 +74,72 @@ class DemoClient implements TokenRefreshCallbackInterface
 
 #### Limits
 ```
-$salesforce = new DemoClient();
-$restforce = $salesforceClient->getClient();
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
 $restforce->limits();
+// returns `object $data { ... }` 
 ```
-Returns `object $data { ... }` 
 
 
 #### UserInfo
 ```
-$salesforce = new DemoClient();
-$restforce = $salesforceClient->getClient();
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
 $restforce->userInfo();
+// returns `object $data { ... }` 
 ```
-Returns `object $data { ... }` 
 
 #### Query
 ```
-$salesforce = new DemoClient();
-$restforce = $salesforceClient->getClient();
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
 $restforce->query('SELECT Id, Name FROM Account);
+// returns `object $data { ... }` 
 ```
-Returns `object $data { ... }` 
 
 #### Find
 ```
-$salesforce = new DemoClient();
-$restforce = $salesforceClient->getClient();
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
 $restforce->find('Account', '001410000056Kf0AAE');
+// returns `object $data { ... }` 
 ```
-Returns `object $data { ... }` 
 
 #### Describe
 ```
-$salesforce = new DemoClient();
-$restforce = $salesforceClient->getClient();
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
 $restforce->describe('Account');
+// returns `object $data { ... }` 
 ```
-Returns `object $data { ... }` 
 
 
 #### Create
 ```
-$salesforce = new DemoClient();
-$restforce = $salesforceClient->getClient();
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
 $restforce->create('Account', [
     'Name' => 'Foo Bar'
 ]);
+// returns `string $id '001i000001ysdBGAAY'` 
 ```
-Returns `string $id 001i000001ysdBGAAY` 
 
 #### Update
 ```
-$salesforce = new DemoClient();
-$restforce = $salesforceClient->getClient();
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
 $restforce->create('Account', [
     'Name' => 'Foo Bar'
 ]);
-```
-Returns `bool $success true|false`
- 
+// returns `bool $success true|false`
+ ```
+
 #### Destroy
 ```
-$salesforce = new DemoClient();
-$restforce = $salesforceClient->getClient();
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
 $restforce->destroy('Account', [
     'Name' => 'Foo Bar'
 ]);
+// returns `bool $success true|false`
 ```
-Returns `bool $success true|false`
