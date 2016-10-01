@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce;
+namespace Jmondi\Restforce\Http;
 
 /**
  * An exception for when the max retry limit

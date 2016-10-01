@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce;
+namespace Jmondi\Restforce\Http;
 
 use Psr\Http\Message\ResponseInterface;
 

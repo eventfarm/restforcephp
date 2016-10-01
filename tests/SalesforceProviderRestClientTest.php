@@ -1,6 +1,9 @@
 <?php
 namespace Jmondi\Restforce;
 
+use Jmondi\Restforce\Http\RestClientInterface;
+use Jmondi\Restforce\Http\RetryAuthorizationTokenFailedException;
+use Jmondi\Restforce\Http\SalesforceProviderRestClient;
 use Jmondi\Restforce\Token\TokenRefreshCallbackInterface;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;

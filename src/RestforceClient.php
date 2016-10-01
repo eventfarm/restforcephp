@@ -1,6 +1,7 @@
 <?php
 namespace Jmondi\Restforce;
 
+use Jmondi\Restforce\Http\RestClientInterface;
 use Jmondi\Restforce\Token\TokenRefreshCallbackInterface;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;

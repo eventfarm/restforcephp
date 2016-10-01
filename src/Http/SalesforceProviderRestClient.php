@@ -1,7 +1,9 @@
 <?php
-namespace Jmondi\Restforce;
+namespace Jmondi\Restforce\Http;
 
 use GuzzleHttp\Client as GuzzleClient;
+use Jmondi\Restforce\Http\RestClientInterface;
+use Jmondi\Restforce\Http\RetryAuthorizationTokenFailedException;
 use Jmondi\Restforce\Token\TokenRefreshCallbackInterface;
 use Psr\Http\Message\ResponseInterface;
 use Stevenmaguire\OAuth2\Client\Provider\Salesforce as SalesforceProvider;
