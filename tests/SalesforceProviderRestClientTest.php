@@ -2,10 +2,10 @@
 namespace Jmondi\Restforce;
 
 use Jmondi\Restforce\Token\TokenRefreshCallbackInterface;
+use Mockery as Mock;
 use Psr\Http\Message\ResponseInterface;
 use Stevenmaguire\OAuth2\Client\Provider\Salesforce as SalesforceProvider;
 use Stevenmaguire\OAuth2\Client\Token\AccessToken;
-use Mockery as Mock;
 
 class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,16 +18,16 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
 
 
         $accessToken->shouldReceive('getToken')
-            ->andReturn('TOKENSDKLJLKJWEF');
+                    ->andReturn('MOCKACCESSTOKEN');
 
 
         $failedResponse = Mock::mock(ResponseInterface::class);
         $failedResponse->shouldReceive('getStatusCode')
-            ->andReturn(401);
+                       ->andReturn(401);
 
         $restClient->shouldReceive('request')
-            ->andReturn($failedResponse)
-            ->times(3);
+                   ->andReturn($failedResponse)
+                   ->times(3);
 
         $maxRetry = 3;
         $salesforceProvider = new SalesforceProviderRestClient(
@@ -43,6 +43,7 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(401, $response->getStatusCode());
 
     }
+
     public function testFailTwiceThenSucceed()
     {
         $restClient = Mock::mock(RestClientInterface::class);
@@ -51,23 +52,23 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
         $tokenRefreshCallback = Mock::mock(TokenRefreshCallbackInterface::class);
 
         $accessToken->shouldReceive('getToken')
-            ->andReturn('TOKENSDKLJLKJWEF');
+                    ->andReturn('TOKENSDKLJLKJWEF');
 
         $failedResponse = Mock::mock(ResponseInterface::class);
         $failedResponse->shouldReceive('getStatusCode')
-            ->andReturn(401);
+                       ->andReturn(401);
 
         $successResponse = Mock::mock(ResponseInterface::class);
         $successResponse->shouldReceive('getStatusCode')
-            ->andReturn(200);
+                        ->andReturn(200);
 
         $restClient->shouldReceive('request')
-            ->andReturn($failedResponse)
-            ->times(2);
+                   ->andReturn($failedResponse)
+                   ->times(2);
 
         $restClient->shouldReceive('request')
-            ->andReturn($successResponse)
-            ->once();
+                   ->andReturn($successResponse)
+                   ->once();
 
         $maxRetry = 3;
         $salesforceProvider = new SalesforceProviderRestClient(
@@ -78,7 +79,7 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
             $maxRetry
         );
 
-        $response = $salesforceProvider->request('GET', '/example/getExample', []);
+        $response = $salesforceProvider->request('GET', '/example/getExample');
 
         $this->assertSame(200, $response->getStatusCode());
     }

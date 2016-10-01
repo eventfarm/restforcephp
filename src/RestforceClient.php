@@ -3,7 +3,7 @@ namespace Jmondi\Restforce;
 
 use Jmondi\Restforce\Token\TokenRefreshCallbackInterface;
 use Psr\Http\Message\ResponseInterface;
-use Stevenmaguire\OAuth2\Client\Token\AccessToken;
+use stdClass;
 
 class RestforceClient
 {
@@ -45,56 +45,56 @@ class RestforceClient
         $this->client = $client;
     }
 
-    public function userInfo():string
+    public function userInfo():stdClass
     {
-        $request = $this->request('GET', $this->resourceOwnerUrl);
-        return $request->getBody()->__toString();
+        $response = $this->request('GET', $this->resourceOwnerUrl);
+        return $this->getBodyObjectFromResponse($response);
     }
 
-    public function query(string $queryString):string
+    public function query(string $queryString):stdClass
     {
         $uri = 'query?q=' . urlencode($queryString);
         $response = $this->request('GET', $uri);
-        return $response->getBody()->__toString();
+        return $this->getBodyObjectFromResponse($response);
     }
 
-    public function find(string $type, string $id):string
+    public function find(string $type, string $id):stdClass
     {
         $uri = '/sobjects/' . $type . '/' . $id;
-        $request = $this->request('GET', $uri);
-        return $request->getBody()->__toString();
+        $response = $this->request('GET', $uri);
+        return $this->getBodyObjectFromResponse($response);
     }
 
-    public function limits():string
+    public function limits():stdClass
     {
-        $request = $this->request('GET', '/limits');
-        return $request->getBody()->__toString();
+        $response = $this->request('GET', '/limits');
+        return $this->getBodyObjectFromResponse($response);
 
     }
 
-    public function create(string $type, array $data):string
+    public function create(string $type, array $data):stdClass
     {
         $uri = '/sobjects/' . $type;
-        $request = $this->request('POST', $uri, [
+        $response = $this->request('POST', $uri, [
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
             'json' => $data,
         ]);
-        return $request->getBody()->__toString();
+        return $this->getBodyObjectFromResponse($response);
     }
 
     public function update(string $type, string $id, array $data)
     {
         $uri = '/sobjects/' . $type . '/' . $id;
-        $request = $this->request('PATCH', $uri, [
+        $response = $this->request('PATCH', $uri, [
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
             'json' => $data,
         ]);
-//        if ($request->getStatusCode() > 299) {
-            dd($request->getReasonPhrase());
+//        if ($response->getStatusCode() > 299) {
+            dd($response->getReasonPhrase());
 //        }
     }
 
@@ -113,15 +113,9 @@ class RestforceClient
 
         return $uri;
     }
-//
-//
-//    private function getProvider():Salesforce
-//    {
-//        $salesforce = new Salesforce([
-//            'clientId' => $this->clientId,
-//            'clientSecret' => $this->clientSecret,
-//            'redirectUri' => $this->redirectURI,
-//        ]);
-//        return $salesforce;
-//    }
+
+    private function getBodyObjectFromResponse(ResponseInterface $request)
+    {
+        return (object) json_decode($request->getBody()->__toString());
+    }
 }
