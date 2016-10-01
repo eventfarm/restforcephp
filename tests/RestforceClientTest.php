@@ -15,7 +15,7 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     const SALESFORCE_CLIENT_SECRET = 'salesforce_client_secret';
     const SALESFORCE_CALLBACK = 'salesforce_callback_url';
     const RESOURCE_OWNER_ID = 'resource_owner_id';
-    const JSON_RESPONSE = '[{ "woo": "foo" }]';
+    const JSON_RESPONSE = '{ "woo": "foo" }';
 
     public function testQuery()
     {
@@ -31,7 +31,6 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
 
         $response->shouldReceive('__toString')
             ->andReturn(self::JSON_RESPONSE);
-
 
         $client->shouldReceive('request')
                 ->with('GET', 'query?q=SELECT+name', [])
@@ -52,6 +51,6 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
 
         $result = $restforceClient->query('SELECT name');
 
-        $this->assertSame(self::JSON_RESPONSE, $result);
+        $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
     }
 }

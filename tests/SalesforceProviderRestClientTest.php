@@ -16,18 +16,24 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
         $accessToken = Mock::mock(AccessToken::class);
         $tokenRefreshCallback = Mock::mock(TokenRefreshCallbackInterface::class);
 
+        $tokenRefreshCallback->shouldReceive('tokenRefreshCallback');
+
+        $provider->shouldReceive('getAccessToken')
+            ->andReturn($accessToken);
 
         $accessToken->shouldReceive('getToken')
-                    ->andReturn('MOCKACCESSTOKEN');
+            ->andReturn('MOCKACCESSTOKEN');
 
+        $accessToken->shouldReceive('getRefreshToken')
+            ->andReturn('TOKENSDKLJLKJWEF');
 
         $failedResponse = Mock::mock(ResponseInterface::class);
         $failedResponse->shouldReceive('getStatusCode')
-                       ->andReturn(401);
+            ->andReturn(401);
 
         $restClient->shouldReceive('request')
-                   ->andReturn($failedResponse)
-                   ->times(3);
+            ->andReturn($failedResponse)
+            ->times(3);
 
         $maxRetry = 3;
         $salesforceProvider = new SalesforceProviderRestClient(
@@ -41,7 +47,6 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
         $response = $salesforceProvider->request('GET', '/example/getExample', []);
 
         $this->assertSame(401, $response->getStatusCode());
-
     }
 
     public function testFailTwiceThenSucceed()
@@ -51,8 +56,16 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
         $accessToken = Mock::mock(AccessToken::class);
         $tokenRefreshCallback = Mock::mock(TokenRefreshCallbackInterface::class);
 
+        $tokenRefreshCallback->shouldReceive('tokenRefreshCallback');
+
+        $provider->shouldReceive('getAccessToken')
+            ->andReturn($accessToken);
+
         $accessToken->shouldReceive('getToken')
-                    ->andReturn('TOKENSDKLJLKJWEF');
+            ->andReturn('MOCKACCESSTOKEN');
+
+        $accessToken->shouldReceive('getRefreshToken')
+            ->andReturn('TOKENSDKLJLKJWEF');
 
         $failedResponse = Mock::mock(ResponseInterface::class);
         $failedResponse->shouldReceive('getStatusCode')

@@ -68,12 +68,12 @@ class SalesforceProviderRestClient implements RestClientInterface
         }
     }
 
-    private function refreshAccessToken():void
+    private function refreshAccessToken()
     {
-        var_dump('refresh access token!! Dying on this to verify access token temp');
-        die();
+        $refreshToken = $this->accessToken->getRefreshToken();
+
         $accessToken = $this->salesforceProvider->getAccessToken('refresh_token', [
-            'refresh_token' => $this->accessToken->getRefreshToken()
+            'refresh_token' => $refreshToken
         ]);
 
         if (!empty($this->tokenRefreshCallback)) {
