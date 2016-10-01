@@ -48,7 +48,7 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
     public function getAccessToken():AccessToken
     {
         if (empty($this->accessToken)) {
-            if (\Cache::has('access_token')){
+            if (ACCESS_TOKEN_EXISTS_IN_DB_OR_CACHE())){
                 $this->accessToken = // GET ACCESS TOKEN FROM DB/CACHE;
             } else {
                 $this->redirectToSalesforceAuth();
