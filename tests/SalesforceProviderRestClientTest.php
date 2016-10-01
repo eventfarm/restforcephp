@@ -2,7 +2,7 @@
 namespace Jmondi\Restforce;
 
 use Jmondi\Restforce\Token\TokenRefreshCallbackInterface;
-use Mockery as Mock;
+use Mockery;
 use Psr\Http\Message\ResponseInterface;
 use Stevenmaguire\OAuth2\Client\Provider\Salesforce as SalesforceProvider;
 use Stevenmaguire\OAuth2\Client\Token\AccessToken;
@@ -11,10 +11,10 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
 {
     public function testRetryOverLimit()
     {
-        $restClient = Mock::mock(RestClientInterface::class);
-        $provider = Mock::mock(SalesforceProvider::class);
-        $accessToken = Mock::mock(AccessToken::class);
-        $tokenRefreshCallback = Mock::mock(TokenRefreshCallbackInterface::class);
+        $restClient = Mockery::mock(RestClientInterface::class);
+        $provider = Mockery::mock(SalesforceProvider::class);
+        $accessToken = Mockery::mock(AccessToken::class);
+        $tokenRefreshCallback = Mockery::mock(TokenRefreshCallbackInterface::class);
 
         $tokenRefreshCallback->shouldReceive('tokenRefreshCallback');
 
@@ -27,7 +27,7 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
         $accessToken->shouldReceive('getRefreshToken')
             ->andReturn('TOKENSDKLJLKJWEF');
 
-        $failedResponse = Mock::mock(ResponseInterface::class);
+        $failedResponse = Mockery::mock(ResponseInterface::class);
         $failedResponse->shouldReceive('getStatusCode')
             ->andReturn(401);
 
@@ -51,10 +51,10 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
 
     public function testFailTwiceThenSucceed()
     {
-        $restClient = Mock::mock(RestClientInterface::class);
-        $provider = Mock::mock(SalesforceProvider::class);
-        $accessToken = Mock::mock(AccessToken::class);
-        $tokenRefreshCallback = Mock::mock(TokenRefreshCallbackInterface::class);
+        $restClient = Mockery::mock(RestClientInterface::class);
+        $provider = Mockery::mock(SalesforceProvider::class);
+        $accessToken = Mockery::mock(AccessToken::class);
+        $tokenRefreshCallback = Mockery::mock(TokenRefreshCallbackInterface::class);
 
         $tokenRefreshCallback->shouldReceive('tokenRefreshCallback');
 
@@ -67,11 +67,11 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
         $accessToken->shouldReceive('getRefreshToken')
             ->andReturn('TOKENSDKLJLKJWEF');
 
-        $failedResponse = Mock::mock(ResponseInterface::class);
+        $failedResponse = Mockery::mock(ResponseInterface::class);
         $failedResponse->shouldReceive('getStatusCode')
                        ->andReturn(401);
 
-        $successResponse = Mock::mock(ResponseInterface::class);
+        $successResponse = Mockery::mock(ResponseInterface::class);
         $successResponse->shouldReceive('getStatusCode')
                         ->andReturn(200);
 

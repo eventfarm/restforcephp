@@ -3,7 +3,7 @@ namespace Jmondi\Restforce;
 
 use GuzzleHttp\Psr7\Response;
 use Jmondi\Restforce\Token\TokenRefreshCallbackInterface;
-use Mockery as Mock;
+use Mockery;
 use Psr\Http\Message\ResponseInterface;
 
 class RestforceClientTest extends \PHPUnit_Framework_TestCase
@@ -17,14 +17,11 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     const RESOURCE_OWNER_ID = 'resource_owner_id';
     const JSON_RESPONSE = '{ "woo": "foo" }';
 
-    public function testQuery()
+    public function testUserInfo()
     {
-        $client = Mock::mock(RestClientInterface::class);
-        $tokenRefreshCallback = Mock::mock(TokenRefreshCallbackInterface::class);
-        $response = Mock::mock(ResponseInterface::class);
-
+        $response = Mockery::mock(ResponseInterface::class);
         $response->shouldReceive('getStatusCode')
-                ->andReturn(200);
+            ->andReturn(200);
 
         $response->shouldReceive('getBody')
             ->andReturn($response);
@@ -32,10 +29,46 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
         $response->shouldReceive('__toString')
             ->andReturn(self::JSON_RESPONSE);
 
+        $client = Mockery::mock(RestClientInterface::class);
         $client->shouldReceive('request')
-                ->with('GET', 'query?q=SELECT+name', [])
-                ->andReturn($response)
-                ->once();
+            ->andReturn($response)
+            ->once();
+
+        $restforceClient = $this->getRestforceClient($client);
+
+        $result = $restforceClient->userInfo();
+
+        $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
+    }
+
+    public function testQuery()
+    {
+        $response = Mockery::mock(ResponseInterface::class);
+        $response->shouldReceive('getStatusCode')
+            ->andReturn(200);
+
+        $response->shouldReceive('getBody')
+            ->andReturn($response);
+
+        $response->shouldReceive('__toString')
+            ->andReturn(self::JSON_RESPONSE);
+
+        $client = Mockery::mock(RestClientInterface::class);
+        $client->shouldReceive('request')
+            ->with('GET', 'query?q=SELECT+name', [])
+            ->andReturn($response)
+            ->once();
+
+        $restforceClient = $this->getRestforceClient($client);
+
+        $result = $restforceClient->query('SELECT name');
+
+        $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
+    }
+
+    private function getRestforceClient($client):RestforceClient
+    {
+        $tokenRefreshCallback = Mockery::mock(TokenRefreshCallbackInterface::class);
 
         $restforceClient = new RestforceClient(
             $client,
@@ -48,9 +81,6 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
             self::RESOURCE_OWNER_ID,
             $tokenRefreshCallback
         );
-
-        $result = $restforceClient->query('SELECT name');
-
-        $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
+        return $restforceClient;
     }
 }
