@@ -1,0 +1,4 @@
+#!/bin/bash
+# post-merge
+
+.git/hooks/update-composer.sh
