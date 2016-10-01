@@ -131,7 +131,7 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
 `public function limits():stdClass`
 
 ```php
-<?php 
+<?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->limits();
@@ -146,7 +146,7 @@ $restforce->limits();
 `public function limits():stdClass`
 
 ```php
-<?php 
+<?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->userInfo();
@@ -160,7 +160,7 @@ $restforce->userInfo();
 `public function query(string $query):stdClass`
 
 ```php
-<?php 
+<?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->query('SELECT Id, Name FROM Account);
@@ -174,7 +174,7 @@ $restforce->query('SELECT Id, Name FROM Account);
 `public function queryAll(string $query):stdClass`
 
 ```php
-<?php 
+<?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->queryAll('SELECT Id, Name FROM Account);
@@ -187,7 +187,7 @@ $restforce->queryAll('SELECT Id, Name FROM Account);
 `public function explain(string $query):stdClass`
 
 ```php
-<?php 
+<?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->explain('SELECT Id, Name FROM Account);
@@ -201,7 +201,7 @@ $restforce->explain('SELECT Id, Name FROM Account);
 `public function find(string $type, string $id, array $fields = []):stdClass`
 
 ```php
-<?php 
+<?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->find('Account', '001410000056Kf0AAE');
@@ -215,7 +215,7 @@ $restforce->find('Account', '001410000056Kf0AAE');
 `public function describe(string $type):stdClass`
 
 ```php
-<?php 
+<?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->describe('Account');
@@ -246,7 +246,7 @@ $restforce->create('Account', [
 `public function update(string $type, string $id, array $data):bool`
 
 ```php
-<?php 
+<?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->update('Account', '001i000001ysdBGAAY' [
@@ -262,7 +262,7 @@ $restforce->update('Account', '001i000001ysdBGAAY' [
 `public function destroy(string $type, string $id):bool`
 
 ```php
-<?php 
+<?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->destroy('Account', '001i000001ysdBGAAY');
