@@ -72,13 +72,13 @@ class DemoClient implements TokenRefreshCallbackInterface
 
 ## Usage
 
-
-#### Query
+#### Limits
 ```
 $salesforce = new DemoClient();
 $restforce = $salesforceClient->getClient();
-$restforce->query('SELECT Id, Name FROM Account);
+$restforce->limits();
 ```
+Returns `object $data { ... }` 
 
 
 #### UserInfo
@@ -87,6 +87,15 @@ $salesforce = new DemoClient();
 $restforce = $salesforceClient->getClient();
 $restforce->userInfo();
 ```
+Returns `object $data { ... }` 
+
+#### Query
+```
+$salesforce = new DemoClient();
+$restforce = $salesforceClient->getClient();
+$restforce->query('SELECT Id, Name FROM Account);
+```
+Returns `object $data { ... }` 
 
 #### Find
 ```
@@ -94,14 +103,16 @@ $salesforce = new DemoClient();
 $restforce = $salesforceClient->getClient();
 $restforce->find('Account', '001410000056Kf0AAE');
 ```
+Returns `object $data { ... }` 
 
-
-#### Limits
+#### Describe
 ```
 $salesforce = new DemoClient();
 $restforce = $salesforceClient->getClient();
-$restforce->limits();
+$restforce->describe('Account');
 ```
+Returns `object $data { ... }` 
+
 
 #### Create
 ```
@@ -111,3 +122,24 @@ $restforce->create('Account', [
     'Name' => 'Foo Bar'
 ]);
 ```
+Returns `string $id 001i000001ysdBGAAY` 
+
+#### Update
+```
+$salesforce = new DemoClient();
+$restforce = $salesforceClient->getClient();
+$restforce->create('Account', [
+    'Name' => 'Foo Bar'
+]);
+```
+Returns `bool $success true|false`
+ 
+#### Destroy
+```
+$salesforce = new DemoClient();
+$restforce = $salesforceClient->getClient();
+$restforce->destroy('Account', [
+    'Name' => 'Foo Bar'
+]);
+```
+Returns `bool $success true|false`

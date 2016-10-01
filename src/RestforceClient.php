@@ -65,6 +65,13 @@ class RestforceClient
         return $this->getBodyObjectFromResponse($response);
     }
 
+    public function describe(string $type):stdClass
+    {
+        $uri = '/sobjects/' . $type . '/describe';
+        $response = $this->request('GET', $uri);
+        return $this->getBodyObjectFromResponse($response);
+    }
+
     public function limits():stdClass
     {
         $response = $this->request('GET', '/limits');
@@ -72,7 +79,7 @@ class RestforceClient
 
     }
 
-    public function create(string $type, array $data):stdClass
+    public function create(string $type, array $data):string
     {
         $uri = '/sobjects/' . $type;
         $response = $this->request('POST', $uri, [
@@ -81,7 +88,7 @@ class RestforceClient
             ],
             'json' => $data,
         ]);
-        return $this->getBodyObjectFromResponse($response);
+        return $this->getBodyObjectFromResponse($response)->id;
     }
 
     public function update(string $type, string $id, array $data)
@@ -93,9 +100,16 @@ class RestforceClient
             ],
             'json' => $data,
         ]);
-//        if ($response->getStatusCode() > 299) {
-            dd($response->getReasonPhrase());
-//        }
+        $success = $response->getStatusCode() === 204;
+        return $success;
+    }
+
+    public function destroy(string $type, string $id):bool
+    {
+        $uri = '/sobjects/' . $type . '/' . $id;
+        $response = $this->request('DELETE', $uri);
+        $success = $response->getStatusCode() === 204;
+        return $success;
     }
 
     private function request(string $method, string $uri, array $options = []):ResponseInterface
