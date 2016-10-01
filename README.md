@@ -229,7 +229,8 @@ $restforce->describe('Account');
 
 `public function create(string $type, array $data):stdClass`
 
-``` 
+```php
+<?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->create('Account', [
