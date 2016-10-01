@@ -100,7 +100,7 @@ class SalesforceProviderRestClient implements RestClientInterface
             $success = $this->isResponseAuthorized($response);
 
             if (!$success) {
-//                $this->refreshAccessToken();
+                $this->refreshAccessToken();
             }
 
             $attempts++;
