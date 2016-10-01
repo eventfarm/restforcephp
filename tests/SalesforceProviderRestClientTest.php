@@ -9,7 +9,7 @@ use Stevenmaguire\OAuth2\Client\Token\AccessToken;
 
 class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
 {
-    public function testRetryOverLimit()
+    public function testExceptionIsThrownWhenClientRetriesMoreThanMaxRetry()
     {
         $restClient = Mockery::mock(RestClientInterface::class);
         $provider = Mockery::mock(SalesforceProvider::class);
@@ -44,12 +44,11 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
             $maxRetry
         );
 
-        $response = $salesforceProvider->request('GET', '/example/getExample', []);
-
-        $this->assertSame(401, $response->getStatusCode());
+        $this->expectException(RetryAuthorizationTokenFailedException::class);
+        $salesforceProvider->request('GET', '/example/getExample', []);
     }
 
-    public function testFailTwiceThenSucceed()
+    public function testFailThenRetryAndSucceedBeforeMaxRetryLimit()
     {
         $restClient = Mockery::mock(RestClientInterface::class);
         $provider = Mockery::mock(SalesforceProvider::class);

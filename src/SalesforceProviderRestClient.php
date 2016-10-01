@@ -108,6 +108,12 @@ class SalesforceProviderRestClient implements RestClientInterface
             $attempts++;
         } while (!$success && $attempts < $this->maxRetry);
 
+        if (!$success) {
+            throw new RetryAuthorizationTokenFailedException(
+                'Max retry limit of ' . $this->maxRetry . 'has been reached. oAuth Token Failed.'
+            );
+        }
+
         return $response;
     }
 }
