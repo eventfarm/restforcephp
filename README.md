@@ -1,8 +1,5 @@
 # Restforce PHP
 
-[![Downloads](https://img.shields.io/packagist/dt/jasonraimondi/restforcephp.svg)](https://packagist.org/packages/jasonraimondi/restforcephp)
-[![License](https://img.shields.io/packagist/l/jasonraimondi/restforcephp.svg)](https://github.com/jasonraimondi/restforcephp/blob/master/LICENSE.txt)
-
 This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejholmes/restforce) is doing.
 
 ## Example Client Implementation
@@ -76,73 +73,134 @@ class DemoClient implements TokenRefreshCallbackInterface
 ## Usage
 
 #### Limits
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_limits.htm?search_text=limits) Returns a list of daily API limits for the salesforce api. Refer to the docs for the full list of options.
+`public function limits():object`
+
 ```
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->limits();
-// returns `object $data { ... }` 
+// { ... }
 ```
 
 
 #### UserInfo
+
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_limits.htm?search_text=limits) Get info about the logged-in user.
+
+`public function limits():object`
+
 ```
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->userInfo();
-// returns `object $data { ... }` 
+// { ... }
 ```
 
 #### Query
+
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm) Use the Query resource to execute a SOQL query that returns all the results in a single response.
+
+`public function query(string $query):object`
+
 ```
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->query('SELECT Id, Name FROM Account);
-// returns `object $data { ... }` 
+// { ... }
+```
+
+#### QueryAll
+
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_queryall.htm) Include SOQL that includes deleted items.
+
+`public function queryAll(string $query):object`
+
+```
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
+$restforce->queryAll('SELECT Id, Name FROM Account);
+// { ... }
+```
+
+#### Explain
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query_explain.htm) Get feedback on how Salesforce will execute your query, report, or list view.
+
+`public function explain(string $query):object`
+
+```
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
+$restforce->explain('SELECT Id, Name FROM Account);
+// { ... }
 ```
 
 #### Find
+
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_field_values.htm?search_text=limits) Find resource `$id` of `$type`, optionally specify the fields you want to retrieve in the fields parameter and use the GET method of the resource.
+
+`public function find(string $type, string $id, array $fields = []):object`
+
 ```
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->find('Account', '001410000056Kf0AAE');
-// returns `object $data { ... }` 
+// { ... }
 ```
 
 #### Describe
+
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm?search_text=describe) Completely describes the individual metadata at all levels for the specified object.
+
+`public function describe(string $type):object`
+
 ```
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->describe('Account');
-// returns `object $data { ... }` 
+// { ... }
 ```
 
 
 #### Create
-```
+
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm) Create new records of `$type`. The response body will contain the ID of the created record if the call is successful.
+
+`public function create(string $type, array $data):object`
+
+``` 
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $restforce->create('Account', [
     'Name' => 'Foo Bar'
 ]);
-// returns `string $id '001i000001ysdBGAAY'` 
+// '001i000001ysdBGAAY'` 
 ```
 
 #### Update
+
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm?search_text=describe) You use the SObject Rows resource to update records. The response will be the a bool of `$success`.
+
+`public function update(string $type, string $id, array $data):bool`
+
 ```
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->create('Account', [
-    'Name' => 'Foo Bar'
+$restforce->update('Account', '001i000001ysdBGAAY' [
+    'Name' => 'Foo Bar Two'
 ]);
-// returns `bool $success true|false`
- ```
+// true|false
+```
 
 #### Destroy
+
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_delete_record.htm?search_text=describe) Delete record of `$type` and `$id`. The response will be the a bool of `$success`.
+
+`public function destroy(string $type, string $id):bool`
+
 ```
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->destroy('Account', [
-    'Name' => 'Foo Bar'
-]);
-// returns `bool $success true|false`
+$restforce->destroy('Account', '001i000001ysdBGAAY');
+// true|false
 ```

@@ -58,9 +58,24 @@ class RestforceClient
         return $this->getBodyObjectFromResponse($response);
     }
 
-    public function find(string $type, string $id):stdClass
+    public function queryAll(string $queryString):stdClass
     {
-        $uri = '/sobjects/' . $type . '/' . $id;
+        $uri = 'queryAll?q=' . urlencode($queryString);
+        $response = $this->request('GET', $uri);
+        return $this->getBodyObjectFromResponse($response);
+    }
+
+    public function explain(string $explainString):stdClass
+    {
+        $uri = 'query?explain=' . urlencode($explainString);
+        $response = $this->request('GET', $uri);
+        return $this->getBodyObjectFromResponse($response);
+    }
+
+    public function find(string $type, string $id, array $fields = []):stdClass
+    {
+        $query = http_build_query($fields);
+        $uri = '/sobjects/' . $type . '/' . $id . $query;
         $response = $this->request('GET', $uri);
         return $this->getBodyObjectFromResponse($response);
     }
@@ -111,6 +126,7 @@ class RestforceClient
         $success = $response->getStatusCode() === 204;
         return $success;
     }
+
 
     private function request(string $method, string $uri, array $options = []):ResponseInterface
     {
