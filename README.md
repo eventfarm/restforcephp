@@ -26,7 +26,7 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
     const INSTANCE_URL = 'salesforce instance url';
     const RESOURCE_OWNER_ID = 'url to salesforce authd user info (from AccessToken)';
 
-    public function tokenRefreshCallback(AccessToken $token):void
+    public function tokenRefreshCallback(AccessToken $token)
     {
         // CALLBACK FUNCTION TO STORE THE
         // NEWLY REFRESHED ACCESS TOKEN
