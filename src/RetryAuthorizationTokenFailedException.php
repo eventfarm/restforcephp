@@ -6,4 +6,7 @@ namespace Jmondi\Restforce;
  * is reached when trying to refresh the api
  * token when making a salesforce request.
  */
-class RetryAuthorizationTokenFailedException extends \Exception {}
+class RetryAuthorizationTokenFailedException extends \Exception
+{
+
+}
