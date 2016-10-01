@@ -20,7 +20,7 @@ class DemoClient implements TokenRefreshCallbackInterface
     const ACCESS_TOKEN = 'access token string, different from AccessToken object';
     const REFRESH_TOKEN = 'refresh token sring';
     const INSTANCE_URL = 'salesforce instance url';
-    const RESOURCE_OWNER_ID = 'url to salesforce auth'd user info (from AccessToken)';
+    const RESOURCE_OWNER_ID = 'url to salesforce authd user info (from AccessToken)';
 
     public function tokenRefreshCallback(AccessToken $token):void
     {
