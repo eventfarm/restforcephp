@@ -1,5 +1,10 @@
 # Restforce PHP
 
+[![Travis](https://img.shields.io/travis/jasonraimondi/restforcephp.svg?maxAge=2592000?style=flat-square)](https://travis-ci.org/jasonraimondi/restforcephp)
+[![Downloads](https://img.shields.io/packagist/dt/jmondi/restforcephp.svg?style=flat-square)](https://packagist.org/packages/jmondi/restforcephp)
+[![Packagist](https://img.shields.io/packagist/l/jmondi/restforcephp.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/jmondi/restforcephp)
+
+
 This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejholmes/restforce) is doing.
 
 ## Example Client Implementation
