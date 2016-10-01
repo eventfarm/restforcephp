@@ -11,7 +11,8 @@
         "composer/installers": "~1.0",
         "php": ">=7.1",
         "league/oauth2-client": "^1.4",
-        "stevenmaguire/oauth2-salesforce": "^0.3.0"
+        "stevenmaguire/oauth2-salesforce": "^0.3.0",
+        "guzzlehttp/guzzle": "^6.2"
     },
     "autoload": {
         "psr-4": {
