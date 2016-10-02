@@ -76,7 +76,8 @@ class RestforceClient
     public function find(string $type, string $id, array $fields = []):stdClass
     {
         $query = http_build_query($fields);
-        $uri = '/sobjects/' . $type . '/' . $id . $query;
+        $uri = '/sobjects/' . $type . '/' . $id;
+        $uri .= empty($fields) ? '' : '?' . $query;
         $response = $this->request('GET', $uri);
         return $this->getBodyObjectFromResponse($response);
     }
