@@ -113,10 +113,10 @@ class RestforceClient
         return $this->getBodyObjectFromResponse($response);
     }
 
-    public function find(string $type, string $id, array $fields = []):stdClass
+    public function find(string $type, string $typeId, array $fields = []):stdClass
     {
         $query = http_build_query($fields);
-        $uri = '/sobjects/' . $type . '/' . $id;
+        $uri = '/sobjects/' . $type . '/' . $typeId;
         $uri .= empty($fields) ? '' : '?' . $query;
         $response = $this->request('GET', $uri);
         return $this->getBodyObjectFromResponse($response);
@@ -147,9 +147,9 @@ class RestforceClient
         return $this->getBodyObjectFromResponse($response)->id;
     }
 
-    public function update(string $type, string $id, array $data)
+    public function update(string $type, string $typeId, array $data)
     {
-        $uri = '/sobjects/' . $type . '/' . $id;
+        $uri = '/sobjects/' . $type . '/' . $typeId;
         $response = $this->request('PATCH', $uri, [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -160,9 +160,9 @@ class RestforceClient
         return $success;
     }
 
-    public function destroy(string $type, string $id):bool
+    public function destroy(string $type, string $typeId):bool
     {
-        $uri = '/sobjects/' . $type . '/' . $id;
+        $uri = '/sobjects/' . $type . '/' . $typeId;
         $response = $this->request('DELETE', $uri);
         $success = $response->getStatusCode() === 204;
         return $success;
