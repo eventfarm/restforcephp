@@ -8,16 +8,54 @@ use stdClass;
 
 class RestforceClient
 {
+    /**
+     * @var string
+     */
     private $accessToken;
+    /**
+     * @var string
+     */
     private $refreshToken;
+    /**
+     * @var string
+     */
     private $host;
+    /**
+     * @var int
+     */
     private $retryCount;
+    /**
+     * @var string
+     */
     private $clientId;
+    /**
+     * @var string
+     */
     private $clientSecret;
+    /**
+     * @var string
+     */
     private $redirectURI;
+    /**
+     * @var TokenRefreshCallbackInterface
+     */
     private $tokenRefreshObject;
+    /**
+     * @var string
+     */
     private $resourceOwnerUrl;
+    /**
+     * @var RestClientInterface
+     */
     private $client;
+    /**
+     * @var string
+     */
+    private $instanceUrl;
+    /**
+     * @var array
+     */
+    private $headerOptions;
 
     public function __construct(
         RestClientInterface $client,
@@ -44,6 +82,8 @@ class RestforceClient
         $this->host = $host;
         $this->retryCount = $retryCount;
         $this->client = $client;
+        $this->instanceUrl = $instanceUrl;
+        $this->headerOptions = $headerOptions;
     }
 
     public function userInfo():stdClass
@@ -132,6 +172,7 @@ class RestforceClient
     private function request(string $method, string $uri, array $options = []):ResponseInterface
     {
         $url = $this->cleanRequestUrl($uri);
+        $options = array_merge_recursive($this->headerOptions, $options);
         $response = $this->client->request($method, $url, $options);
         return $response;
     }
