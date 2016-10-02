@@ -21,25 +21,25 @@ Add the following lines to your ``composer.json`` file.
 ```
 
 ```bash
-   composer install
+$ composer install
 ```
 
 ## Unit Tests:
 
 ```bash
-    vendor/bin/phpunit
+$ vendor/bin/phpunit
 ```
 
 ### With Code Coverage:
 
 ```bash
-    vendor/bin/phpunit --coverage-text --coverage-html coverage_report
+$ vendor/bin/phpunit --coverage-text --coverage-html coverage_report
 ```
 
 ## Run Coding Standards Test:
 
 ```bash
-    vendor/bin/phpcs -p --standard=PSR2 src/ tests/
+$ vendor/bin/phpcs -p --standard=PSR2 src/ tests/
 ```
 
 ## Example Client Implementation
