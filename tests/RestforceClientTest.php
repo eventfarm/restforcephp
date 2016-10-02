@@ -68,31 +68,6 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
     }
 
-    public function testQueryAll()
-    {
-        $response = Mockery::mock(ResponseInterface::class);
-        $response->shouldReceive('getStatusCode')
-            ->andReturn(200);
-
-        $response->shouldReceive('getBody')
-            ->andReturn($response);
-
-        $response->shouldReceive('__toString')
-            ->andReturn(self::JSON_RESPONSE);
-
-        $client = Mockery::mock(RestClientInterface::class);
-        $client->shouldReceive('request')
-            ->with('GET', 'queryAll?q=SELECT+name', [])
-            ->andReturn($response)
-            ->once();
-
-        $restforceClient = $this->getRestforceClient($client);
-
-        $result = $restforceClient->queryAll('SELECT name');
-
-        $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
-    }
-
     public function testQuery()
     {
         $response = Mockery::mock(ResponseInterface::class);
@@ -114,6 +89,31 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
         $restforceClient = $this->getRestforceClient($client);
 
         $result = $restforceClient->query('SELECT name');
+
+        $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
+    }
+
+    public function testQueryAll()
+    {
+        $response = Mockery::mock(ResponseInterface::class);
+        $response->shouldReceive('getStatusCode')
+            ->andReturn(200);
+
+        $response->shouldReceive('getBody')
+            ->andReturn($response);
+
+        $response->shouldReceive('__toString')
+            ->andReturn(self::JSON_RESPONSE);
+
+        $client = Mockery::mock(RestClientInterface::class);
+        $client->shouldReceive('request')
+            ->with('GET', 'queryAll?q=SELECT+name', [])
+            ->andReturn($response)
+            ->once();
+
+        $restforceClient = $this->getRestforceClient($client);
+
+        $result = $restforceClient->queryAll('SELECT name');
 
         $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
     }
