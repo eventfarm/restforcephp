@@ -38,8 +38,7 @@ class SalesforceProviderRestClient implements \Jmondi\Restforce\RestClient\RestC
         AccessToken $accessToken,
         TokenRefreshCallbackInterface $tokenRefreshCallback = null,
         int $maxRetry = 2
-    )
-    {
+    ) {
         $this->client = $client;
         $this->salesforceProvider = $salesforceProvider;
         $this->accessToken = $accessToken;
