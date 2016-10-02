@@ -1,15 +1,13 @@
 language: php
 php:
-  - 7.0
-  - 7.1
-
+- 7.0
+- 7.1
 sudo: false
-
 before_script:
-  - composer self-update
-  - composer install
-
+- composer self-update
+- composer install
 script:
-  - vendor/bin/phpcs --standard=PSR2 src/ tests/
-  - vendor/bin/phpunit -c phpunit.xml
-  - vendor/bin/test-reporter
+- vendor/bin/phpcs --standard=PSR2 src/ tests/
+- vendor/bin/phpunit -c phpunit.xml
+
+after_script: bin/code-climate-coverage.sh
