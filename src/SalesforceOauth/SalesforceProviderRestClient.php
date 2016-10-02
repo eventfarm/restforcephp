@@ -38,7 +38,8 @@ class SalesforceProviderRestClient implements \Jmondi\Restforce\RestClient\RestC
         AccessToken $accessToken,
         TokenRefreshCallbackInterface $tokenRefreshCallback = null,
         int $maxRetry = 2
-    ) {
+    )
+    {
         $this->client = $client;
         $this->salesforceProvider = $salesforceProvider;
         $this->accessToken = $accessToken;
@@ -62,11 +63,7 @@ class SalesforceProviderRestClient implements \Jmondi\Restforce\RestClient\RestC
 
     private function isResponseAuthorized(ResponseInterface $response):bool
     {
-        if ($response->getStatusCode() === 401) {
-            return false;
-        } else {
-            return true;
-        }
+        return ! ($response->getStatusCode() === 401);
     }
 
     private function refreshAccessToken()
