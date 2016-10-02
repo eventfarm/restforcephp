@@ -1,5 +1,6 @@
 language: php
 php:
+  - 7.0
   - 7.1
 
 sudo: false
@@ -11,3 +12,4 @@ before_script:
 script:
   - vendor/bin/phpcs --standard=PSR2 src/ tests/
   - vendor/bin/phpunit -c phpunit.xml
+  - vendor/bin/test-reporter
