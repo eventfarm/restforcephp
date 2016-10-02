@@ -8,6 +8,40 @@
 
 This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejholmes/restforce) is doing.
 
+## Installation
+
+Add the following lines to your ``composer.json`` file.
+
+```json
+{
+    "require": {
+        "jmondi/restforcephp": "dev-master"
+    }
+}
+```
+
+```bash
+   composer install
+```
+
+## Unit Tests:
+
+```bash
+    vendor/bin/phpunit
+```
+
+### With Code Coverage:
+
+```bash
+    vendor/bin/phpunit --coverage-text --coverage-html coverage_report
+```
+
+## Run Coding Standards Test:
+
+```bash
+    vendor/bin/phpcs -p --standard=PSR2 src/ tests/
+```
+
 ## Example Client Implementation
 
 ```php
