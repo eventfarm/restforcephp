@@ -3,7 +3,7 @@
 [![Travis](https://img.shields.io/travis/jasonraimondi/restforcephp.svg?maxAge=2592000?style=flat-square)](https://travis-ci.org/jasonraimondi/restforcephp)
 [![Downloads](https://img.shields.io/packagist/dt/jmondi/restforcephp.svg?style=flat-square)](https://packagist.org/packages/jmondi/restforcephp)
 [![Packagist](https://img.shields.io/packagist/l/jmondi/restforcephp.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/jmondi/restforcephp)
-
+[![Code Climate](https://codeclimate.com/github/jasonraimondi/restforcephp/badges/gpa.svg)](https://codeclimate.com/github/jasonraimondi/restforcephp)
 
 This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejholmes/restforce) is doing.
 
@@ -25,8 +25,6 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
     const SALESFORCE_CLIENT_ID = 'your salesforce client id';
     const SALESFORCE_CLIENT_SECRET = 'your salesforce client secret';
     const SALESFORCE_CALLBACK = 'callback URL to catch $_GET['code'] to generate AccessToken';
-    const ACCESS_TOKEN = 'access token string, different from AccessToken object';
-    const REFRESH_TOKEN = 'refresh token sring';
     const INSTANCE_URL = 'salesforce instance url';
     const RESOURCE_OWNER_ID = 'url to salesforce authd user info (from AccessToken)';
 
@@ -85,12 +83,7 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
 
             $this->restforce = new RestforceClient(
                 $client,
-                self::ACCESS_TOKEN,
-                self::REFRESH_TOKEN,
                 self::INSTANCE_URL,
-                self::SALESFORCE_CLIENT_ID,
-                self::SALESFORCE_CLIENT_SECRET,
-                self::SALESFORCE_CALLBACK,
                 self::RESOURCE_OWNER_ID,
                 $this
             );
