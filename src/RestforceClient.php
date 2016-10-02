@@ -9,42 +9,6 @@ use stdClass;
 class RestforceClient
 {
     /**
-     * @var string
-     */
-    private $accessToken;
-    /**
-     * @var string
-     */
-    private $refreshToken;
-    /**
-     * @var string
-     */
-    private $host;
-    /**
-     * @var int
-     */
-    private $retryCount;
-    /**
-     * @var string
-     */
-    private $clientId;
-    /**
-     * @var string
-     */
-    private $clientSecret;
-    /**
-     * @var string
-     */
-    private $redirectURI;
-    /**
-     * @var TokenRefreshCallbackInterface
-     */
-    private $tokenRefreshObject;
-    /**
-     * @var string
-     */
-    private $resourceOwnerUrl;
-    /**
      * @var RestClientInterface
      */
     private $client;
@@ -53,37 +17,36 @@ class RestforceClient
      */
     private $instanceUrl;
     /**
+     * @var string
+     */
+    private $resourceOwnerUrl;
+    /**
+     * @var TokenRefreshCallbackInterface
+     */
+    private $tokenRefreshObject;
+    /**
      * @var array
      */
     private $headerOptions;
+    /**
+     * @var string
+     */
+    private $host;
 
     public function __construct(
         RestClientInterface $client,
-        string $accessToken,
-        string $refreshToken,
         string $instanceUrl,
-        string $clientId,
-        string $clientSecret,
-        string $redirectURI,
         string $resourceOwnerUrl,
         TokenRefreshCallbackInterface $tokenRefreshObject = null,
         array $headerOptions = [],
-        string $host = 'login.salesforce.com',
-        int $retryCount = 4
+        string $host = 'login.salesforce.com'
     ) {
-    
-        $this->clientId = $clientId;
-        $this->clientSecret = $clientSecret;
-        $this->redirectURI = $redirectURI;
-        $this->resourceOwnerUrl = $resourceOwnerUrl;
-        $this->tokenRefreshObject = $tokenRefreshObject;
-        $this->accessToken = $accessToken;
-        $this->refreshToken = $refreshToken;
-        $this->host = $host;
-        $this->retryCount = $retryCount;
         $this->client = $client;
         $this->instanceUrl = $instanceUrl;
+        $this->resourceOwnerUrl = $resourceOwnerUrl;
+        $this->tokenRefreshObject = $tokenRefreshObject;
         $this->headerOptions = $headerOptions;
+        $this->host = $host;
     }
 
     public function userInfo():stdClass
