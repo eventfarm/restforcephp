@@ -15,8 +15,33 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     const SALESFORCE_CLIENT_ID = 'salesforce_client_id';
     const SALESFORCE_CLIENT_SECRET = 'salesforce_client_secret';
     const SALESFORCE_CALLBACK = 'salesforce_callback_url';
-    const RESOURCE_OWNER_ID = 'resource_owner_id';
+    const RESOURCE_OWNER_ID = 'resource_owner_id_url';
     const JSON_RESPONSE = '{ "woo": "foo" }';
+
+    public function testLimits()
+    {
+        $response = Mockery::mock(ResponseInterface::class);
+        $response->shouldReceive('getStatusCode')
+            ->andReturn(200);
+
+        $response->shouldReceive('getBody')
+            ->andReturn($response);
+
+        $response->shouldReceive('__toString')
+            ->andReturn(self::JSON_RESPONSE);
+
+        $client = Mockery::mock(RestClientInterface::class);
+        $client->shouldReceive('request')
+            ->with('GET', 'limits', [])
+            ->andReturn($response)
+            ->once();
+
+        $restforceClient = $this->getRestforceClient($client);
+
+        $result = $restforceClient->limits();
+
+        $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
+    }
 
     public function testUserInfo()
     {
@@ -32,6 +57,7 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
 
         $client = Mockery::mock(RestClientInterface::class);
         $client->shouldReceive('request')
+            ->with('GET', 'resource_owner_id_url', [])
             ->andReturn($response)
             ->once();
 
