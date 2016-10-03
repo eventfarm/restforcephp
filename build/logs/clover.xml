@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1475441011">
-  <project timestamp="1475441011">
+<coverage generated="1475458762">
+  <project timestamp="1475458762">
     <package name="Jmondi\Restforce\RestClient">
       <file name="/Users/jraimondi/Code/restforcephp/src/RestClient/GuzzleRestClient.php">
         <class name="GuzzleRestClient" namespace="Jmondi\Restforce\RestClient">
-          <metrics complexity="2" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="8" coveredelements="0"/>
+          <metrics complexity="2" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="5" coveredelements="5"/>
         </class>
-        <line num="16" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="17" type="stmt" count="0"/>
-        <line num="19" type="stmt" count="0"/>
-        <line num="20" type="stmt" count="0"/>
-        <line num="22" type="method" name="request" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="23" type="stmt" count="0"/>
-        <line num="24" type="stmt" count="0"/>
-        <line num="25" type="stmt" count="0"/>
-        <metrics loc="26" ncloc="23" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="8" coveredelements="0"/>
+        <line num="16" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="19" type="stmt" count="1"/>
+        <line num="20" type="stmt" count="1"/>
+        <line num="22" type="method" name="request" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <metrics loc="26" ncloc="23" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="5" coveredelements="5"/>
       </file>
     </package>
     <file name="/Users/jraimondi/Code/restforcephp/src/RestClient/RestClientInterface.php">
@@ -23,16 +20,16 @@
     <package name="Jmondi\Restforce">
       <file name="/Users/jraimondi/Code/restforcephp/src/RestforceClient.php">
         <class name="RestforceClient" namespace="Jmondi\Restforce">
-          <metrics complexity="16" methods="14" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="51" coveredstatements="40" elements="65" coveredelements="52"/>
+          <metrics complexity="16" methods="14" coveredmethods="14" conditionals="0" coveredconditionals="0" statements="51" coveredstatements="51" elements="65" coveredelements="65"/>
         </class>
-        <line num="36" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="9"/>
-        <line num="44" type="stmt" count="9"/>
-        <line num="45" type="stmt" count="9"/>
-        <line num="46" type="stmt" count="9"/>
-        <line num="47" type="stmt" count="9"/>
-        <line num="48" type="stmt" count="9"/>
-        <line num="49" type="stmt" count="9"/>
-        <line num="50" type="stmt" count="9"/>
+        <line num="36" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="11"/>
+        <line num="44" type="stmt" count="11"/>
+        <line num="45" type="stmt" count="11"/>
+        <line num="46" type="stmt" count="11"/>
+        <line num="47" type="stmt" count="11"/>
+        <line num="48" type="stmt" count="11"/>
+        <line num="49" type="stmt" count="11"/>
+        <line num="50" type="stmt" count="11"/>
         <line num="52" type="method" name="userInfo" visibility="public" complexity="1" crap="1" count="1"/>
         <line num="54" type="stmt" count="1"/>
         <line num="55" type="stmt" count="1"/>
@@ -61,36 +58,36 @@
         <line num="95" type="method" name="limits" visibility="public" complexity="1" crap="1" count="1"/>
         <line num="97" type="stmt" count="1"/>
         <line num="98" type="stmt" count="1"/>
-        <line num="101" type="method" name="create" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="103" type="stmt" count="0"/>
-        <line num="104" type="stmt" count="0"/>
-        <line num="107" type="stmt" count="0"/>
-        <line num="108" type="stmt" count="0"/>
-        <line num="110" type="stmt" count="0"/>
-        <line num="113" type="method" name="update" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="115" type="stmt" count="0"/>
-        <line num="116" type="stmt" count="0"/>
-        <line num="119" type="stmt" count="0"/>
-        <line num="120" type="stmt" count="0"/>
-        <line num="122" type="stmt" count="0"/>
-        <line num="123" type="stmt" count="0"/>
+        <line num="101" type="method" name="create" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="103" type="stmt" count="1"/>
+        <line num="104" type="stmt" count="1"/>
+        <line num="107" type="stmt" count="1"/>
+        <line num="108" type="stmt" count="1"/>
+        <line num="110" type="stmt" count="1"/>
+        <line num="113" type="method" name="update" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="115" type="stmt" count="1"/>
+        <line num="116" type="stmt" count="1"/>
+        <line num="119" type="stmt" count="1"/>
+        <line num="120" type="stmt" count="1"/>
+        <line num="122" type="stmt" count="1"/>
+        <line num="123" type="stmt" count="1"/>
         <line num="126" type="method" name="destroy" visibility="public" complexity="1" crap="1" count="1"/>
         <line num="128" type="stmt" count="1"/>
         <line num="129" type="stmt" count="1"/>
         <line num="130" type="stmt" count="1"/>
         <line num="131" type="stmt" count="1"/>
-        <line num="135" type="method" name="request" visibility="private" complexity="1" crap="1" count="9"/>
-        <line num="137" type="stmt" count="9"/>
-        <line num="138" type="stmt" count="9"/>
-        <line num="139" type="stmt" count="9"/>
-        <line num="140" type="stmt" count="9"/>
-        <line num="143" type="method" name="cleanRequestUrl" visibility="private" complexity="2" crap="2" count="9"/>
-        <line num="145" type="stmt" count="9"/>
-        <line num="146" type="stmt" count="5"/>
-        <line num="149" type="stmt" count="9"/>
-        <line num="152" type="method" name="getBodyObjectFromResponse" visibility="private" complexity="1" crap="1" count="8"/>
-        <line num="154" type="stmt" count="8"/>
-        <metrics loc="156" ncloc="138" classes="1" methods="14" coveredmethods="12" conditionals="0" coveredconditionals="0" statements="51" coveredstatements="40" elements="65" coveredelements="52"/>
+        <line num="135" type="method" name="request" visibility="private" complexity="1" crap="1" count="11"/>
+        <line num="137" type="stmt" count="11"/>
+        <line num="138" type="stmt" count="11"/>
+        <line num="139" type="stmt" count="11"/>
+        <line num="140" type="stmt" count="11"/>
+        <line num="143" type="method" name="cleanRequestUrl" visibility="private" complexity="2" crap="2" count="11"/>
+        <line num="145" type="stmt" count="11"/>
+        <line num="146" type="stmt" count="7"/>
+        <line num="149" type="stmt" count="11"/>
+        <line num="152" type="method" name="getBodyObjectFromResponse" visibility="private" complexity="1" crap="1" count="9"/>
+        <line num="154" type="stmt" count="9"/>
+        <metrics loc="156" ncloc="138" classes="1" methods="14" coveredmethods="14" conditionals="0" coveredconditionals="0" statements="51" coveredstatements="51" elements="65" coveredelements="65"/>
       </file>
     </package>
     <file name="/Users/jraimondi/Code/restforcephp/src/SalesforceOauth/AccessTokenInterface.php">
@@ -151,6 +148,6 @@
     <file name="/Users/jraimondi/Code/restforcephp/src/SalesforceOauth/TokenRefreshCallbackInterface.php">
       <metrics loc="9" ncloc="9" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="7" loc="337" ncloc="296" classes="4" methods="23" coveredmethods="19" conditionals="0" coveredconditionals="0" statements="88" coveredstatements="71" elements="111" coveredelements="90"/>
+    <metrics files="7" loc="337" ncloc="296" classes="4" methods="23" coveredmethods="23" conditionals="0" coveredconditionals="0" statements="85" coveredstatements="85" elements="108" coveredelements="108"/>
   </project>
 </coverage>
