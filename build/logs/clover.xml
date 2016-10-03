@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1475458762">
-  <project timestamp="1475458762">
+<coverage generated="1475459532">
+  <project timestamp="1475459532">
     <package name="Jmondi\Restforce\RestClient">
       <file name="/Users/jraimondi/Code/restforcephp/src/RestClient/GuzzleRestClient.php">
         <class name="GuzzleRestClient" namespace="Jmondi\Restforce\RestClient">
