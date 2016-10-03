@@ -176,7 +176,7 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $limits = $restforce->limits();
-// { ... }
+// $limits = { ... }
 ```
 
 
@@ -191,7 +191,7 @@ $limits = $restforce->limits();
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $user = $restforce->userInfo();
-// { ... }
+// $user = { ... }
 ```
 
 #### Query
@@ -205,7 +205,7 @@ $user = $restforce->userInfo();
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $results = $restforce->query('SELECT Id, Name FROM Account');
-// { ... }
+// $results = { ... }
 ```
 
 #### QueryAll
@@ -219,7 +219,7 @@ $results = $restforce->query('SELECT Id, Name FROM Account');
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $results = $restforce->queryAll('SELECT Id, Name FROM Account');
-// { ... }
+// $results = { ... }
 ```
 
 #### Explain
@@ -232,7 +232,7 @@ $results = $restforce->queryAll('SELECT Id, Name FROM Account');
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $explaination = $restforce->explain('SELECT Id, Name FROM Account');
-// { ... }
+// $explaination = { ... }
 ```
 
 #### Find
@@ -246,7 +246,7 @@ $explaination = $restforce->explain('SELECT Id, Name FROM Account');
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $object = $restforce->find('Account', '001410000056Kf0AAE');
-// { ... }
+// $object = { ... }
 ```
 
 #### Describe
@@ -260,7 +260,7 @@ $object = $restforce->find('Account', '001410000056Kf0AAE');
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $description = $restforce->describe('Account');
-// { ... }
+// $description = { ... }
 ```
 
 #### Picklist Values
@@ -274,7 +274,7 @@ $description = $restforce->describe('Account');
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $picklistValues = $restforce->describe('Task', 'Type');
-// { ... }
+// $picklistValues = { ... }
 ```
 
 
@@ -291,7 +291,7 @@ $restforce = $demoSalesforceClient->getClient();
 $id = $restforce->create('Account', [
     'Name' => 'Foo Bar'
 ]);
-// '001i000001ysdBGAAY'` 
+// $id = '001i000001ysdBGAAY'` 
 ```
 
 #### Update
@@ -307,7 +307,7 @@ $restforce = $demoSalesforceClient->getClient();
 $success = $restforce->update('Account', '001i000001ysdBGAAY', [
     'Name' => 'Foo Bar Two'
 ]);
-// true|false
+// $success = true|false
 ```
 
 #### Destroy
@@ -321,5 +321,5 @@ $success = $restforce->update('Account', '001i000001ysdBGAAY', [
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $success = $restforce->destroy('Account', '001i000001ysdBGAAY');
-// true|false
+// $success = true|false
 ```
