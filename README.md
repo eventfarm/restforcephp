@@ -226,6 +226,20 @@ $restforce->explain('SELECT Id, Name FROM Account);
 // { ... }
 ```
 
+#### Basic
+
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_basic_info.htm?search_text=limits) Describes the individual metadata for the specified object.
+
+`public function basic(string $type):stdClass`
+
+```php
+<?php
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
+$restforce->find('Account', '001410000056Kf0AAE');
+// { ... }
+```
+
 #### Find
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_field_values.htm?search_text=limits) Find resource `$id` of `$type`, optionally specify the fields you want to retrieve in the fields parameter and use the GET method of the resource.
