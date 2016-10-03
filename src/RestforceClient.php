@@ -77,25 +77,25 @@ class RestforceClient
         return $this->getBodyObjectFromResponse($response);
     }
 
-    public function find(string $type, string $typeId = null, array $fields = []):stdClass
+    public function find(string $sobject, string $sobjectId = null, array $fields = []):stdClass
     {
         $query = http_build_query($fields);
-        $uri = '/sobjects/' . $type . '/' . $typeId;
+        $uri = '/sobjects/' . $sobject . '/' . $sobjectId;
         $uri .= empty($fields) ? '' : '?' . $query;
         $response = $this->request('GET', $uri);
         return $this->getBodyObjectFromResponse($response);
     }
 
-    public function describe(string $type):stdClass
+    public function describe(string $sobject):stdClass
     {
-        $uri = '/sobjects/' . $type . '/describe';
+        $uri = '/sobjects/' . $sobject . '/describe';
         $response = $this->request('GET', $uri);
         return $this->getBodyObjectFromResponse($response);
     }
 
-    public function picklistValues(string $type, string $field)
+    public function picklistValues(string $sobject, string $field)
     {
-        $fieldList = $this->describe($type)->fields;
+        $fieldList = $this->describe($sobject)->fields;
         $picklist = new SalesforcePicklist($fieldList, $field);
         return $picklist->extract();
     }
@@ -106,9 +106,9 @@ class RestforceClient
         return $this->getBodyObjectFromResponse($response);
     }
 
-    public function create(string $type, array $data):string
+    public function create(string $sobject, array $data):string
     {
-        $uri = '/sobjects/' . $type;
+        $uri = '/sobjects/' . $sobject;
         $response = $this->request('POST', $uri, [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -118,9 +118,9 @@ class RestforceClient
         return $this->getBodyObjectFromResponse($response)->id;
     }
 
-    public function update(string $type, string $typeId, array $data)
+    public function update(string $sobject, string $sobjectId, array $data)
     {
-        $uri = '/sobjects/' . $type . '/' . $typeId;
+        $uri = '/sobjects/' . $sobject . '/' . $sobjectId;
         $response = $this->request('PATCH', $uri, [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -131,9 +131,9 @@ class RestforceClient
         return $success;
     }
 
-    public function destroy(string $type, string $typeId):bool
+    public function destroy(string $sobject, string $sobjectId):bool
     {
-        $uri = '/sobjects/' . $type . '/' . $typeId;
+        $uri = '/sobjects/' . $sobject . '/' . $sobjectId;
         $response = $this->request('DELETE', $uri);
         $success = $response->getStatusCode() === 204;
         return $success;
