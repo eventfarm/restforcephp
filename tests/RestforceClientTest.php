@@ -254,6 +254,33 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
     }
 
+    public function testPicklistValues()
+    {
+        $response = Mockery::mock(ResponseInterface::class);
+        $response->shouldReceive('getStatusCode')
+            ->andReturn(200);
+
+        $response->shouldReceive('getBody')
+            ->andReturn($response);
+
+        $response->shouldReceive('__toString')
+            ->andReturn('{ "name": "Task", "fields": [{"name":"Type", "picklistValues": [{"label": "Call", "value": "Call"}]}] }');
+
+        $client = Mockery::mock(RestClientInterface::class);
+        $client->shouldReceive('request')
+            ->with(
+                'GET',
+                'sobjects/Task/describe',
+                []
+            )
+            ->andReturn($response)
+            ->once();
+
+        $restforceClient = $this->getRestforceClient($client);
+
+        $restforceClient->picklistValues('Task', 'Type');
+    }
+
     public function testCreate()
     {
         $response = Mockery::mock(ResponseInterface::class);
