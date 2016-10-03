@@ -16,7 +16,7 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     const SALESFORCE_CLIENT_SECRET = 'salesforce_client_secret';
     const SALESFORCE_CALLBACK = 'salesforce_callback_url';
     const RESOURCE_OWNER_ID = 'resource_owner_id_url';
-    const JSON_RESPONSE = '{ "woo": "foo" }';
+    const JSON_RESPONSE = '{ "id": "001410000056Kf0AAE", "woo": "foo" }';
 
     public function testLimits()
     {
@@ -231,79 +231,78 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
 
     public function testCreate()
     {
-//        $response = Mockery::mock(ResponseInterface::class);
-//        $response->shouldReceive('getStatusCode')
-//            ->andReturn(200);
-//
-//        $response->shouldReceive('getBody')
-//            ->andReturn($response);
-//
-//        $response->shouldReceive('__toString')
-//            ->andReturn(self::JSON_RESPONSE);
-//
-//        $client = Mockery::mock(RestClientInterface::class);
-//        $client->shouldReceive('request')
-//            ->with(
-//                'POST',
-//                'sobjects/Account/describe',
-//                [
-//                    'headers' => [
-//                        'Bearer' => self::ACCESS_TOKEN
-//                    ],
-//                    'json' => [
-//                        'Name' => 'TestCreateNewAccount'
-//                    ]
-//                ]
-//            )
-//            ->andReturn('001410000056Kf0AAE')
-//            ->once();
-//
-//        $restforceClient = $this->getRestforceClient($client);
-//
-//        $result = $restforceClient->create('Account', [
-//            'Name' => 'TestCreateNewAccount'
-//        ]);
-//
-//        $this->assertEquals('001410000056Kf0AAE', $result);
+        $response = Mockery::mock(ResponseInterface::class);
+        $response->shouldReceive('getStatusCode')
+            ->andReturn(200);
+
+        $response->shouldReceive('getBody')
+            ->andReturn($response);
+
+        $response->shouldReceive('__toString')
+            ->andReturn(self::JSON_RESPONSE);
+
+        $client = Mockery::mock(RestClientInterface::class);
+        $client->shouldReceive('request')
+            ->with(
+                'POST',
+                'sobjects/Account',
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json'
+                    ],
+                    'json' => [
+                        'Name' => 'TestCreateNewAccount'
+                    ]
+                ]
+            )
+            ->andReturn($response)
+            ->once();
+
+        $restforceClient = $this->getRestforceClient($client);
+
+        $result = $restforceClient->create('Account', [
+            'Name' => 'TestCreateNewAccount'
+        ]);
+
+        $this->assertEquals('001410000056Kf0AAE', $result);
     }
 
     public function testUpdate()
     {
-//        $response = Mockery::mock(ResponseInterface::class);
-//        $response->shouldReceive('getStatusCode')
-//            ->andReturn(204);
-//
-//        $response->shouldReceive('getBody')
-//            ->andReturn($response);
-//
-//        $response->shouldReceive('__toString')
-//            ->andReturn(self::JSON_RESPONSE);
-//
-//        $client = Mockery::mock(RestClientInterface::class);
-//        $client->shouldReceive('request')
-//            ->with(
-//                'PATCH',
-//                'sobjects/Account/001410000056Kf0AAE',
-//                [
-//                    'headers' => [
-//                        'Bearer' => self::ACCESS_TOKEN,
-//                        'Content-Type' => 'application/json'
-//                    ],
-//                    'json' => [
-//                        'Name' => 'My Updated Name'
-//                    ]
-//                ]
-//            )
-//            ->andReturn($response)
-//            ->once();
-//
-//        $restforceClient = $this->getRestforceClient($client);
-//
-//        $result = $restforceClient->update('Account', '001410000056Kf0AAE', [
-//            'Name' => 'My Updated Name'
-//        ]);
-//
-//        $this->assertEquals(true, $result);
+        $response = Mockery::mock(ResponseInterface::class);
+        $response->shouldReceive('getStatusCode')
+            ->andReturn(204);
+
+        $response->shouldReceive('getBody')
+            ->andReturn($response);
+
+        $response->shouldReceive('__toString')
+            ->andReturn(self::JSON_RESPONSE);
+
+        $client = Mockery::mock(RestClientInterface::class);
+        $client->shouldReceive('request')
+            ->with(
+                'PATCH',
+                'sobjects/Account/001410000056Kf0AAE',
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json'
+                    ],
+                    'json' => [
+                        'Name' => 'My Updated Name'
+                    ]
+                ]
+            )
+            ->andReturn($response)
+            ->once();
+
+        $restforceClient = $this->getRestforceClient($client);
+
+        $result = $restforceClient->update('Account', '001410000056Kf0AAE', [
+            'Name' => 'My Updated Name'
+        ]);
+
+        $this->assertEquals(true, $result);
     }
 
 
