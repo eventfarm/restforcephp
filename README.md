@@ -237,9 +237,9 @@ $explaination = $restforce->explain('SELECT Id, Name FROM Account');
 
 #### Find
 
-[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_field_values.htm?search_text=limits) Find resource `$id` of `$type`, optionally specify the fields you want to retrieve in the fields parameter and use the GET method of the resource.
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_field_values.htm?search_text=limits) Find resource `$id` of `$sobject`, optionally specify the fields you want to retrieve in the fields parameter and use the GET method of the resource.
 
-`public function find(string $type, string $id, array $fields = []):stdClass`
+`public function find(string $sobject, string $id, array $fields = []):stdClass`
 
 ```php
 <?php
@@ -253,7 +253,7 @@ $object = $restforce->find('Account', '001410000056Kf0AAE');
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm?search_text=describe) Completely describes the individual metadata at all levels for the specified object.
 
-`public function describe(string $type):stdClass`
+`public function describe(string $sobject):stdClass`
 
 ```php
 <?php
@@ -267,7 +267,7 @@ $description = $restforce->describe('Account');
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm?search_text=describe) Uses the [describe](#describe) endpoint and extracts out the picklist values for the specified object and field.
 
-`public function picklistValues(string $type, string $field):array`
+`public function picklistValues(string $sobject, string $field):array`
 
 ```php
 <?php
@@ -280,9 +280,9 @@ $picklistValues = $restforce->describe('Task', 'Type');
 
 #### Create
 
-[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm) Create new records of `$type`. The response body will contain the ID of the created record if the call is successful.
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm) Create new records of `$sobject`. The response body will contain the ID of the created record if the call is successful.
 
-`public function create(string $type, array $data):stdClass`
+`public function create(string $sobject, array $data):stdClass`
 
 ```php
 <?php
@@ -298,7 +298,7 @@ $id = $restforce->create('Account', [
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm?search_text=describe) You use the SObject Rows resource to update records. The response will be the a bool of `$success`.
 
-`public function update(string $type, string $id, array $data):bool`
+`public function update(string $sobject, string $id, array $data):bool`
 
 ```php
 <?php
@@ -312,9 +312,9 @@ $success = $restforce->update('Account', '001i000001ysdBGAAY', [
 
 #### Destroy
 
-[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_delete_record.htm?search_text=describe) Delete record of `$type` and `$id`. The response will be the a bool of `$success`.
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_delete_record.htm?search_text=describe) Delete record of `$sobject` and `$id`. The response will be the a bool of `$success`.
 
-`public function destroy(string $type, string $id):bool`
+`public function destroy(string $sobject, string $id):bool`
 
 ```php
 <?php
