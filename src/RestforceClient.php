@@ -77,13 +77,6 @@ class RestforceClient
         return $this->getBodyObjectFromResponse($response);
     }
 
-    public function basic(string $type):stdClass
-    {
-        $uri = '/sobjects/' . $type;
-        $response = $this->request('GET', $uri);
-        return $this->getBodyObjectFromResponse($response);
-    }
-
     public function find(string $type, string $typeId = null, array $fields = []):stdClass
     {
         $query = http_build_query($fields);

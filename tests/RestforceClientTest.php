@@ -143,31 +143,6 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
     }
 
-    public function testBasic()
-    {
-        $response = Mockery::mock(ResponseInterface::class);
-        $response->shouldReceive('getStatusCode')
-            ->andReturn(200);
-
-        $response->shouldReceive('getBody')
-            ->andReturn($response);
-
-        $response->shouldReceive('__toString')
-            ->andReturn(self::JSON_RESPONSE);
-
-        $client = Mockery::mock(RestClientInterface::class);
-        $client->shouldReceive('request')
-            ->with('GET', 'sobjects/Account', [])
-            ->andReturn($response)
-            ->once();
-
-        $restforceClient = $this->getRestforceClient($client);
-
-        $result = $restforceClient->basic('Account');
-
-        $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
-    }
-
     public function testFindWithoutParams()
     {
         $response = Mockery::mock(ResponseInterface::class);
