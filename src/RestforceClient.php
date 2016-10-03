@@ -4,6 +4,7 @@ namespace Jmondi\Restforce;
 use Jmondi\Restforce\RestClient\RestClientInterface;
 use Jmondi\Restforce\SalesforceOauth\TokenRefreshCallbackInterface;
 use Psr\Http\Message\ResponseInterface;
+use Jmondi\Restforce\Models\SalesforcePicklist;
 use stdClass;
 
 class RestforceClient
@@ -97,6 +98,13 @@ class RestforceClient
         $uri = '/sobjects/' . $type . '/describe';
         $response = $this->request('GET', $uri);
         return $this->getBodyObjectFromResponse($response);
+    }
+
+    public function picklistValues(string $type, string $field)
+    {
+        $fieldList = $this->describe($type)->fields;
+        $picklist = new SalesforcePicklist($fieldList, $field);
+        return $picklist->extract();
     }
 
     public function limits():stdClass

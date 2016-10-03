@@ -166,7 +166,7 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
 <?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->limits();
+$limits = $restforce->limits();
 // { ... }
 ```
 
@@ -181,7 +181,7 @@ $restforce->limits();
 <?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->userInfo();
+$user = $restforce->userInfo();
 // { ... }
 ```
 
@@ -195,7 +195,7 @@ $restforce->userInfo();
 <?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->query('SELECT Id, Name FROM Account);
+$results = $restforce->query('SELECT Id, Name FROM Account');
 // { ... }
 ```
 
@@ -209,7 +209,7 @@ $restforce->query('SELECT Id, Name FROM Account);
 <?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->queryAll('SELECT Id, Name FROM Account);
+$results = $restforce->queryAll('SELECT Id, Name FROM Account');
 // { ... }
 ```
 
@@ -222,7 +222,7 @@ $restforce->queryAll('SELECT Id, Name FROM Account);
 <?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->explain('SELECT Id, Name FROM Account);
+$explaination = $restforce->explain('SELECT Id, Name FROM Account');
 // { ... }
 ```
 
@@ -236,7 +236,7 @@ $restforce->explain('SELECT Id, Name FROM Account);
 <?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->find('Account', '001410000056Kf0AAE');
+$restforce->basic('Account');
 // { ... }
 ```
 
@@ -250,7 +250,7 @@ $restforce->find('Account', '001410000056Kf0AAE');
 <?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->find('Account', '001410000056Kf0AAE');
+$object = $restforce->find('Account', '001410000056Kf0AAE');
 // { ... }
 ```
 
@@ -264,7 +264,21 @@ $restforce->find('Account', '001410000056Kf0AAE');
 <?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->describe('Account');
+$description = $restforce->describe('Account');
+// { ... }
+```
+
+#### Picklist Values
+
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm?search_text=describe) Uses the [describe](#describe) endpoint and extracts out the picklist values for the specified object and field.
+
+`public function picklistValues(string $type, string $field):array`
+
+```php
+<?php
+$demoSalesforceClient = new DemoSalesforceClient();
+$restforce = $demoSalesforceClient->getClient();
+$picklistValues = $restforce->describe('Task', 'Type');
 // { ... }
 ```
 
@@ -279,7 +293,7 @@ $restforce->describe('Account');
 <?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->create('Account', [
+$id = $restforce->create('Account', [
     'Name' => 'Foo Bar'
 ]);
 // '001i000001ysdBGAAY'` 
@@ -295,7 +309,7 @@ $restforce->create('Account', [
 <?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->update('Account', '001i000001ysdBGAAY' [
+$success = $restforce->update('Account', '001i000001ysdBGAAY', [
     'Name' => 'Foo Bar Two'
 ]);
 // true|false
@@ -311,6 +325,6 @@ $restforce->update('Account', '001i000001ysdBGAAY' [
 <?php
 $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
-$restforce->destroy('Account', '001i000001ysdBGAAY');
+$success = $restforce->destroy('Account', '001i000001ysdBGAAY');
 // true|false
 ```
