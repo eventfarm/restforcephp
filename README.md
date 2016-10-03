@@ -10,6 +10,12 @@ This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejh
 
 ## Installation
 
+```
+$ composer require jmondi/restforcephp
+```
+
+Or.
+
 Add the following lines to your ``composer.json`` file.
 
 ```json
@@ -40,6 +46,9 @@ $ vendor/bin/phpunit --coverage-text --coverage-html coverage_report
 
 ```bash
 $ vendor/bin/phpcs -p --standard=PSR2 src/ tests/
+
+// Run fix on src and tests directory
+$ vendor/bin/phpcbf --standard=PSR2 src/ tests/ 
 ```
 
 ## Example Client Implementation
