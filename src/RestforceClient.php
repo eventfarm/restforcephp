@@ -1,7 +1,6 @@
 <?php
 namespace Jmondi\Restforce;
 
-
 use Jmondi\Restforce\Models\SalesforcePicklist;
 use Jmondi\Restforce\RestClient\RestClientInterface;
 use Psr\Http\Message\ResponseInterface;
