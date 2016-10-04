@@ -15,10 +15,9 @@ class AccessToken implements AccessTokenInterface
     private $accessToken;
 
     /**
-     * @param array $options An array of options returned by the service provider
-     *     in the access token request. The `access_token` option is required.
+     * @param $accessToken
      */
-    public function __construct(StevenMaguireAccessToken $accessToken)
+    public function __construct($accessToken)
     {
         $this->accessToken = $accessToken;
     }

@@ -24,7 +24,8 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
 
         $accessToken->shouldReceive('getToken')
             ->andReturn('MOCKACCESSTOKEN');
-
+        $accessToken->shouldReceive('getInstanceUrl')
+            ->andReturn('salesforce.com');
         $accessToken->shouldReceive('getRefreshToken')
             ->andReturn('TOKENSDKLJLKJWEF');
 
@@ -35,7 +36,6 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
         $restClient->shouldReceive('request')
             ->andReturn($failedResponse)
             ->times(3);
-
 
         $maxRetry = 3;
         $apiVersion = 'v37.0';
@@ -66,6 +66,8 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
 
         $accessToken->shouldReceive('getToken')
             ->andReturn('MOCKACCESSTOKEN');
+        $accessToken->shouldReceive('getInstanceUrl')
+            ->andReturn('salesforce.com');
 
         $accessToken->shouldReceive('getRefreshToken')
             ->andReturn('TOKENSDKLJLKJWEF');
