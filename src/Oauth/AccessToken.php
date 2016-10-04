@@ -4,10 +4,6 @@ namespace Jmondi\Restforce\Oauth;
 class AccessToken implements AccessTokenInterface
 {
     /**
-     * @var string
-     */
-    private $instanceUrl;
-    /**
      * @var AccessTokenInterface
      */
     private $accessToken;
