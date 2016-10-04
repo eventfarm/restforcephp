@@ -2,7 +2,6 @@
 namespace Jmondi\Restforce\RestClient;
 
 use GuzzleHttp\Client as GuzzleClient;
-use Jmondi\Restforce\RestClient\RestClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class GuzzleRestClient implements RestClientInterface

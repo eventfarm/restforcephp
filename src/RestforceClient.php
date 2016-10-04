@@ -2,7 +2,7 @@
 namespace Jmondi\Restforce;
 
 use Jmondi\Restforce\RestClient\RestClientInterface;
-use Jmondi\Restforce\SalesforceOauth\TokenRefreshCallbackInterface;
+use Jmondi\Restforce\TokenRefreshCallbackInterface;
 use Psr\Http\Message\ResponseInterface;
 use Jmondi\Restforce\Models\SalesforcePicklist;
 use stdClass;
