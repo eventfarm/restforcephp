@@ -5,6 +5,8 @@ use Stevenmaguire\OAuth2\Client\Provider\Salesforce as StevenMaguireSalesforcePr
 
 class SalesforceProvider implements SalesforceProviderInterface
 {
+    private $salesforceProvider;
+
     public function __construct(StevenMaguireSalesforceProvider $salesforceProvider)
     {
         $this->salesforceProvider = $salesforceProvider;
@@ -19,6 +21,12 @@ class SalesforceProvider implements SalesforceProviderInterface
      */
     public function getAccessToken($grant, array $options = [])
     {
-        $this->salesforceProvider->getAccessToken($grant, $options);
+        $accessToken = $this->salesforceProvider->getAccessToken($grant, $options);
+        return new AccessToken($accessToken);
+    }
+
+    public function getAuthorizationUrl():string
+    {
+        return $this->salesforceProvider->getAuthorizationUrl();
     }
 }

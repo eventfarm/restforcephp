@@ -11,4 +11,5 @@ interface SalesforceProviderInterface
      * @return AccessToken
      */
     public function getAccessToken($grant, array $options = []);
+    public function getAuthorizationUrl():string;
 }
