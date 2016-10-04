@@ -1,13 +1,14 @@
 <?php
 namespace Jmondi\Restforce\Oauth;
 
-use Stevenmaguire\OAuth2\Client\Provider\Salesforce as StevenMaguireSalesforceProvider;
-
 class SalesforceProvider implements SalesforceProviderInterface
 {
     private $salesforceProvider;
 
-    public function __construct(StevenMaguireSalesforceProvider $salesforceProvider)
+    /**
+     * @param SalesforceProviderInterface $salesforceProvider
+     */
+    public function __construct($salesforceProvider)
     {
         $this->salesforceProvider = $salesforceProvider;
     }

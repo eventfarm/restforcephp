@@ -13,10 +13,6 @@ class RestforceClient
      * @var RestClientInterface
      */
     private $client;
-    /**
-     * @var string
-     */
-    private $resourceOwnerUrl;
 
     public function __construct(
         RestClientInterface $client

@@ -2,6 +2,7 @@
 namespace Jmondi\Restforce;
 
 use Jmondi\Restforce\Oauth\AccessToken;
+use Jmondi\Restforce\Oauth\AccessTokenInterface;
 use Mockery;
 
 class AccessTokenTest extends \PHPUnit_Framework_TestCase
@@ -10,7 +11,7 @@ class AccessTokenTest extends \PHPUnit_Framework_TestCase
     public function testLeagueAccessTokenFacade()
     {
         $stevenMaguireAccessToken = Mockery::mock(
-            \Stevenmaguire\OAuth2\Client\Token\AccessToken::class
+            AccessTokenInterface::class
         );
 
         $restforceAccessToken = new AccessToken(

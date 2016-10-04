@@ -1,8 +1,6 @@
 <?php
 namespace Jmondi\Restforce\Oauth;
 
-use Stevenmaguire\OAuth2\Client\Token\AccessToken as StevenMaguireAccessToken;
-
 class AccessToken implements AccessTokenInterface
 {
     /**
@@ -10,12 +8,12 @@ class AccessToken implements AccessTokenInterface
      */
     private $instanceUrl;
     /**
-     * @var StevenMaguireAccessToken
+     * @var AccessTokenInterface
      */
     private $accessToken;
 
     /**
-     * @param $accessToken
+     * @param AccessTokenInterface $accessToken
      */
     public function __construct($accessToken)
     {

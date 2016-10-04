@@ -57,98 +57,53 @@ $ vendor/bin/phpcbf --standard=PSR2 src/ tests/
 <?php
 namespace App;
 
+use Jmondi\Restforce\Oauth\AccessToken;
+use Jmondi\Restforce\Oauth\AccessTokenInterface;
+use Jmondi\Restforce\Oauth\SalesforceProvider;
+use Jmondi\Restforce\Oauth\SalesforceProviderInterface;
 use Jmondi\Restforce\RestClient\GuzzleRestClient;
+use Jmondi\Restforce\RestClient\RestClientInterface;
 use Jmondi\Restforce\RestforceClient;
-use Jmondi\Restforce\SalesforceOauth\SalesforceProviderRestClient;
-use Jmondi\Restforce\SalesforceOauth\TokenRefreshCallbackInterface;
-use Stevenmaguire\OAuth2\Client\Provider\Salesforce as SalesforceProvider;
-use Stevenmaguire\OAuth2\Client\Token\AccessToken;
+use Jmondi\Restforce\SalesforceRequestClient;
+use Jmondi\Restforce\TokenRefreshCallbackInterface;
 
 class DemoSalesforceClient implements TokenRefreshCallbackInterface
 {
     const SALESFORCE_CLIENT_ID = 'your salesforce client id';
     const SALESFORCE_CLIENT_SECRET = 'your salesforce client secret';
     const SALESFORCE_CALLBACK = 'callback URL to catch $_GET['code'] to generate AccessToken';
-    const INSTANCE_URL = 'salesforce instance url';
-    const RESOURCE_OWNER_ID = 'url to salesforce authd user info (from AccessToken)';
 
-    public function tokenRefreshCallback(AccessToken $token)
-    {
-        // CALLBACK FUNCTION TO STORE THE
-        // NEWLY REFRESHED ACCESS TOKEN
-        // TO PERSIST IN MEMORY
-    }
 
-    public function getProvider():SalesforceProvider
+    public function getRestforceClient():RestforceClient
     {
-        if (empty($this->salesforce)) {
-            $this->salesforce = new SalesforceProvider([
-                'clientId' => self::SALESFORCE_CLIENT_ID,
-                'clientSecret' => self::SALESFORCE_CLIENT_SECRET,
-                'redirectUri' => self::SALESFORCE_CALLBACK,
-            ]);
-        }
-        return $this->salesforce;
-    }
+        $salesforceClient = new SalesforceRequestClient(
+            $this->getGuzzleRestClient(),
+            $this->getSalesforceProvider(),
+            $this->getAccessToken(),
+            $this,
+            $apiVersion = 'v37.0'
+        );
 
-    public function getAccessToken():AccessToken
-    {
-        if (empty($this->accessToken)) {
-            if (ACCESS_TOKEN_EXISTS_IN_DB_OR_CACHE())){
-                $this->accessToken = // GET ACCESS TOKEN FROM DB/CACHE;
-            } else {
-                $this->redirectToSalesforceAuth();
-            }
-        }
-        
-        return $this->accessToken;
-    }
-
-    public function getClient():RestforceClient
-    {
-        $accessToken = $this->getAccessToken();
-        
         if (empty($this->restforce)) {
-            $apiVersion = 'v37.0';
-            $baseUri = $accessToken->getInstanceUrl() . '/services/data/' . $apiVersion . '/';
-
-            $client =
-                new SalesforceProviderRestClient(
-                    new GuzzleRestClient(
-                        new \GuzzleHttp\Client([
-                            'base_uri' => $baseUri,
-                            'http_errors' => false
-                        ])
-                    ),
-                    $this->getProvider(),
-                    $accessToken,
-                    $this
-                );
-
             $this->restforce = new RestforceClient(
-                $client,
-                self::INSTANCE_URL,
-                self::RESOURCE_OWNER_ID,
-                $this
+                $salesforceClient
             );
         }
         return $this->restforce;
     }
-    
+
     public function redirectToSalesforceAuth()
     {
-        $provider = $this->getProvider();
+        $provider = $this->getSalesforceProvider();
         $authorizationUrl = $provider->getAuthorizationUrl();
         header('Location: ' . $authorizationUrl);
         exit;
     }
 
-    /**
-     * Generates the access token from the salesforce callback.
-     */
-    public function generateAccessTokenFromCode(string $code):AccessToken
+    public function generateAccessTokenFromCode(string $code):AccessTokenInterface
     {
-        $provider = $this->getProvider();
+        $provider = $this->getSalesforceProvider();
+
         try {
             $accessToken = $provider->getAccessToken('authorization_code', [
                 'code' => $code
@@ -157,9 +112,51 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
             exit($e->getMessage());
         }
 
-        // PERSIST ACCESS TOKEN TO DB/CACHE HERE 
+        // STORE THE $accessToken TO PERSISTANCE LAYER
 
         return $accessToken;
+    }
+
+    public function tokenRefreshCallback(AccessToken $token)
+    {
+        // CALLBACK FUNCTION TO STORE THE REFRESHED $token TO PERSISTANCE LAYER
+    }
+
+    private function getSalesforceProvider():SalesforceProviderInterface
+    {
+        if (empty($this->salesforce)) {
+            $this->salesforce = new SalesforceProvider(
+                new Salesforce([
+                    'clientId' => self::SALESFORCE_CLIENT_ID,
+                    'clientSecret' => self::SALESFORCE_CLIENT_SECRET,
+                    'redirectUri' => self::SALESFORCE_CALLBACK,
+                ])
+            );
+        }
+        return $this->salesforce;
+    }
+
+    private function getGuzzleRestClient():RestClientInterface
+    {
+        if (empty($this->restClient)) {
+            $this->restClient = new GuzzleRestClient(
+                new \GuzzleHttp\Client(['http_errors' => false])
+            );
+        }
+
+        return $this->restClient;
+    }
+
+    private function getAccessToken():AccessTokenInterface
+    {
+        if (empty($this->accessToken)) {
+            if (\Cache::has('access_token')){
+                $this->accessToken = // RETRIEVE ACCESS TOKEN FROM PERSISTANCE LAYER;
+            } else {
+                $this->redirectToSalesforceAuth();
+            }
+        }
+        return $this->accessToken;
     }
 }
 ```

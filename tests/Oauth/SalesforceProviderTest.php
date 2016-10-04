@@ -1,28 +1,24 @@
 <?php
 namespace Jmondi\Restforce;
 
-use Jmondi\Restforce\Oauth\AccessToken;
 use Jmondi\Restforce\Oauth\AccessTokenInterface;
 use Jmondi\Restforce\Oauth\SalesforceProvider;
+use Jmondi\Restforce\Oauth\SalesforceProviderInterface;
 use Mockery;
-use Stevenmaguire\OAuth2\Client\Provider\Salesforce as StevenMaguireSalesforceProvider;
 
 class SalesforceProviderTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testLeagueAccessTokenFacade()
     {
-        $stevenMaguireSalesforceProvider = Mockery::mock(
-            StevenMaguireSalesforceProvider::class
-        );
-
+        $salesforceProviderInterface = Mockery::mock(SalesforceProviderInterface::class);
         $restforceAccessToken = Mockery::instanceMock(AccessTokenInterface::class);
 
         $restforceSalesforceProvider = new SalesforceProvider(
-            $stevenMaguireSalesforceProvider
+            $salesforceProviderInterface
         );
 
-        $stevenMaguireSalesforceProvider->shouldReceive('getAccessToken')
+        $salesforceProviderInterface->shouldReceive('getAccessToken')
             ->with('', [])
             ->andReturn($restforceAccessToken);
 
