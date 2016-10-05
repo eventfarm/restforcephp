@@ -61,7 +61,13 @@ class RestforceClient
     ) {
     
         $restClient = GuzzleRestClient::createClient();
-        $salesforceProvider = StevenMaguireSalesforceProvider::createDefaultProvider($clientId, $clientSecret, $redirectUrl, $domain);
+        $salesforceProvider =
+            StevenMaguireSalesforceProvider::createDefaultProvider(
+                $clientId,
+                $clientSecret,
+                $redirectUrl,
+                $domain
+            );
         return new self(
             $restClient,
             $salesforceProvider,
