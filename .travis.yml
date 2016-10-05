@@ -1,12 +1,13 @@
 language: php
 php:
-- 7.0
-- 7.1
+  - 7.0
+  - 7.1
 sudo: false
 before_script:
-- composer self-update
-- composer install
+  - composer self-update
+  - composer install
 script:
-- vendor/bin/phpcs --standard=PSR2 src/
-- vendor/bin/phpunit -c phpunit.xml
-after_script: ./bin/codeclimate.sh
+  - vendor/bin/phpcs --standard=PSR2 src/
+  - vendor/bin/phpunit -c phpunit.xml
+after_script:
+  - ./bin/codeclimate.sh

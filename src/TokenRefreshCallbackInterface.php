@@ -1,7 +1,7 @@
 <?php
-namespace Jmondi\Restforce\SalesforceOauth;
+namespace Jmondi\Restforce;
 
-use Stevenmaguire\OAuth2\Client\Token\AccessToken;
+use Jmondi\Restforce\Oauth\AccessToken;
 
 interface TokenRefreshCallbackInterface
 {

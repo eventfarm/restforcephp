@@ -1,10 +1,9 @@
 <?php
 namespace Jmondi\Restforce;
 
-use Jmondi\Restforce\RestClient\RestClientInterface;
-use Jmondi\Restforce\SalesforceOauth\TokenRefreshCallbackInterface;
-use Psr\Http\Message\ResponseInterface;
 use Jmondi\Restforce\Models\SalesforcePicklist;
+use Jmondi\Restforce\RestClient\RestClientInterface;
+use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
 class RestforceClient
@@ -13,46 +12,16 @@ class RestforceClient
      * @var RestClientInterface
      */
     private $client;
-    /**
-     * @var string
-     */
-    private $instanceUrl;
-    /**
-     * @var string
-     */
-    private $resourceOwnerUrl;
-    /**
-     * @var TokenRefreshCallbackInterface
-     */
-    private $tokenRefreshObject;
-    /**
-     * @var array
-     */
-    private $headerOptions;
-    /**
-     * @var string
-     */
-    private $host;
 
     public function __construct(
-        RestClientInterface $client,
-        string $instanceUrl,
-        string $resourceOwnerUrl,
-        TokenRefreshCallbackInterface $tokenRefreshObject = null,
-        array $headerOptions = [],
-        string $host = 'login.salesforce.com'
+        RestClientInterface $client
     ) {
         $this->client = $client;
-        $this->instanceUrl = $instanceUrl;
-        $this->resourceOwnerUrl = $resourceOwnerUrl;
-        $this->tokenRefreshObject = $tokenRefreshObject;
-        $this->headerOptions = $headerOptions;
-        $this->host = $host;
     }
 
     public function userInfo():stdClass
     {
-        $response = $this->request('GET', $this->resourceOwnerUrl);
+        $response = $this->request('GET', $this->client->getResourceOwnerUrl());
         return $this->getBodyObjectFromResponse($response);
     }
 
@@ -143,7 +112,6 @@ class RestforceClient
     private function request(string $method, string $uri, array $options = []):ResponseInterface
     {
         $url = $this->cleanRequestUrl($uri);
-        $options = array_merge_recursive($this->headerOptions, $options);
         $response = $this->client->request($method, $url, $options);
         return $response;
     }

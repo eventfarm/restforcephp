@@ -1,26 +1,25 @@
 <?php
-namespace Jmondi\Restforce\SalesforceOauth;
+namespace Jmondi\Restforce;
 
 use GuzzleHttp\Client as GuzzleClient;
+use Jmondi\Restforce\Oauth\AccessTokenInterface;
+use Jmondi\Restforce\Oauth\SalesforceProviderInterface;
 use Jmondi\Restforce\RestClient\RestClientInterface;
-use Jmondi\Restforce\SalesforceOauth\RetryAuthorizationTokenFailedException;
-use Jmondi\Restforce\SalesforceOauth\TokenRefreshCallbackInterface;
+use Jmondi\Restforce\Oauth\RetryAuthorizationTokenFailedException;
 use Psr\Http\Message\ResponseInterface;
-use Stevenmaguire\OAuth2\Client\Provider\Salesforce as SalesforceProvider;
-use Stevenmaguire\OAuth2\Client\Token\AccessToken;
 
-class SalesforceProviderRestClient implements \Jmondi\Restforce\RestClient\RestClientInterface
+class SalesforceRequestClient implements RestClientInterface
 {
     /**
-     * @var GuzzleClient
+     * @var RestClientInterface
      */
     private $client;
     /**
-     * @var SalesforceProvider
+     * @var SalesforceProviderInterface
      */
     private $salesforceProvider;
     /**
-     * @var AccessToken
+     * @var AccessTokenInterface
      */
     private $accessToken;
     /**
@@ -31,12 +30,17 @@ class SalesforceProviderRestClient implements \Jmondi\Restforce\RestClient\RestC
      * @var int
      */
     private $maxRetry;
+    /**
+     * @var string
+     */
+    private $baseUrl;
 
     public function __construct(
-        \Jmondi\Restforce\RestClient\RestClientInterface $client,
-        SalesforceProvider $salesforceProvider,
-        AccessToken $accessToken,
+        RestClientInterface $client,
+        SalesforceProviderInterface $salesforceProvider,
+        AccessTokenInterface $accessToken,
         TokenRefreshCallbackInterface $tokenRefreshCallback = null,
+        string $apiVersion,
         int $maxRetry = 2
     ) {
         $this->client = $client;
@@ -44,18 +48,24 @@ class SalesforceProviderRestClient implements \Jmondi\Restforce\RestClient\RestC
         $this->accessToken = $accessToken;
         $this->tokenRefreshCallback = $tokenRefreshCallback;
         $this->maxRetry = $maxRetry;
+        $this->baseUrl = $this->accessToken->getInstanceUrl() . '/services/data/' . $apiVersion . '/';
     }
 
     public function request(string $method, string $uri = '', array $options = []):ResponseInterface
     {
         return $this->retryRequest(
             $method,
-            $uri,
+            $this->baseUrl . $uri,
             $this->mergeOptions($options)
         );
     }
 
-    private function getAccessToken()
+    public function getResourceOwnerUrl():string
+    {
+        return $this->accessToken->getResourceOwnerId();
+    }
+
+    private function getAccessToken():string
     {
         return $this->accessToken->getToken();
     }

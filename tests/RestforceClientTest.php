@@ -3,7 +3,7 @@ namespace Jmondi\Restforce;
 
 use GuzzleHttp\Psr7\Response;
 use Jmondi\Restforce\RestClient\RestClientInterface;
-use Jmondi\Restforce\SalesforceOauth\TokenRefreshCallbackInterface;
+use Jmondi\Restforce\TokenRefreshCallbackInterface;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;
 
@@ -56,16 +56,19 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
             ->andReturn(self::JSON_RESPONSE);
 
         $client = Mockery::mock(RestClientInterface::class);
+
+        $client->shouldReceive('getResourceOwnerUrl')
+            ->andReturn('resource_owner_id_url');
+
         $client->shouldReceive('request')
             ->with('GET', 'resource_owner_id_url', [])
             ->andReturn($response)
             ->once();
 
+
         $restforceClient = $this->getRestforceClient($client);
 
-        $result = $restforceClient->userInfo();
-
-        $this->assertEquals(json_decode(self::JSON_RESPONSE), $result);
+        $restforceClient->userInfo();
     }
 
     public function testQuery()
