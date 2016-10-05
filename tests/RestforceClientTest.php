@@ -199,7 +199,7 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
 
         $restClient = Mockery::mock(RestClientInterface::class);
         $restClient->shouldReceive('request')
-            ->andReturnUsing(function($m, $e, $o) use($method, $endpoint, $options, $response) {
+            ->andReturnUsing(function ($m, $e, $o) use ($method, $endpoint, $options, $response) {
                 $this->assertEquals($method, $m);
                 $this->assertEquals('myInstanceUrl/services/data/v37.0/' . $endpoint, $e);
                 $this->assertEquals($options, $o);
