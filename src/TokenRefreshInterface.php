@@ -3,7 +3,7 @@ namespace Jmondi\Restforce;
 
 use Jmondi\Restforce\Oauth\AccessToken;
 
-interface TokenRefreshCallbackInterface
+interface TokenRefreshInterface
 {
     public function tokenRefreshCallback(AccessToken $accessToken);
 }

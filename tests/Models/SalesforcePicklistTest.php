@@ -1,6 +1,8 @@
 <?php
+namespace Jmondi\Restforce\Tests\Models;
 
-namespace Jmondi\Restforce\Models;
+use Jmondi\Restforce\Models\SalesforcePicklist;
+use Jmondi\Restforce\Models\SalesforcePicklistFieldDoesNotExist;
 
 class SalesforcePicklistTest extends \PHPUnit_Framework_TestCase
 {

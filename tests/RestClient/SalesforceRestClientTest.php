@@ -1,21 +1,23 @@
 <?php
-namespace Jmondi\Restforce;
+namespace Jmondi\Restforce\Test\RestClient;
 
 use Jmondi\Restforce\Oauth\AccessToken;
-use Jmondi\Restforce\Oauth\SalesforceProvider;
-use Jmondi\Restforce\RestClient\GuzzleRestClient;
 use Jmondi\Restforce\Oauth\RetryAuthorizationTokenFailedException;
+use Jmondi\Restforce\Oauth\StevenMaguireSalesforceProvider;
+use Jmondi\Restforce\RestClient\GuzzleRestClient;
+use Jmondi\Restforce\RestClient\SalesforceRestClient;
+use Jmondi\Restforce\TokenRefreshInterface;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;
 
-class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
+class SalesforceRestClientTest extends \PHPUnit_Framework_TestCase
 {
     public function testExceptionIsThrownWhenClientRetriesMoreThanMaxRetry()
     {
         $restClient = Mockery::mock(GuzzleRestClient::class);
-        $provider = Mockery::mock(SalesforceProvider::class);
+        $provider = Mockery::mock(StevenMaguireSalesforceProvider::class);
         $accessToken = Mockery::mock(AccessToken::class);
-        $tokenRefreshCallback = Mockery::mock(TokenRefreshCallbackInterface::class);
+        $tokenRefreshCallback = Mockery::mock(TokenRefreshInterface::class);
 
         $tokenRefreshCallback->shouldReceive('tokenRefreshCallback');
 
@@ -39,10 +41,13 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
 
         $maxRetry = 3;
         $apiVersion = 'v37.0';
-        $salesforceProvider = new SalesforceRequestClient(
+        $resourceOwnerUrl = "myResourceOwnerUrl";
+
+        $salesforceProvider = new SalesforceRestClient(
             $restClient,
             $provider,
             $accessToken,
+            $resourceOwnerUrl,
             $tokenRefreshCallback,
             $apiVersion,
             $maxRetry
@@ -55,9 +60,9 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
     public function testFailThenRetryAndSucceedBeforeMaxRetryLimit()
     {
         $restClient = Mockery::mock(GuzzleRestClient::class);
-        $provider = Mockery::mock(SalesforceProvider::class);
+        $provider = Mockery::mock(StevenMaguireSalesforceProvider::class);
         $accessToken = Mockery::mock(AccessToken::class);
-        $tokenRefreshCallback = Mockery::mock(TokenRefreshCallbackInterface::class);
+        $tokenRefreshCallback = Mockery::mock(TokenRefreshInterface::class);
 
         $tokenRefreshCallback->shouldReceive('tokenRefreshCallback');
 
@@ -90,10 +95,13 @@ class SalesforceProviderRestClientTest extends \PHPUnit_Framework_TestCase
 
         $maxRetry = 3;
         $apiVersion = 'v37.0';
-        $salesforceProvider = new SalesforceRequestClient(
+        $resourceOwnerUrl = 'myResourceOwnerUrl';
+
+        $salesforceProvider = new SalesforceRestClient(
             $restClient,
             $provider,
             $accessToken,
+            $resourceOwnerUrl,
             $tokenRefreshCallback,
             $apiVersion,
             $maxRetry

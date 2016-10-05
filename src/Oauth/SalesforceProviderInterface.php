@@ -8,8 +8,7 @@ interface SalesforceProviderInterface
      *
      * @param  mixed $grant
      * @param  array $options
-     * @return AccessToken
+     * @return AccessTokenInterface
      */
-    public function getAccessToken($grant, array $options = []);
-    public function getAuthorizationUrl():string;
+    public function getAccessToken($grant, array $options = []):AccessTokenInterface;
 }

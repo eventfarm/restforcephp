@@ -30,28 +30,29 @@ Add the following lines to your ``composer.json`` file.
 $ composer install
 ```
 
-## Unit Tests:
-
-```bash
-$ vendor/bin/phpunit
-```
-
-### With Code Coverage:
-
-```bash
-$ vendor/bin/phpunit --coverage-text --coverage-html coverage_report
-```
-
-## Run Coding Standards Test:
-
-```bash
-$ vendor/bin/phpcs -p --standard=PSR2 src/ tests/
-
-// Run fix on src and tests directory
-$ vendor/bin/phpcbf --standard=PSR2 src/ tests/ 
-```
-
 ## Example Client Implementation
+
+Our example client implementation is using [GuzzleHttp](https://github.com/guzzle/guzzle) and [The PHP League's Oauth Client](https://github.com/thephpleague/oauth2-client) and [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) for authentication.
+
+### DemoRestClient
+
+Our rest client implements the PSR-7 HTTP message interface. Our example implementation is using the [GuzzleHttp](https://github.com/guzzle/guzzle) library, but you are free to use any that returns a [ResponseInterface](https://github.com/php-fig/http-message/blob/master/src/ResponseInterface.php).
+
+You can either use the provided [GuzzleRestClient](./src/RestClient/GuzzleRestClient.php) or have your own that implements our [RestClientInterface](./src/RestClient/RestClientInterface.php).
+
+### DemoSalesforceProvider
+
+Our Demo Salesforce Provider is using [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) library. We chose this library as it is on the list of The PHP Leagues Oauth Client. 
+
+You can either use the provided [SalesforceProvider](./src/Oauth/SalesforceProvider.php) or have your own that implements our [SalesforceProviderInterface](./src/Oauth/SalesforceProviderInterface.php).
+
+### DemoAccessToken
+
+Our DemoAccessToken is using [Steven Maguire's AccessToken](https://github.com/stevenmaguire/oauth2-salesforce/tree/master/src/Token) which is an extension of PHP League's Access Token.
+
+You can either use the provided [AccessToken](./src/Oauth/AccessToken.php) or have your own that implements our [AccessTokenInterface](./src/Oauth/AccessTokenInterface.php).
+
+### DemoSalesforceClient
 
 ```php
 <?php
@@ -76,17 +77,13 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
 
     public function getRestforceClient():RestforceClient
     {
-        $salesforceClient = new SalesforceRequestClient(
-            $this->getGuzzleRestClient(),
-            $this->getSalesforceProvider(),
-            $this->getAccessToken(),
-            $this,
-            $apiVersion = 'v37.0'
-        );
-
         if (empty($this->restforce)) {
             $this->restforce = new RestforceClient(
-                $salesforceClient
+                $this->getGuzzleRestClient(),
+                $this->getSalesforceProvider(),
+                $this->getAccessToken(),
+                $this,
+                $apiVersion = 'v37.0'
             );
         }
         return $this->restforce;
@@ -319,4 +316,40 @@ $demoSalesforceClient = new DemoSalesforceClient();
 $restforce = $demoSalesforceClient->getClient();
 $success = $restforce->destroy('Account', '001i000001ysdBGAAY');
 // $success = true|false
+```
+
+## Contributing
+
+Thanks for considering contributing to our Restforcephp project. Just a few things:
+ 
+- Make sure your commit conforms to the PSR-2 coding standard.
+- Make sure your commit messages are well defined.
+- Make sure you have added the necessary unit tests for your changes.
+- Run _all_ the tests to assure nothing else was accidentally broken.
+- Submit a pull request.
+
+#### Unit Tests:
+
+```bash
+$ vendor/bin/phpunit
+```
+
+##### With Code Coverage:
+
+```bash
+$ vendor/bin/phpunit --coverage-text --coverage-html coverage_report
+```
+
+#### Check PHP-CS PSR2 Test:
+
+```bash
+$ vendor/bin/phpcs -p --standard=PSR2 src/ tests/
+```
+
+#### Apply PHP-CS PSR2 Fix:
+
+Auto runs and resolves some low hanging PSR2 fixes, this might not get all of them, so rerun the check after.
+
+```bash
+$ vendor/bin/phpcbf --standard=PSR2 src/ tests/ 
 ```

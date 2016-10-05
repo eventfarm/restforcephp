@@ -2,7 +2,12 @@
 namespace Jmondi\Restforce;
 
 use Jmondi\Restforce\Models\SalesforcePicklist;
+use Jmondi\Restforce\Oauth\AccessToken;
+use Jmondi\Restforce\Oauth\SalesforceProviderInterface;
+use Jmondi\Restforce\Oauth\StevenMaguireSalesforceProvider;
+use Jmondi\Restforce\RestClient\GuzzleRestClient;
 use Jmondi\Restforce\RestClient\RestClientInterface;
+use Jmondi\Restforce\RestClient\SalesforceRestClient;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
@@ -13,10 +18,80 @@ class RestforceClient
      */
     private $client;
 
-    public function __construct(
-        RestClientInterface $client
+    const DEFAULT_HOST = 'login.salesforce.com';
+    const DEFAULT_API_VERSION = 'v37.0';
+    const DEFAULT_RETRY_MAX_REQUESTS = 2;
+    const DEFAULT_TOKEN_REFRESH_OBJECT = null;
+
+    public static function with(
+        RestClientInterface $restClient,
+        SalesforceProviderInterface $salesforceProvider,
+        string $accessToken,
+        string $refreshToken,
+        string $instanceUrl,
+        string $resourceOwnerUrl,
+        TokenRefreshInterface $tokenRefreshObject = self::DEFAULT_TOKEN_REFRESH_OBJECT,
+        $apiVersion = self::DEFAULT_API_VERSION,
+        int $retryMaxRequests = self::DEFAULT_RETRY_MAX_REQUESTS
     ) {
-        $this->client = $client;
+    
+        return new self(
+            $restClient,
+            $salesforceProvider,
+            new AccessToken($accessToken, $refreshToken, $instanceUrl),
+            $resourceOwnerUrl,
+            $apiVersion,
+            $retryMaxRequests,
+            $tokenRefreshObject
+        );
+    }
+
+    public static function withDefaults(
+        string $accessToken,
+        string $refreshToken,
+        string $instanceUrl,
+        string $resourceOwnerUrl,
+        string $clientId,
+        string $clientSecret,
+        string $redirectUrl,
+        TokenRefreshInterface $tokenRefreshObject = self::DEFAULT_TOKEN_REFRESH_OBJECT,
+        string $apiVersion = self::DEFAULT_API_VERSION,
+        string $domain = self::DEFAULT_HOST,
+        int $retryMaxRequests = self::DEFAULT_RETRY_MAX_REQUESTS
+    ) {
+    
+        $restClient = GuzzleRestClient::createClient();
+        $salesforceProvider = StevenMaguireSalesforceProvider::createDefaultProvider($clientId, $clientSecret, $redirectUrl, $domain);
+        return new self(
+            $restClient,
+            $salesforceProvider,
+            new AccessToken($accessToken, $refreshToken, $instanceUrl),
+            $resourceOwnerUrl,
+            $apiVersion,
+            $domain,
+            $retryMaxRequests,
+            $tokenRefreshObject
+        );
+    }
+
+    private function __construct(
+        RestClientInterface $restClient,
+        SalesforceProviderInterface $salesforceProvider,
+        AccessToken $accessToken,
+        string $resourceOwnerUrl,
+        string $apiVersion,
+        int $maxRetryRequests,
+        TokenRefreshInterface $tokenRefreshObject = null
+    ) {
+        $this->client = new SalesforceRestClient(
+            $restClient,
+            $salesforceProvider,
+            $accessToken,
+            $resourceOwnerUrl,
+            $tokenRefreshObject,
+            $apiVersion,
+            $maxRetryRequests
+        );
     }
 
     public function userInfo():stdClass

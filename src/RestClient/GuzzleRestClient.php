@@ -7,6 +7,12 @@ use Psr\Http\Message\ResponseInterface;
 
 class GuzzleRestClient implements RestClientInterface
 {
+    public static function createClient()
+    {
+        return new self(
+            new Client(['http_errors' => false])
+        );
+    }
 
     /**
      * @var GuzzleClient
@@ -15,7 +21,6 @@ class GuzzleRestClient implements RestClientInterface
 
     public function __construct(GuzzleClient $client)
     {
-
         $this->client = $client;
     }
 

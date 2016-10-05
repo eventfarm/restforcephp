@@ -4,35 +4,51 @@ namespace Jmondi\Restforce\Oauth;
 class AccessToken implements AccessTokenInterface
 {
     /**
-     * @var AccessTokenInterface
+     * @var string
      */
     private $accessToken;
-
     /**
-     * @param AccessTokenInterface $accessToken
+     * @var string
      */
-    public function __construct($accessToken)
-    {
+    private $refreshToken;
+    /**
+     * @var string
+     */
+    private $instanceUrl;
+
+    public function __construct(
+        string $accessToken,
+        string $refreshToken,
+        string $instanceUrl
+    ) {
+    
         $this->accessToken = $accessToken;
-    }
-
-    public function getInstanceUrl():string
-    {
-        return $this->accessToken->getInstanceUrl();
-    }
-
-    public function getRefreshToken():string
-    {
-        return $this->accessToken->getRefreshToken();
-    }
-
-    public function getResourceOwnerId():string
-    {
-        return $this->accessToken->getResourceOwnerId();
+        $this->refreshToken = $refreshToken;
+        $this->instanceUrl = $instanceUrl;
     }
 
     public function getToken():string
     {
-        return $this->accessToken->getToken();
+        return $this->accessToken;
+    }
+
+    public function setToken(string $accessToken)
+    {
+        $this->accessToken = $accessToken;
+    }
+
+    public function getRefreshToken():string
+    {
+        return $this->refreshToken;
+    }
+
+    public function setRefreshToken(string $refreshToken)
+    {
+        $this->refreshToken = $refreshToken;
+    }
+
+    public function getInstanceUrl():string
+    {
+        return $this->instanceUrl;
     }
 }
