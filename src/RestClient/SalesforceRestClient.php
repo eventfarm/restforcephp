@@ -38,7 +38,7 @@ class SalesforceRestClient
     /**
      * @var string
      */
-    private $baseUrl;
+    private $apiVersion;
 
     public function __construct(
         RestClientInterface $restClient,
@@ -55,14 +55,14 @@ class SalesforceRestClient
         $this->resourceOwnerUrl = $resourceOwnerUrl;
         $this->tokenRefreshCallback = $tokenRefreshCallback;
         $this->maxRetryRequests = $maxRetryRequests;
-        $this->baseUrl = $this->accessToken->getInstanceUrl() . '/services/data/' . $apiVersion . '/';
+        $this->apiVersion = $apiVersion;
     }
 
     public function request(string $method, string $uri = '', array $options = []):ResponseInterface
     {
         return $this->retryRequest(
             $method,
-            $this->baseUrl . $uri,
+            $this->constructUrl($uri),
             $this->mergeOptions($options)
         );
     }
@@ -129,5 +129,17 @@ class SalesforceRestClient
         }
 
         return $response;
+    }
+
+    private function constructUrl(string $endpoint):string
+    {
+        $beginsWithHttp = (substr($endpoint, 0, 7) === "http://") || (substr($endpoint, 0, 8) === "https://");
+
+        if ($beginsWithHttp) {
+            return $endpoint;
+        }
+
+        $baseUrl = $this->accessToken->getInstanceUrl() . '/services/data/' . $this->apiVersion . '/';
+        return $baseUrl . $endpoint;
     }
 }

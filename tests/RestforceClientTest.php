@@ -11,45 +11,48 @@ use Psr\Http\Message\ResponseInterface;
 
 class RestforceClientTest extends \PHPUnit_Framework_TestCase
 {
+    const API_VERSION = 'v37.0';
+    const INSTANCE_URL = 'myInstanceUrl';
+    const RESOURCE_OWNER_URL = 'http://myResourceOwnerUrl';
+
     public function testLimitsSendsCorrectRequest()
     {
         $restforceClient = $this->getRestforceClient(
             'GET',
-            'limits',
+            $this->getBaseUrl() . 'limits',
             $this->getAuthorizationHeader()
         );
 
         $restforceClient->limits();
     }
 
-    // TODO: Need to make rest client smarter
-//    public function testUserInfo()
-//    {
-//        $restforceClient = $this->getRestforceClient(
-//            'GET',
-//            'myResourceOwnerUrl',
-//            $this->getAuthorizationHeader()
-//        );
-//
-//        $restforceClient->userInfo();
-//    }
+    public function testUserInfo()
+    {
+        $restforceClient = $this->getRestforceClient(
+            'GET',
+            self::RESOURCE_OWNER_URL,
+            $this->getAuthorizationHeader()
+        );
+
+        $restforceClient->userInfo();
+    }
 
     public function testQuerySendsCorrectRequest()
     {
         $restforceClient = $this->getRestforceClient(
             'GET',
-            'query?q=SELECT+name',
+            $this->getBaseUrl() . 'query?q=SELECT+name',
             $this->getAuthorizationHeader()
         );
 
-        $restforceClient->query("SELECT name");
+        $restforceClient->query('SELECT name');
     }
 
     public function testQueryAllSendsCorrectRequest()
     {
         $restforceClient = $this->getRestforceClient(
             'GET',
-            'queryAll?q=SELECT+name',
+            $this->getBaseUrl() . 'queryAll?q=SELECT+name',
             $this->getAuthorizationHeader()
         );
 
@@ -60,7 +63,7 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     {
         $restforceClient = $this->getRestforceClient(
             'GET',
-            'query?explain=SELECT+name',
+            $this->getBaseUrl() . 'query?explain=SELECT+name',
             $this->getAuthorizationHeader()
         );
 
@@ -71,7 +74,7 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     {
         $restforceClient = $this->getRestforceClient(
             'GET',
-            'sobjects/Account/001410000056Kf0AAE',
+            $this->getBaseUrl() . 'sobjects/Account/001410000056Kf0AAE',
             $this->getAuthorizationHeader()
         );
 
@@ -82,7 +85,7 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     {
         $restforceClient = $this->getRestforceClient(
             'GET',
-            'sobjects/Account/001410000056Kf0AAE?Name=MyName&SomethingElse=MySomethingElse',
+            $this->getBaseUrl() . 'sobjects/Account/001410000056Kf0AAE?Name=MyName&SomethingElse=MySomethingElse',
             $this->getAuthorizationHeader()
         );
 
@@ -96,7 +99,7 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     {
         $restforceClient = $this->getRestforceClient(
             'GET',
-            'sobjects/Account/describe',
+            $this->getBaseUrl() . 'sobjects/Account/describe',
             $this->getAuthorizationHeader()
         );
 
@@ -107,7 +110,7 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     {
         $restforceClient = $this->getRestforceClient(
             'GET',
-            'sobjects/Task/describe',
+            $this->getBaseUrl() . 'sobjects/Task/describe',
             $this->getAuthorizationHeader(),
             '{ "name": "Task", "fields": [{"name":"Type", "picklistValues": [{"label": "Call", "value": "Call"}]}] }'
         );
@@ -119,10 +122,10 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     {
         $restforceClient = $this->getRestforceClient(
             'POST',
-            'sobjects/Account',
+            $this->getBaseUrl() . 'sobjects/Account',
             [
                 'headers' => [
-                    'Authorization' => 'Bearer ' . "myAccessToken",
+                    'Authorization' => 'Bearer ' . 'myAccessToken',
                     'Content-Type' => 'application/json'
                 ],
                 'json' => [
@@ -141,10 +144,10 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     {
         $restforceClient = $this->getRestforceClient(
             'PATCH',
-            'sobjects/Account/001410000056Kf0AAE',
+            $this->getBaseUrl() . 'sobjects/Account/001410000056Kf0AAE',
             [
                 'headers' => [
-                    'Authorization' => 'Bearer ' . "myAccessToken",
+                    'Authorization' => 'Bearer ' . 'myAccessToken',
                     'Content-Type' => 'application/json'
                 ],
                 'json' => [
@@ -163,7 +166,7 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     {
         $restforceClient = $this->getRestforceClient(
             'DELETE',
-            'sobjects/Account/001410000056Kf0AAE',
+            $this->getBaseUrl() . 'sobjects/Account/001410000056Kf0AAE',
             $this->getAuthorizationHeader()
         );
 
@@ -174,9 +177,14 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'headers' => [
-                'Authorization' => 'Bearer ' . "myAccessToken"
+                'Authorization' => 'Bearer ' . 'myAccessToken'
             ]
         ];
+    }
+
+    private function getBaseUrl():string
+    {
+        return self::INSTANCE_URL . '/services/data/' . self::API_VERSION . '/';
     }
 
     private function getRestforceClient(
@@ -201,7 +209,7 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
         $restClient->shouldReceive('request')
             ->andReturnUsing(function ($m, $e, $o) use ($method, $endpoint, $options, $response) {
                 $this->assertEquals($method, $m);
-                $this->assertEquals('myInstanceUrl/services/data/v37.0/' . $endpoint, $e);
+                $this->assertEquals($endpoint, $e);
                 $this->assertEquals($options, $o);
                 return $response;
             });
@@ -211,8 +219,8 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
             $salesforceProvider,
             'myAccessToken',
             'myRefreshToken',
-            'myInstanceUrl',
-            'http://myResourceOwnerUrl'
+            self::INSTANCE_URL,
+            self::RESOURCE_OWNER_URL
         );
     }
 }
