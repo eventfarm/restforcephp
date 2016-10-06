@@ -33,7 +33,7 @@ Add the following lines to your ``composer.json`` file.
 $ composer install
 ```
 
-## Example Client Implementation
+## Project Defaults
 
 Our example client implementation is using [GuzzleHttp](https://github.com/guzzle/guzzle) for sending Http requests, [The PHP League's Oauth Client](https://github.com/thephpleague/oauth2-client) and [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) for Salesforce Authentication.
 
@@ -43,32 +43,20 @@ Our rest client implements the PSR-7 HTTP message interface. Our example impleme
 
 You can either use the provided [GuzzleRestClient](./src/RestClient/GuzzleRestClient.php) or have your own that implements our [RestClientInterface](./src/RestClient/RestClientInterface.php).
 
-### DemoSalesforceProvider
+### StevenMaguireSalesforceProvider
 
-Our Demo Salesforce Provider is using [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) library. We chose this library as it is on the list of The PHP Leagues Oauth Client. 
+Our Default Salesforce Provider is using [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) library. We chose this library as it is on the list of The PHP Leagues Oauth Client. 
 
 You can either use the provided [SalesforceProvider](./src/Oauth/SalesforceProvider.php) or have your own that implements our [SalesforceProviderInterface](./src/Oauth/SalesforceProviderInterface.php).
 
-### DemoAccessToken
-
-Our DemoAccessToken is using [Steven Maguire's AccessToken](https://github.com/stevenmaguire/oauth2-salesforce/tree/master/src/Token) which is an extension of PHP League's Access Token.
-
-You can either use the provided [AccessToken](./src/Oauth/AccessToken.php) or have your own that implements our [AccessTokenInterface](./src/Oauth/AccessTokenInterface.php).
-
-### DemoSalesforceClient
+## Example Client Implementation
 
 ```php
 <?php
 namespace App;
 
 use Jmondi\Restforce\Oauth\AccessToken;
-use Jmondi\Restforce\Oauth\AccessTokenInterface;
-use Jmondi\Restforce\Oauth\SalesforceProvider;
-use Jmondi\Restforce\Oauth\SalesforceProviderInterface;
-use Jmondi\Restforce\RestClient\GuzzleRestClient;
-use Jmondi\Restforce\RestClient\RestClientInterface;
 use Jmondi\Restforce\RestforceClient;
-use Jmondi\Restforce\SalesforceRequestClient;
 use Jmondi\Restforce\TokenRefreshCallbackInterface;
 
 class DemoSalesforceClient implements TokenRefreshCallbackInterface
@@ -90,31 +78,6 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
         return $this->restforce;
     }
 
-    public function redirectToSalesforceAuth()
-    {
-        $provider = $this->getSalesforceProvider();
-        $authorizationUrl = $provider->getAuthorizationUrl();
-        header('Location: ' . $authorizationUrl);
-        exit;
-    }
-
-    public function generateAccessTokenFromCode(string $code):AccessTokenInterface
-    {
-        $provider = $this->getSalesforceProvider();
-
-        try {
-            $accessToken = $provider->getAccessToken('authorization_code', [
-                'code' => $code
-            ]);
-        } catch (IdentityProviderException $e) {
-            exit($e->getMessage());
-        }
-
-        // STORE THE $accessToken TO PERSISTANCE LAYER
-
-        return $accessToken;
-    }
-
     public function tokenRefreshCallback(AccessToken $token)
     {
         // CALLBACK FUNCTION TO STORE THE REFRESHED $token TO PERSISTANCE LAYER
@@ -125,6 +88,7 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
 ## Usage
 
 #### Limits
+
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_limits.htm?search_text=limits) Returns a list of daily API limits for the salesforce api. Refer to the docs for the full list of options.
 
 `public function limits():stdClass`
