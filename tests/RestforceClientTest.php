@@ -15,78 +15,120 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
 
     public function testLimitsSendsCorrectRequest()
     {
-        $restforceClient = $this->getRestforceClient(
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock();
+
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
             'GET',
             $this->getBaseUrl() . 'limits',
             $this->getAuthorizationHeader()
         );
-
         $restforceClient->limits();
     }
 
     public function testUserInfo()
     {
-        $restforceClient = $this->getRestforceClient(
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock();
+
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
             'GET',
             self::RESOURCE_OWNER_URL,
             $this->getAuthorizationHeader()
         );
-
         $restforceClient->userInfo();
     }
 
     public function testQuerySendsCorrectRequest()
     {
-        $restforceClient = $this->getRestforceClient(
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock();
+
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
             'GET',
             $this->getBaseUrl() . 'query?q=SELECT+name',
             $this->getAuthorizationHeader()
         );
-
         $restforceClient->query('SELECT name');
     }
 
     public function testQueryAllSendsCorrectRequest()
     {
-        $restforceClient = $this->getRestforceClient(
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock();
+
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
             'GET',
             $this->getBaseUrl() . 'queryAll?q=SELECT+name',
             $this->getAuthorizationHeader()
         );
-
         $restforceClient->queryAll('SELECT name');
     }
 
     public function testExplainSendsCorrectRequest()
     {
-        $restforceClient = $this->getRestforceClient(
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock();
+
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
             'GET',
             $this->getBaseUrl() . 'query?explain=SELECT+name',
             $this->getAuthorizationHeader()
         );
-
         $restforceClient->explain('SELECT name');
     }
 
     public function testFindWithoutParamsSendsCorrectRequest()
     {
-        $restforceClient = $this->getRestforceClient(
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock();
+
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
             'GET',
             $this->getBaseUrl() . 'sobjects/Account/001410000056Kf0AAE',
             $this->getAuthorizationHeader()
         );
-
         $restforceClient->find('Account', '001410000056Kf0AAE');
     }
 
     public function testFindWithParamsSendsCorrectRequest()
     {
-        $restforceClient = $this->getRestforceClient(
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock();
+
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
             'GET',
             $this->getBaseUrl() . 'sobjects/Account/001410000056Kf0AAE?Name=MyName&SomethingElse=MySomethingElse',
             $this->getAuthorizationHeader()
         );
-
         $restforceClient->find('Account', '001410000056Kf0AAE', [
             'Name' => 'MyName',
             'SomethingElse' => 'MySomethingElse'
@@ -95,30 +137,52 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
 
     public function testDescribeSendsCorrectRequest()
     {
-        $restforceClient = $this->getRestforceClient(
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock();
+
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
             'GET',
             $this->getBaseUrl() . 'sobjects/Account/describe',
             $this->getAuthorizationHeader()
         );
-
         $restforceClient->describe('Account');
     }
 
     public function testPicklistValuesSendsCorrectRequest()
     {
-        $restforceClient = $this->getRestforceClient(
-            'GET',
-            $this->getBaseUrl() . 'sobjects/Task/describe',
-            $this->getAuthorizationHeader(),
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock(
             '{ "name": "Task", "fields": [{"name":"Type", "picklistValues": [{"label": "Call", "value": "Call"}]}] }'
         );
 
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
+            'GET',
+            $this->getBaseUrl() . 'sobjects/Task/describe',
+            $this->getAuthorizationHeader()
+        );
         $restforceClient->picklistValues('Task', 'Type');
     }
 
     public function testCreateSendsCorrectRequest()
     {
-        $restforceClient = $this->getRestforceClient(
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock(
+            '{ "id": "001410000056Kf0AAE" }'
+        );
+
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
             'POST',
             $this->getBaseUrl() . 'sobjects/Account',
             [
@@ -129,18 +193,67 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
                 'json' => [
                     'Name' => 'TestCreateNewAccount'
                 ]
-            ],
-            '{ "id": "001410000056Kf0AAE", "woo": "foo" }'
+            ]
         );
-
         $restforceClient->create('Account', [
             'Name' => 'TestCreateNewAccount'
         ]);
     }
 
+    public function testCreateSuccessReturnsIdOfNewObject()
+    {
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock(
+            '{ "id": "001410000056Kf0AAE" }',
+            201
+        );
+
+        // Act
+        $restforceClient = $this->getRestforceClient(
+            $response,
+            $salesforceProvider
+        );
+        $result = $restforceClient->create('Account', [
+            'Name' => 'TestCreateNewAccount'
+        ]);
+
+        // Assert
+        $this->assertEquals('001410000056Kf0AAE', $result);
+    }
+
+    public function testCreateFailureReturnsFalse()
+    {
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock(
+            '',
+            400
+        );
+
+        // Act
+        $restforceClient = $this->getRestforceClient(
+            $response,
+            $salesforceProvider
+        );
+        $result = $restforceClient->create('Account', [
+            'Name' => 'TestCreateNewAccount'
+        ]);
+
+        // Assert
+        $this->assertFalse($result);
+    }
+
     public function testUpdateSendsCorrectRequest()
     {
-        $restforceClient = $this->getRestforceClient(
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock('', 204);
+
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
             'PATCH',
             $this->getBaseUrl() . 'sobjects/Account/001410000056Kf0AAE',
             [
@@ -153,22 +266,98 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
                 ]
             ]
         );
-
         $restforceClient->update('Account', '001410000056Kf0AAE', [
             'Name' => 'My Updated Name'
         ]);
     }
 
+    public function testUpdateSuccessReturnsTrue()
+    {
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock('', 204);
+
+        // Act
+        $restforceClient = $this->getRestforceClient(
+            $response,
+            $salesforceProvider
+        );
+        $result = $restforceClient->update('Account', '001410000056Kf0AAE', [
+            'Name' => 'My Updated Name'
+        ]);
+
+        // Assert
+        $this->assertTrue($result);
+    }
+
+    public function testUpdateFailureReturnsFalse()
+    {
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock('', 400);
+
+        // Act
+        $restforceClient = $this->getRestforceClient(
+            $response,
+            $salesforceProvider
+        );
+        $result = $restforceClient->update('Account', '001410000056Kf0AAE', [
+            'Name' => 'My Updated Name'
+        ]);
+
+        // Assert
+        $this->assertFalse($result);
+    }
 
     public function testDestroySendsCorrectRequest()
     {
-        $restforceClient = $this->getRestforceClient(
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock('', 204);
+
+        // Act/Assert
+        $restforceClient = $this->getRestforceClientWithParameterAsserts(
+            $response,
+            $salesforceProvider,
             'DELETE',
             $this->getBaseUrl() . 'sobjects/Account/001410000056Kf0AAE',
             $this->getAuthorizationHeader()
         );
-
         $restforceClient->destroy('Account', '001410000056Kf0AAE');
+    }
+
+    public function testDestroySuccessReturnsTrue()
+    {
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock('', 204);
+
+        // Act
+        $restforceClient = $this->getRestforceClient(
+            $response,
+            $salesforceProvider
+        );
+        $result = $restforceClient->destroy('Account', '001410000056Kf0AAE');
+
+        // Assert
+        $this->assertTrue($result);
+    }
+
+    public function testDestroyFailureReturnsFalse()
+    {
+        // Arrange
+        $salesforceProvider = $this->getSalesforceProviderMock();
+        $response = $this->getResponseMock('', 400);
+
+        // Act
+        $restforceClient = $this->getRestforceClient(
+            $response,
+            $salesforceProvider
+        );
+        $result = $restforceClient->destroy('Account', '001410000056Kf0AAE');
+
+        // Assert
+        $this->assertFalse($result);
     }
 
     private function getAuthorizationHeader()
@@ -185,17 +374,18 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
         return self::INSTANCE_URL . '/services/data/' . self::API_VERSION . '/';
     }
 
-    private function getRestforceClient(
-        string $method,
-        string $endpoint,
-        array $options,
-        string $responseString = ''
-    ):RestforceClient {
-        $salesforceProvider = Mockery::mock(SalesforceProviderInterface::class);
+    private function getSalesforceProviderMock()
+    {
+        return  Mockery::mock(SalesforceProviderInterface::class);
+    }
 
+    private function getResponseMock(
+        string $responseString = '',
+        int $responseCode = 200
+    ) {
         $response = Mockery::mock(ResponseInterface::class);
         $response->shouldReceive('getStatusCode')
-            ->andReturn(200);
+            ->andReturn($responseCode);
 
         $response->shouldReceive('getBody')
             ->andReturn($response);
@@ -203,6 +393,16 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
         $response->shouldReceive('__toString')
             ->andReturn($responseString);
 
+        return $response;
+    }
+
+    private function getRestforceClientWithParameterAsserts(
+        ResponseInterface $response,
+        SalesforceProviderInterface $salesforceProvider,
+        string $method,
+        string $endpoint,
+        array $options
+    ):RestforceClient {
         $restClient = Mockery::mock(RestClientInterface::class);
         $restClient->shouldReceive('request')
             ->andReturnUsing(function ($m, $e, $o) use ($method, $endpoint, $options, $response) {
@@ -211,6 +411,25 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($options, $o);
                 return $response;
             })
+            ->once();
+
+        return RestforceClient::with(
+            $restClient,
+            $salesforceProvider,
+            'myAccessToken',
+            'myRefreshToken',
+            self::INSTANCE_URL,
+            self::RESOURCE_OWNER_URL
+        );
+    }
+
+    private function getRestforceClient(
+        ResponseInterface $response,
+        SalesforceProviderInterface $salesforceProvider
+    ):RestforceClient {
+        $restClient = Mockery::mock(RestClientInterface::class);
+        $restClient->shouldReceive('request')
+            ->andReturn($response)
             ->once();
 
         return RestforceClient::with(

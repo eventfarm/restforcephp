@@ -156,7 +156,12 @@ class RestforceClient
         return $this->getBodyObjectFromResponse($response);
     }
 
-    public function create(string $sobject, array $data):string
+    /**
+     * @param string $sobject
+     * @param array $data
+     * @return string | bool
+     */
+    public function create(string $sobject, array $data)
     {
         $uri = '/sobjects/' . $sobject;
         $response = $this->request('POST', $uri, [
@@ -165,7 +170,9 @@ class RestforceClient
             ],
             'json' => $data,
         ]);
-        return $this->getBodyObjectFromResponse($response)->id;
+        return $response->getStatusCode() === 201 ?
+            $this->getBodyObjectFromResponse($response)->id :
+            false;
     }
 
     public function update(string $sobject, string $sobjectId, array $data)
