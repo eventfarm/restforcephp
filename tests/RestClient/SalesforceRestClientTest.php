@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce\Test\RestClient;
+namespace Jmondi\Restforce\Tests\RestClient;
 
 use Jmondi\Restforce\Oauth\AccessToken;
 use Jmondi\Restforce\Oauth\RetryAuthorizationTokenFailedException;
@@ -48,9 +48,9 @@ class SalesforceRestClientTest extends \PHPUnit_Framework_TestCase
             $provider,
             $accessToken,
             $resourceOwnerUrl,
-            $tokenRefreshCallback,
             $apiVersion,
-            $maxRetry
+            $maxRetry,
+            $tokenRefreshCallback
         );
 
         $this->expectException(RetryAuthorizationTokenFailedException::class);
@@ -102,9 +102,9 @@ class SalesforceRestClientTest extends \PHPUnit_Framework_TestCase
             $provider,
             $accessToken,
             $resourceOwnerUrl,
-            $tokenRefreshCallback,
             $apiVersion,
-            $maxRetry
+            $maxRetry,
+            $tokenRefreshCallback
         );
 
         $response = $salesforceProvider->request('GET', '/example/getExample');

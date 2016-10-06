@@ -45,17 +45,17 @@ class SalesforceRestClient
         SalesforceProviderInterface $salesforceProvider,
         AccessToken $accessToken,
         string $resourceOwnerUrl,
-        TokenRefreshInterface $tokenRefreshCallback = null,
-        string $apiVersion = 'v37.0',
-        int $maxRetryRequests = 2
+        string $apiVersion,
+        int $maxRetryRequests,
+        TokenRefreshInterface $tokenRefreshCallback = null
     ) {
         $this->restClient = $restClient;
         $this->salesforceProvider = $salesforceProvider;
         $this->accessToken = $accessToken;
         $this->resourceOwnerUrl = $resourceOwnerUrl;
-        $this->tokenRefreshCallback = $tokenRefreshCallback;
         $this->maxRetryRequests = $maxRetryRequests;
         $this->apiVersion = $apiVersion;
+        $this->tokenRefreshCallback = $tokenRefreshCallback;
     }
 
     public function request(string $method, string $uri = '', array $options = []):ResponseInterface
@@ -113,16 +113,16 @@ class SalesforceRestClient
         $attempts = 0;
         do {
             $response = $this->restClient->request($method, $uri, $options);
-            $success = $this->isResponseAuthorized($response);
+            $isAuthorized = $this->isResponseAuthorized($response);
 
-            if (!$success) {
+            if (!$isAuthorized) {
                 $this->refreshAccessToken();
             }
 
             $attempts++;
-        } while (!$success && $attempts < $this->maxRetryRequests);
+        } while (!$isAuthorized && $attempts < $this->maxRetryRequests);
 
-        if (!$success) {
+        if (!$isAuthorized) {
             throw new RetryAuthorizationTokenFailedException(
                 'Max retry limit of ' . $this->maxRetryRequests . 'has been reached. oAuth Token Failed.'
             );
