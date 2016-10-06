@@ -10,6 +10,9 @@ This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejh
 
 ## Installation
 
+Our rest client implements the PSR-7 HTTP message interface. Our example implementation is using the [GuzzleHttp](https://github.com/guzzle/guzzle) library, but you are free to use any that returns a [ResponseInterface](https://github.com/php-fig/http-message/blob/master/src/ResponseInterface.php).
+
+
 ```
 $ composer require jmondi/restforcephp
 ```
@@ -32,9 +35,9 @@ $ composer install
 
 ## Example Client Implementation
 
-Our example client implementation is using [GuzzleHttp](https://github.com/guzzle/guzzle) and [The PHP League's Oauth Client](https://github.com/thephpleague/oauth2-client) and [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) for authentication.
+Our example client implementation is using [GuzzleHttp](https://github.com/guzzle/guzzle) for sending Http requests, [The PHP League's Oauth Client](https://github.com/thephpleague/oauth2-client) and [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) for Salesforce Authentication.
 
-### DemoRestClient
+### GuzzleRestClient
 
 Our rest client implements the PSR-7 HTTP message interface. Our example implementation is using the [GuzzleHttp](https://github.com/guzzle/guzzle) library, but you are free to use any that returns a [ResponseInterface](https://github.com/php-fig/http-message/blob/master/src/ResponseInterface.php).
 
@@ -70,20 +73,18 @@ use Jmondi\Restforce\TokenRefreshCallbackInterface;
 
 class DemoSalesforceClient implements TokenRefreshCallbackInterface
 {
-    const SALESFORCE_CLIENT_ID = 'your salesforce client id';
-    const SALESFORCE_CLIENT_SECRET = 'your salesforce client secret';
-    const SALESFORCE_CALLBACK = 'callback URL to catch $_GET['code'] to generate AccessToken';
-
-
     public function getRestforceClient():RestforceClient
     {
         if (empty($this->restforce)) {
-            $this->restforce = new RestforceClient(
-                $this->getGuzzleRestClient(),
-                $this->getSalesforceProvider(),
-                $this->getAccessToken(),
-                $this,
-                $apiVersion = 'v37.0'
+            $this->restforce = RestforceClient::withDefaults(
+                ACCESS_TOKEN,
+                REFRESH_TOKEN,
+                INSTANCE_URL,
+                RESOURCE_OWNER_URL,
+                CLIENT_ID,
+                CLIENT_SECRET,
+                REDIRECT_URL,
+                $this
             );
         }
         return $this->restforce;
@@ -117,43 +118,6 @@ class DemoSalesforceClient implements TokenRefreshCallbackInterface
     public function tokenRefreshCallback(AccessToken $token)
     {
         // CALLBACK FUNCTION TO STORE THE REFRESHED $token TO PERSISTANCE LAYER
-    }
-
-    private function getSalesforceProvider():SalesforceProviderInterface
-    {
-        if (empty($this->salesforce)) {
-            $this->salesforce = new SalesforceProvider(
-                new Salesforce([
-                    'clientId' => self::SALESFORCE_CLIENT_ID,
-                    'clientSecret' => self::SALESFORCE_CLIENT_SECRET,
-                    'redirectUri' => self::SALESFORCE_CALLBACK,
-                ])
-            );
-        }
-        return $this->salesforce;
-    }
-
-    private function getGuzzleRestClient():RestClientInterface
-    {
-        if (empty($this->restClient)) {
-            $this->restClient = new GuzzleRestClient(
-                new \GuzzleHttp\Client(['http_errors' => false])
-            );
-        }
-
-        return $this->restClient;
-    }
-
-    private function getAccessToken():AccessTokenInterface
-    {
-        if (empty($this->accessToken)) {
-            if (\Cache::has('access_token')){
-                $this->accessToken = // RETRIEVE ACCESS TOKEN FROM PERSISTANCE LAYER;
-            } else {
-                $this->redirectToSalesforceAuth();
-            }
-        }
-        return $this->accessToken;
     }
 }
 ```
