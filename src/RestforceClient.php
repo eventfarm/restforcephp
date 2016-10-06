@@ -20,7 +20,7 @@ class RestforceClient
 
     const DEFAULT_HOST = 'login.salesforce.com';
     const DEFAULT_API_VERSION = 'v37.0';
-    const DEFAULT_RETRY_MAX_REQUESTS = 2;
+    const DEFAULT_MAX_RETRY_REQUESTS = 2;
     const DEFAULT_TOKEN_REFRESH_OBJECT = null;
 
     public static function with(
@@ -32,7 +32,7 @@ class RestforceClient
         string $resourceOwnerUrl,
         TokenRefreshInterface $tokenRefreshObject = self::DEFAULT_TOKEN_REFRESH_OBJECT,
         $apiVersion = self::DEFAULT_API_VERSION,
-        int $retryMaxRequests = self::DEFAULT_RETRY_MAX_REQUESTS
+        int $maxRetryRequests = self::DEFAULT_MAX_RETRY_REQUESTS
     ) {
     
         return new self(
@@ -41,7 +41,7 @@ class RestforceClient
             new AccessToken($accessToken, $refreshToken, $instanceUrl),
             $resourceOwnerUrl,
             $apiVersion,
-            $retryMaxRequests,
+            $maxRetryRequests,
             $tokenRefreshObject
         );
     }
@@ -57,7 +57,7 @@ class RestforceClient
         TokenRefreshInterface $tokenRefreshObject = self::DEFAULT_TOKEN_REFRESH_OBJECT,
         string $apiVersion = self::DEFAULT_API_VERSION,
         string $domain = self::DEFAULT_HOST,
-        int $retryMaxRequests = self::DEFAULT_RETRY_MAX_REQUESTS
+        int $maxRetryRequests = self::DEFAULT_MAX_RETRY_REQUESTS
     ) {
     
         $restClient = GuzzleRestClient::createClient();
@@ -75,7 +75,7 @@ class RestforceClient
             $resourceOwnerUrl,
             $apiVersion,
             $domain,
-            $retryMaxRequests,
+            $maxRetryRequests,
             $tokenRefreshObject
         );
     }
@@ -87,16 +87,16 @@ class RestforceClient
         string $resourceOwnerUrl,
         string $apiVersion,
         int $maxRetryRequests,
-        TokenRefreshInterface $tokenRefreshObject = null
+        TokenRefreshInterface $tokenRefreshObject = self::DEFAULT_TOKEN_REFRESH_OBJECT
     ) {
         $this->client = new SalesforceRestClient(
             $restClient,
             $salesforceProvider,
             $accessToken,
             $resourceOwnerUrl,
-            $tokenRefreshObject,
             $apiVersion,
-            $maxRetryRequests
+            $maxRetryRequests,
+            $tokenRefreshObject
         );
     }
 
