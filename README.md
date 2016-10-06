@@ -6,12 +6,9 @@
 [![Code Climate](https://codeclimate.com/github/jasonraimondi/restforcephp/badges/gpa.svg)](https://codeclimate.com/github/jasonraimondi/restforcephp)
 [![Test Coverage](https://codeclimate.com/github/jasonraimondi/restforcephp/badges/coverage.svg)](https://codeclimate.com/github/jasonraimondi/restforcephp/coverage)
 
-This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejholmes/restforce) is doing.
+This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejholmes/restforce) is doing for rails.
 
 ## Installation
-
-Our rest client implements the PSR-7 HTTP message interface. Our example implementation is using the [GuzzleHttp](https://github.com/guzzle/guzzle) library, but you are free to use any that returns a [ResponseInterface](https://github.com/php-fig/http-message/blob/master/src/ResponseInterface.php).
-
 
 ```
 $ composer require jmondi/restforcephp
@@ -35,11 +32,13 @@ $ composer install
 
 ## Project Defaults
 
-Our example client implementation is using [GuzzleHttp](https://github.com/guzzle/guzzle) for sending Http requests, [The PHP League's Oauth Client](https://github.com/thephpleague/oauth2-client) and [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) for Salesforce Authentication.
+In order to get you up and running as easily as possible, we provide default implementations of a Rest Client and Salesforce Provider to use in combination with this package. 
+* We've chosen to use [GuzzleHttp](https://github.com/guzzle/guzzle) for sending Http requests by default
+* We've chosen to use [The PHP League's Oauth Client](https://github.com/thephpleague/oauth2-client) and [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) for Salesforce Authentication.
 
 ### GuzzleRestClient
 
-Our rest client implements the PSR-7 HTTP message interface. Our example implementation is using the [GuzzleHttp](https://github.com/guzzle/guzzle) library, but you are free to use any that returns a [ResponseInterface](https://github.com/php-fig/http-message/blob/master/src/ResponseInterface.php).
+Our rest client implements the PSR-7 HTTP message interface.
 
 You can either use the provided [GuzzleRestClient](./src/RestClient/GuzzleRestClient.php) or have your own that implements our [RestClientInterface](./src/RestClient/RestClientInterface.php).
 
@@ -47,7 +46,7 @@ You can either use the provided [GuzzleRestClient](./src/RestClient/GuzzleRestCl
 
 Our Default Salesforce Provider is using [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) library. We chose this library as it is on the list of The PHP Leagues Oauth Client. 
 
-You can either use the provided [SalesforceProvider](./src/Oauth/SalesforceProvider.php) or have your own that implements our [SalesforceProviderInterface](./src/Oauth/SalesforceProviderInterface.php).
+You can either use the provided [StevenMaguireSalesforceProvider](./src/Oauth/StevenMaguireSalesforceProvider.php) or have your own that implements our [SalesforceProviderInterface](./src/Oauth/SalesforceProviderInterface.php).
 
 ## Example Client Implementation
 
@@ -59,20 +58,20 @@ use Jmondi\Restforce\Oauth\AccessToken;
 use Jmondi\Restforce\RestforceClient;
 use Jmondi\Restforce\TokenRefreshCallbackInterface;
 
-class DemoSalesforceClient implements TokenRefreshCallbackInterface
+class DemoSalesforceClient implements TokenRefreshInterface
 {
     public function getRestforceClient():RestforceClient
     {
         if (empty($this->restforce)) {
             $this->restforce = RestforceClient::withDefaults(
-                ACCESS_TOKEN,
-                REFRESH_TOKEN,
-                INSTANCE_URL,
-                RESOURCE_OWNER_URL,
-                CLIENT_ID,
-                CLIENT_SECRET,
-                REDIRECT_URL,
-                $this
+                'ACCESS_TOKEN',
+                'REFRESH_TOKEN',
+                'INSTANCE_URL',
+                'RESOURCE_OWNER_URL',
+                'CLIENT_ID',
+                'CLIENT_SECRET',
+                'REDIRECT_URL',
+                $this // TokenRefreshInterface
             );
         }
         return $this->restforce;
