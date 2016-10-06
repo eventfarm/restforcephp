@@ -1,11 +1,9 @@
 <?php
-namespace Jmondi\Restforce;
+namespace Jmondi\Restforce\Tests;
 
-use GuzzleHttp\Psr7\Response;
-use Jmondi\Restforce\Oauth\AccessTokenInterface;
 use Jmondi\Restforce\Oauth\SalesforceProviderInterface;
 use Jmondi\Restforce\RestClient\RestClientInterface;
-use Jmondi\Restforce\TokenRefreshInterface;
+use Jmondi\Restforce\RestforceClient;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;
 
@@ -212,7 +210,8 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($endpoint, $e);
                 $this->assertEquals($options, $o);
                 return $response;
-            });
+            })
+            ->once();
 
         return RestforceClient::with(
             $restClient,
