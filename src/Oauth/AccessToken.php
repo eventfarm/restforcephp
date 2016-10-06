@@ -32,19 +32,9 @@ class AccessToken implements AccessTokenInterface
         return $this->accessToken;
     }
 
-    public function setToken(string $accessToken)
-    {
-        $this->accessToken = $accessToken;
-    }
-
     public function getRefreshToken():string
     {
         return $this->refreshToken;
-    }
-
-    public function setRefreshToken(string $refreshToken)
-    {
-        $this->refreshToken = $refreshToken;
     }
 
     public function getInstanceUrl():string

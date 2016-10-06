@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce\Test\RestClient;
+namespace Jmondi\Restforce\Tests\RestClient;
 
 use Jmondi\Restforce\RestClient\GuzzleRestClient;
 use Mockery;

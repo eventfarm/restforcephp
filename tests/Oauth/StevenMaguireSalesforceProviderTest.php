@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce\Test\Oauth;
+namespace Jmondi\Restforce\Tests\Oauth;
 
 use Jmondi\Restforce\Oauth\StevenMaguireSalesforceProvider;
 use League\OAuth2\Client\Token\AccessToken;
