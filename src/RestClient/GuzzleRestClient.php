@@ -1,8 +1,7 @@
 <?php
 namespace Jmondi\Restforce\RestClient;
 
-use GuzzleHttp\Client as GuzzleClient;
-use Jmondi\Restforce\RestClient\RestClientInterface;
+use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
 class GuzzleRestClient implements RestClientInterface
@@ -15,11 +14,11 @@ class GuzzleRestClient implements RestClientInterface
     }
 
     /**
-     * @var GuzzleClient
+     * @var Client
      */
     private $client;
 
-    public function __construct(GuzzleClient $client)
+    public function __construct(Client $client)
     {
         $this->client = $client;
     }

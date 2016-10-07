@@ -40,9 +40,9 @@ class RestforceClient
             $salesforceProvider,
             new AccessToken($accessToken, $refreshToken, $instanceUrl),
             $resourceOwnerUrl,
+            $tokenRefreshObject,
             $apiVersion,
-            $maxRetryRequests,
-            $tokenRefreshObject
+            $maxRetryRequests
         );
     }
 
@@ -56,8 +56,8 @@ class RestforceClient
         string $redirectUrl,
         TokenRefreshInterface $tokenRefreshObject = self::DEFAULT_TOKEN_REFRESH_OBJECT,
         string $apiVersion = self::DEFAULT_API_VERSION,
-        string $domain = self::DEFAULT_HOST,
-        int $maxRetryRequests = self::DEFAULT_MAX_RETRY_REQUESTS
+        int $maxRetryRequests = self::DEFAULT_MAX_RETRY_REQUESTS,
+        string $domain = self::DEFAULT_HOST
     ) {
     
         $restClient = GuzzleRestClient::createClient();
@@ -73,30 +73,39 @@ class RestforceClient
             $salesforceProvider,
             new AccessToken($accessToken, $refreshToken, $instanceUrl),
             $resourceOwnerUrl,
+            $tokenRefreshObject,
             $apiVersion,
-            $domain,
-            $maxRetryRequests,
-            $tokenRefreshObject
+            $maxRetryRequests
         );
     }
 
+    /**
+     * RestforceClient constructor.
+     * @param RestClientInterface $restClient
+     * @param SalesforceProviderInterface $salesforceProvider
+     * @param AccessToken $accessToken
+     * @param string $resourceOwnerUrl
+     * @param TokenRefreshInterface|null $tokenRefreshObject
+     * @param string $apiVersion
+     * @param int $maxRetryRequests
+     */
     private function __construct(
         RestClientInterface $restClient,
         SalesforceProviderInterface $salesforceProvider,
         AccessToken $accessToken,
         string $resourceOwnerUrl,
+        $tokenRefreshObject,
         string $apiVersion,
-        int $maxRetryRequests,
-        TokenRefreshInterface $tokenRefreshObject = self::DEFAULT_TOKEN_REFRESH_OBJECT
+        int $maxRetryRequests
     ) {
         $this->client = new SalesforceRestClient(
             $restClient,
             $salesforceProvider,
             $accessToken,
             $resourceOwnerUrl,
+            $tokenRefreshObject,
             $apiVersion,
-            $maxRetryRequests,
-            $tokenRefreshObject
+            $maxRetryRequests
         );
     }
 

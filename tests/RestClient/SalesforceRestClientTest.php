@@ -48,9 +48,9 @@ class SalesforceRestClientTest extends \PHPUnit_Framework_TestCase
             $provider,
             $accessToken,
             $resourceOwnerUrl,
+            $tokenRefreshCallback,
             $apiVersion,
-            $maxRetry,
-            $tokenRefreshCallback
+            $maxRetry
         );
 
         $this->expectException(RetryAuthorizationTokenFailedException::class);
@@ -102,9 +102,9 @@ class SalesforceRestClientTest extends \PHPUnit_Framework_TestCase
             $provider,
             $accessToken,
             $resourceOwnerUrl,
+            $tokenRefreshCallback,
             $apiVersion,
-            $maxRetry,
-            $tokenRefreshCallback
+            $maxRetry
         );
 
         $response = $salesforceProvider->request('GET', '/example/getExample');

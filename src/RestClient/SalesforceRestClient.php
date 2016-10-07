@@ -7,8 +7,6 @@ use Jmondi\Restforce\Oauth\RetryAuthorizationTokenFailedException;
 use Jmondi\Restforce\TokenRefreshInterface;
 use Psr\Http\Message\ResponseInterface;
 
-//use Psr\Http\Message\ResponseInterface;
-
 class SalesforceRestClient
 {
     /**
@@ -30,7 +28,7 @@ class SalesforceRestClient
     /**
      * @var TokenRefreshInterface|null
      */
-    private $tokenRefreshCallback;
+    private $tokenRefreshObject;
     /**
      * @var int
      */
@@ -40,14 +38,24 @@ class SalesforceRestClient
      */
     private $apiVersion;
 
+    /**
+     * SalesforceRestClient constructor.
+     * @param RestClientInterface $restClient
+     * @param SalesforceProviderInterface $salesforceProvider
+     * @param AccessToken $accessToken
+     * @param string $resourceOwnerUrl
+     * @param TokenRefreshInterface|null $tokenRefreshObject
+     * @param string $apiVersion
+     * @param int $maxRetryRequests
+     */
     public function __construct(
         RestClientInterface $restClient,
         SalesforceProviderInterface $salesforceProvider,
         AccessToken $accessToken,
         string $resourceOwnerUrl,
+        $tokenRefreshObject,
         string $apiVersion,
-        int $maxRetryRequests,
-        TokenRefreshInterface $tokenRefreshCallback = null
+        int $maxRetryRequests
     ) {
         $this->restClient = $restClient;
         $this->salesforceProvider = $salesforceProvider;
@@ -55,7 +63,7 @@ class SalesforceRestClient
         $this->resourceOwnerUrl = $resourceOwnerUrl;
         $this->maxRetryRequests = $maxRetryRequests;
         $this->apiVersion = $apiVersion;
-        $this->tokenRefreshCallback = $tokenRefreshCallback;
+        $this->tokenRefreshObject = $tokenRefreshObject;
     }
 
     public function request(string $method, string $uri = '', array $options = []):ResponseInterface
@@ -90,8 +98,8 @@ class SalesforceRestClient
             'refresh_token' => $refreshToken
         ]);
 
-        if (!empty($this->tokenRefreshCallback)) {
-            $this->tokenRefreshCallback->tokenRefreshCallback($accessToken);
+        if (!empty($this->tokenRefreshObject)) {
+            $this->tokenRefreshObject->tokenRefreshCallback($accessToken);
         }
 
         $this->accessToken = $accessToken;
