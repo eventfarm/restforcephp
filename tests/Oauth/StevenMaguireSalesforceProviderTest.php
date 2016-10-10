@@ -1,7 +1,7 @@
 <?php
-namespace Jmondi\Restforce\Tests\Oauth;
+namespace EventFarm\Restforce\Tests\Oauth;
 
-use Jmondi\Restforce\Oauth\StevenMaguireSalesforceProvider;
+use EventFarm\Restforce\Oauth\StevenMaguireSalesforceProvider;
 use League\OAuth2\Client\Token\AccessToken;
 use Mockery;
 use Stevenmaguire\OAuth2\Client\Provider\Salesforce;
@@ -31,7 +31,7 @@ class StevenMaguireSalesforceProviderTest extends \PHPUnit_Framework_TestCase
             'refresh_token' => $myRefreshToken
         ]);
 
-        $this->assertInstanceOf(\Jmondi\Restforce\Oauth\AccessToken::class, $accessToken);
+        $this->assertInstanceOf(\EventFarm\Restforce\Oauth\AccessToken::class, $accessToken);
         $this->assertSame($myAccessToken, $accessToken->getToken());
         $this->assertSame($myRefreshToken, $accessToken->getRefreshToken());
         $this->assertSame($myResourceOwnerId, $accessToken->getInstanceUrl());

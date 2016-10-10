@@ -1,9 +1,9 @@
 <?php
-namespace Jmondi\Restforce\Tests;
+namespace EventFarm\Restforce\Tests;
 
-use Jmondi\Restforce\Oauth\SalesforceProviderInterface;
-use Jmondi\Restforce\RestClient\RestClientInterface;
-use Jmondi\Restforce\RestforceClient;
+use EventFarm\Restforce\Oauth\SalesforceProviderInterface;
+use EventFarm\Restforce\RestClient\RestClientInterface;
+use EventFarm\Restforce\RestforceClient;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;
 

@@ -1,10 +1,10 @@
 <?php
-namespace Jmondi\Restforce\RestClient;
+namespace EventFarm\Restforce\RestClient;
 
-use Jmondi\Restforce\Oauth\AccessToken;
-use Jmondi\Restforce\Oauth\SalesforceProviderInterface;
-use Jmondi\Restforce\Oauth\RetryAuthorizationTokenFailedException;
-use Jmondi\Restforce\TokenRefreshInterface;
+use EventFarm\Restforce\Oauth\AccessToken;
+use EventFarm\Restforce\Oauth\SalesforceProviderInterface;
+use EventFarm\Restforce\Oauth\RetryAuthorizationTokenFailedException;
+use EventFarm\Restforce\TokenRefreshInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class SalesforceRestClient

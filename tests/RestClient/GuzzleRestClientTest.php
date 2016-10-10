@@ -1,7 +1,7 @@
 <?php
-namespace Jmondi\Restforce\Tests\RestClient;
+namespace EventFarm\Restforce\Tests\RestClient;
 
-use Jmondi\Restforce\RestClient\GuzzleRestClient;
+use EventFarm\Restforce\RestClient\GuzzleRestClient;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;
 

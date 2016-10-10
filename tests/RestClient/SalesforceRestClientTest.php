@@ -1,12 +1,12 @@
 <?php
-namespace Jmondi\Restforce\Tests\RestClient;
+namespace EventFarm\Restforce\Tests\RestClient;
 
-use Jmondi\Restforce\Oauth\AccessToken;
-use Jmondi\Restforce\Oauth\RetryAuthorizationTokenFailedException;
-use Jmondi\Restforce\Oauth\StevenMaguireSalesforceProvider;
-use Jmondi\Restforce\RestClient\GuzzleRestClient;
-use Jmondi\Restforce\RestClient\SalesforceRestClient;
-use Jmondi\Restforce\TokenRefreshInterface;
+use EventFarm\Restforce\Oauth\AccessToken;
+use EventFarm\Restforce\Oauth\RetryAuthorizationTokenFailedException;
+use EventFarm\Restforce\Oauth\StevenMaguireSalesforceProvider;
+use EventFarm\Restforce\RestClient\GuzzleRestClient;
+use EventFarm\Restforce\RestClient\SalesforceRestClient;
+use EventFarm\Restforce\TokenRefreshInterface;
 use Mockery;
 use Psr\Http\Message\ResponseInterface;
 

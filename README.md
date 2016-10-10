@@ -1,17 +1,17 @@
 # Restforce PHP
 
-[![Travis](https://img.shields.io/travis/jasonraimondi/restforcephp.svg?maxAge=2592000?style=flat-square)](https://travis-ci.org/jasonraimondi/restforcephp)
-[![Downloads](https://img.shields.io/packagist/dt/jmondi/restforcephp.svg?style=flat-square)](https://packagist.org/packages/jmondi/restforcephp)
-[![Packagist](https://img.shields.io/packagist/l/jmondi/restforcephp.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/jmondi/restforcephp)
-[![Code Climate](https://codeclimate.com/github/jasonraimondi/restforcephp/badges/gpa.svg)](https://codeclimate.com/github/jasonraimondi/restforcephp)
-[![Test Coverage](https://codeclimate.com/github/jasonraimondi/restforcephp/badges/coverage.svg)](https://codeclimate.com/github/jasonraimondi/restforcephp/coverage)
+[![Travis](https://img.shields.io/travis/eventfarm/restforcephp.svg?maxAge=2592000?style=flat-square)](https://travis-ci.org/eventfarm/restforcephp)
+[![Downloads](https://img.shields.io/packagist/dt/eventfarm/restforcephp.svg?style=flat-square)](https://packagist.org/packages/eventfarm/restforcephp)
+[![Packagist](https://img.shields.io/packagist/l/eventfarm/restforcephp.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/eventfarm/restforcephp)
+[![Code Climate](https://codeclimate.com/github/eventfarm/restforcephp/badges/gpa.svg)](https://codeclimate.com/github/eventfarm/restforcephp)
+[![Test Coverage](https://codeclimate.com/github/eventfarm/restforcephp/badges/coverage.svg)](https://codeclimate.com/github/eventfarm/restforcephp/coverage)
 
 This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejholmes/restforce) is doing for rails.
 
 ## Installation
 
 ```
-$ composer require jmondi/restforcephp
+$ composer require eventfarm/restforcephp
 ```
 
 Or.
@@ -21,7 +21,7 @@ Add the following lines to your ``composer.json`` file.
 ```json
 {
     "require": {
-        "jmondi/restforcephp": "dev-master"
+        "eventfarm/restforcephp": "dev-master"
     }
 }
 ```
@@ -54,9 +54,9 @@ You can either use the provided [StevenMaguireSalesforceProvider](./src/Oauth/St
 <?php
 namespace App;
 
-use Jmondi\Restforce\Oauth\AccessToken;
-use Jmondi\Restforce\RestforceClient;
-use Jmondi\Restforce\TokenRefreshCallbackInterface;
+use EventFarm\Restforce\Oauth\AccessToken;
+use EventFarm\Restforce\RestforceClient;
+use EventFarm\Restforce\TokenRefreshCallbackInterface;
 
 class DemoSalesforceClient implements TokenRefreshInterface
 {

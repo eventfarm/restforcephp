@@ -1,5 +1,5 @@
 {
-    "name": "jmondi/restforcephp",
+    "name": "eventfarm/restforcephp",
     "description": "PHP Salesforce REST",
     "license": "MIT",
     "require-dev": {
@@ -16,12 +16,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Jmondi\\Restforce\\": "src"
+            "EventFarm\\Restforce\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Jmondi\\Restforce\\Tests\\": "tests"
+            "EventFarm\\Restforce\\Tests\\": "tests"
         }
     }
 }
