@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce\Models;
+namespace EventFarm\Restforce\Models;
 
 class SalesforcePicklist
 {

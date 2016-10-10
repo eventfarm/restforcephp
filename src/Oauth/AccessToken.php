@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce\Oauth;
+namespace EventFarm\Restforce\Oauth;
 
 class AccessToken implements AccessTokenInterface
 {

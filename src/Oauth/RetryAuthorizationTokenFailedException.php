@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce\Oauth;
+namespace EventFarm\Restforce\Oauth;
 
 /**
  * An exception for when the max retry limit

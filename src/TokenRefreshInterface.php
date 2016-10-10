@@ -1,7 +1,7 @@
 <?php
-namespace Jmondi\Restforce;
+namespace EventFarm\Restforce;
 
-use Jmondi\Restforce\Oauth\AccessToken;
+use EventFarm\Restforce\Oauth\AccessToken;
 
 interface TokenRefreshInterface
 {

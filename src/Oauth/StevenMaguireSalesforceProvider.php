@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce\Oauth;
+namespace EventFarm\Restforce\Oauth;
 
 use Stevenmaguire\OAuth2\Client\Provider\Salesforce;
 

@@ -1,5 +1,5 @@
 <?php
-namespace Jmondi\Restforce\RestClient;
+namespace EventFarm\Restforce\RestClient;
 
 use Psr\Http\Message\ResponseInterface;
 

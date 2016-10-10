@@ -1,13 +1,13 @@
 <?php
-namespace Jmondi\Restforce;
+namespace EventFarm\Restforce;
 
-use Jmondi\Restforce\Models\SalesforcePicklist;
-use Jmondi\Restforce\Oauth\AccessToken;
-use Jmondi\Restforce\Oauth\SalesforceProviderInterface;
-use Jmondi\Restforce\Oauth\StevenMaguireSalesforceProvider;
-use Jmondi\Restforce\RestClient\GuzzleRestClient;
-use Jmondi\Restforce\RestClient\RestClientInterface;
-use Jmondi\Restforce\RestClient\SalesforceRestClient;
+use EventFarm\Restforce\Models\SalesforcePicklist;
+use EventFarm\Restforce\Oauth\AccessToken;
+use EventFarm\Restforce\Oauth\SalesforceProviderInterface;
+use EventFarm\Restforce\Oauth\StevenMaguireSalesforceProvider;
+use EventFarm\Restforce\RestClient\GuzzleRestClient;
+use EventFarm\Restforce\RestClient\RestClientInterface;
+use EventFarm\Restforce\RestClient\SalesforceRestClient;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
