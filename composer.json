@@ -2,13 +2,6 @@
     "name": "eventfarm/restforcephp",
     "description": "PHP Salesforce REST",
     "license": "MIT",
-    "minimum-stability": "dev",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/jasonraimondi/oauth2-salesforce"
-        }
-    ],
     "require-dev": {
         "phpunit/phpunit": "~5.4",
         "mockery/mockery": "~0.9",
@@ -19,7 +12,7 @@
         "php": ">=7.0",
         "psr/http-message": "^1.0",
         "guzzlehttp/guzzle": "^6.2",
-        "stevenmaguire/oauth2-salesforce": "dev-php71"
+        "stevenmaguire/oauth2-salesforce": "^0.3.0"
     },
     "autoload": {
         "psr-4": {
