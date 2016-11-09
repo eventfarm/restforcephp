@@ -18,7 +18,7 @@ class RestforceClient
      */
     private $client;
 
-    const DEFAULT_HOST = 'login.salesforce.com';
+    const DEFAULT_HOST = 'https://login.salesforce.com';
     const DEFAULT_API_VERSION = 'v37.0';
     const DEFAULT_MAX_RETRY_REQUESTS = 2;
     const DEFAULT_TOKEN_REFRESH_OBJECT = null;
