@@ -41,10 +41,20 @@ class StevenMaguireSalesforceProvider implements SalesforceProviderInterface
     public function getAccessToken($grant, array $options = []):AccessTokenInterface
     {
         $salesforceAccessToken = $this->salesforce->getAccessToken($grant, $options);
+
+        if ($grant === 'refresh_token' && isset($options['refresh_token'])) {
+            $refreshToken = $options['refresh_token'];
+        } else {
+            $refreshToken = $salesforceAccessToken->getRefreshToken();
+        }
+
+        $accessToken = $salesforceAccessToken->getToken();
+        $instanceUrl = $salesforceAccessToken->getResourceOwnerId();
+
         return new AccessToken(
-            $salesforceAccessToken->getToken(),
-            $salesforceAccessToken->getRefreshToken(),
-            $salesforceAccessToken->getResourceOwnerId()
+            $accessToken,
+            $refreshToken,
+            $instanceUrl
         );
     }
 }
