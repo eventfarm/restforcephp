@@ -50,11 +50,13 @@ class StevenMaguireSalesforceProvider implements SalesforceProviderInterface
 
         $accessToken = $salesforceAccessToken->getToken();
         $instanceUrl = $salesforceAccessToken->getResourceOwnerId();
+        $values = $salesforceAccessToken->getValues();
 
         return new AccessToken(
             $accessToken,
             $refreshToken,
-            $instanceUrl
+            $instanceUrl,
+            $values
         );
     }
 }

@@ -12,11 +12,13 @@ class StevenMaguireSalesforceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $myAccessToken = 'myAccessToken';
         $myRefreshToken = 'myRefreshToken';
-        $myResourceOwnerId= 'myResourceOwnerId';
+        $myResourceOwnerId = 'myResourceOwnerId';
+        $myValues = 'myValues';
         $theLeagueAccessToken = Mockery::mock(AccessToken::class);
         $theLeagueAccessToken->shouldReceive('getToken')->andReturn($myAccessToken);
         $theLeagueAccessToken->shouldReceive('getRefreshToken')->andReturn($myRefreshToken);
         $theLeagueAccessToken->shouldReceive('getResourceOwnerId')->andReturn($myResourceOwnerId);
+        $theLeagueAccessToken->shouldReceive('getValues')->andReturn($myValues);
 
         $salesforceProvider = Mockery::mock(Salesforce::class);
         $salesforceProvider->shouldReceive('getAccessToken')
