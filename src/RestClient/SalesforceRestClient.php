@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class SalesforceRestClient
 {
+    const ONE_TENTH_SECOND = 100000;
     /**
      * @var RestClientInterface
      */
@@ -124,6 +125,7 @@ class SalesforceRestClient
             $isAuthorized = $this->isResponseAuthorized($response);
 
             if (!$isAuthorized) {
+                usleep(self::ONE_TENTH_SECOND * $attempts);
                 $this->refreshAccessToken();
             }
 
