@@ -125,7 +125,11 @@ class SalesforceRestClient
             $isAuthorized = $this->isResponseAuthorized($response);
 
             if (!$isAuthorized) {
+
+                // Back off the token refresh retry to combat rapid
+                // requests to salesforce not allowing the token to refresh.
                 usleep(self::ONE_TENTH_SECOND * pow(2, $attempts));
+
                 $this->refreshAccessToken();
             }
 
