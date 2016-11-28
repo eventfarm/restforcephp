@@ -2,6 +2,7 @@
 namespace EventFarm\Restforce;
 
 use EventFarm\Restforce\Models\SalesforcePicklist;
+use EventFarm\Restforce\Models\SalesforceSobjectFieldlist;
 use EventFarm\Restforce\Oauth\AccessToken;
 use EventFarm\Restforce\Oauth\SalesforceProviderInterface;
 use EventFarm\Restforce\Oauth\StevenMaguireSalesforceProvider;
@@ -156,6 +157,13 @@ class RestforceClient
     {
         $fieldList = $this->describe($sobject)->fields;
         $picklist = new SalesforcePicklist($fieldList, $field);
+        return $picklist->extract();
+    }
+
+    public function fieldList(string $sobject)
+    {
+        $fieldList = $this->describe($sobject)->fields;
+        $picklist = new SalesforceSobjectFieldlist($fieldList);
         return $picklist->extract();
     }
 
