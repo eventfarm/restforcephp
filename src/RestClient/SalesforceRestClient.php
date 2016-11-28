@@ -9,7 +9,9 @@ use Psr\Http\Message\ResponseInterface;
 
 class SalesforceRestClient
 {
-    const ONE_TENTH_SECOND = 100000;
+    // I know, I know, it's one fifth.
+    const TWO_TENTHS_SECOND = 200000;
+
     /**
      * @var RestClientInterface
      */
@@ -127,7 +129,7 @@ class SalesforceRestClient
             if (!$isAuthorized) {
                 // Back off the token refresh retry to combat rapid
                 // requests to salesforce not allowing the token to refresh.
-                usleep(self::ONE_TENTH_SECOND * pow(2, $attempts));
+                usleep(self::TWO_TENTHS_SECOND * pow(2, $attempts));
 
                 $this->refreshAccessToken();
             }
