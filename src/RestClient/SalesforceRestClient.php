@@ -9,8 +9,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class SalesforceRestClient
 {
-    // I know, I know, it's one fifth.
-    const TWO_TENTHS_SECOND = 200000;
+    const ONE_TENTH_SECOND = 100000;
+    const HALF_SECOND = 500000;
 
     /**
      * @var RestClientInterface
@@ -69,7 +69,7 @@ class SalesforceRestClient
         $this->tokenRefreshObject = $tokenRefreshObject;
     }
 
-    public function request(string $method, string $uri = '', array $options = []):ResponseInterface
+    public function request(string $method, string $uri = '', array $options = []): ResponseInterface
     {
         return $this->retryRequest(
             $method,
@@ -78,19 +78,19 @@ class SalesforceRestClient
         );
     }
 
-    public function getResourceOwnerUrl():string
+    public function getResourceOwnerUrl(): string
     {
         return $this->resourceOwnerUrl;
     }
 
-    private function getAccessToken():string
+    private function getAccessToken(): string
     {
         return $this->accessToken->getToken();
     }
 
-    private function isResponseAuthorized(ResponseInterface $response):bool
+    private function isResponseAuthorized(ResponseInterface $response): bool
     {
-        return ! ($response->getStatusCode() === 401);
+        return !($response->getStatusCode() === 401);
     }
 
     private function refreshAccessToken()
@@ -98,7 +98,7 @@ class SalesforceRestClient
         $refreshToken = $this->accessToken->getRefreshToken();
 
         $accessToken = $this->salesforceProvider->getAccessToken('refresh_token', [
-            'refresh_token' => $refreshToken
+            'refresh_token' => $refreshToken,
         ]);
 
         if (!empty($this->tokenRefreshObject)) {
@@ -108,20 +108,20 @@ class SalesforceRestClient
         $this->accessToken = $accessToken;
     }
 
-    private function mergeOptions(array $options):array
+    private function mergeOptions(array $options): array
     {
         $defaultOptions = [
             'headers' => [
-                'Authorization' => 'Bearer ' . $this->getAccessToken()
-            ]
+                'Authorization' => 'Bearer ' . $this->getAccessToken(),
+            ],
         ];
         $options = array_merge_recursive($defaultOptions, $options);
         return $options;
     }
 
-    private function retryRequest(string $method, string $uri, array $options):ResponseInterface
+    private function retryRequest(string $method, string $uri, array $options): ResponseInterface
     {
-        $attempts = 0;
+        $attempt = 0;
         do {
             $response = $this->restClient->request($method, $uri, $options);
             $isAuthorized = $this->isResponseAuthorized($response);
@@ -129,13 +129,12 @@ class SalesforceRestClient
             if (!$isAuthorized) {
                 // Back off the token refresh retry to combat rapid
                 // requests to salesforce not allowing the token to refresh.
-                usleep(self::TWO_TENTHS_SECOND * pow(2, $attempts));
-
+                $this->delayRetry($attempt);
                 $this->refreshAccessToken();
             }
 
-            $attempts++;
-        } while (!$isAuthorized && $attempts < $this->maxRetryRequests);
+            $attempt++;
+        } while (!$isAuthorized && $attempt < $this->maxRetryRequests);
 
         if (!$isAuthorized) {
             throw new RetryAuthorizationTokenFailedException(
@@ -146,7 +145,7 @@ class SalesforceRestClient
         return $response;
     }
 
-    private function constructUrl(string $endpoint):string
+    private function constructUrl(string $endpoint): string
     {
         $beginsWithHttp = (substr($endpoint, 0, 7) === "http://") || (substr($endpoint, 0, 8) === "https://");
 
@@ -156,5 +155,10 @@ class SalesforceRestClient
 
         $baseUrl = $this->accessToken->getInstanceUrl() . '/services/data/' . $this->apiVersion . '/';
         return $baseUrl . $endpoint;
+    }
+
+    private function delayRetry(int $attempt)
+    {
+        usleep(self::HALF_SECOND + self::ONE_TENTH_SECOND * pow(2, $attempt));
     }
 }
