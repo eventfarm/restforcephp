@@ -116,20 +116,23 @@ class RestforceClient
         return $this->getBodyObjectFromResponse($response);
     }
 
-    public function query(string $queryString):stdClass
+    public function query(string $queryString): \stdClass
     {
         $uri = 'query?q=' . urlencode($queryString);
         $response = $this->request('GET', $uri);
-        $data = $this->getBodyObjectFromResponse($response);
+        $responseBody = $this->getBodyObjectFromResponse($response);
+        $records = $responseBody->records;
 
-        while (isset($data->nextnextRecordsUrl) && $data->nextRecordsUrl !== null) {
-            $paginationResponse = $this->request('GET', $data->nextRecordsUrl);
+        while (isset($responseBody->nextRecordsUrl) && $responseBody->nextRecordsUrl !== null) {
+            $paginationResponse = $this->request('GET', $responseBody->nextRecordsUrl);
             $paginationData = $this->getBodyObjectFromResponse($paginationResponse);
-            $data->records = array_merge_recursive($data->records, $paginationData->records);
-            $data->nextnextRecordsUrl = $paginationData->nextRecordsUrl ?? null;
+            $records = array_merge_recursive($records, $paginationData->records);
+            $responseBody->nextnextRecordsUrl = $paginationData->nextRecordsUrl ?? null;
         }
 
-        return $data;
+        $responseBody->records = $records;
+
+        return $responseBody;
     }
 
     public function queryAll(string $queryString):stdClass
