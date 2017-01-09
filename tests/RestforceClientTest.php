@@ -51,7 +51,9 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $salesforceProvider = $this->getSalesforceProviderMock();
-        $response = $this->getResponseMock();
+        $response = $this->getResponseMock(
+            file_get_contents(__DIR__ . '/SampleResponse/sobject/query_success_response.json')
+        );
 
         // Act/Assert
         $restforceClient = $this->getRestforceClientWithParameterAsserts(
@@ -62,6 +64,38 @@ class RestforceClientTest extends \PHPUnit_Framework_TestCase
             $this->getAuthorizationHeader()
         );
         $restforceClient->query('SELECT name');
+    }
+
+    public function testQueryWithPaginatedResponseSendsCorrectRequest()
+    {
+//        // Arrange
+//        $salesforceProvider = $this->getSalesforceProviderMock();
+//        $firstPageResponse = $this->getResponseMock(
+//            file_get_contents(__DIR__ . '/SampleResponse/sobject/query_paginated_first_page_response.json')
+//        );
+//        $lastPageResponse = $this->getResponseMock(
+//            file_get_contents(__DIR__ . '/SampleResponse/sobject/query_paginated_last_page_response.json')
+//        );
+//
+//        $method = 'GET';
+//        $endpoint = $this->getBaseUrl() . 'query?q=SELECT+name';
+//        $options = $this->getAuthorizationHeader();
+//
+//        $firstPage = Mockery::mock(RestClientInterface::class);
+//        $firstPage->shouldReceive('request')
+//            ->with($method, $endpoint, $options)
+//            ->once();
+//
+//        $restforceClient = RestforceClient::with(
+//            $firstPage,
+//            $salesforceProvider,
+//            'myAccessToken',
+//            'myRefreshToken',
+//            self::INSTANCE_URL,
+//            self::RESOURCE_OWNER_URL
+//        );
+//
+//        $restforceClient->query('SELECT name');
     }
 
     public function testQueryAllSendsCorrectRequest()
