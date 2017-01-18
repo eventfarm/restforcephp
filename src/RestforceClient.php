@@ -122,7 +122,7 @@ class RestforceClient
         $uri = 'query?q=' . urlencode($queryString);
         $response = $this->request('GET', $uri);
 
-        if  ($response->getStatusCode() !== 200) {
+        if ($response->getStatusCode() !== 200) {
             throw RestforceClientException::queryError($response->getBody());
         }
 
