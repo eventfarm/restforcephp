@@ -8,6 +8,7 @@ use EventFarm\Restforce\Oauth\SalesforceProviderInterface;
 use EventFarm\Restforce\Oauth\StevenMaguireSalesforceProvider;
 use EventFarm\Restforce\RestClient\GuzzleRestClient;
 use EventFarm\Restforce\RestClient\RestClientInterface;
+use EventFarm\Restforce\RestClient\RestforceClientException;
 use EventFarm\Restforce\RestClient\SalesforceRestClient;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
@@ -35,7 +36,7 @@ class RestforceClient
         $apiVersion = self::DEFAULT_API_VERSION,
         int $maxRetryRequests = self::DEFAULT_MAX_RETRY_REQUESTS
     ) {
-    
+
         return new self(
             $restClient,
             $salesforceProvider,
@@ -60,7 +61,7 @@ class RestforceClient
         int $maxRetryRequests = self::DEFAULT_MAX_RETRY_REQUESTS,
         string $domain = self::DEFAULT_HOST
     ) {
-    
+
         $restClient = GuzzleRestClient::createClient();
         $salesforceProvider =
             StevenMaguireSalesforceProvider::createDefaultProvider(
@@ -120,6 +121,11 @@ class RestforceClient
     {
         $uri = 'query?q=' . urlencode($queryString);
         $response = $this->request('GET', $uri);
+
+        if  ($response->getStatusCode() !== 200) {
+            throw RestforceClientException::queryError($response->getBody());
+        }
+
         $responseBody = $this->getBodyObjectFromResponse($response);
         $records = $responseBody->records;
 
