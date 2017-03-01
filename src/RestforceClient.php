@@ -13,7 +13,7 @@ use EventFarm\Restforce\RestClient\SalesforceRestClient;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
-class RestforceClient
+class RestforceClient implements RestforceClientInterface
 {
     /**
      * @var RestClientInterface
