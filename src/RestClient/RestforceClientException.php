@@ -7,6 +7,6 @@ class RestforceClientException extends \Exception
 {
     public static function queryError(StreamInterface $responseBody)
     {
-        return new self('Error communicating with Salesforce: ' . $responseBody->getContents(), 500);
+        return new self($responseBody->getContents(), 500);
     }
 }
