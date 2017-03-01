@@ -92,6 +92,10 @@ class DemoSalesforceClient implements TokenRefreshInterface
 
 Consult the [Salesforce OAuth 2.0 Documentation](https://developer.salesforce.com/page/Digging_Deeper_into_OAuth_2.0_on_Force.com#Configuring_OAuth_2.0_Access_for_your_Application) to find out what Available OAuth Scopes your app needs.
 
+## Salesforce Documentation
+
+Links to Salesforce documentation pages can be found in each section. Alternatively, here is the [holy grail of the Saleforce endpoints.](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_list.htm) 
+
 ## Usage
 
 #### Limits
