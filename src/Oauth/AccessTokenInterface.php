@@ -8,4 +8,6 @@ interface AccessTokenInterface
     public function getRefreshToken():string;
 
     public function getInstanceUrl():string;
+
+    public function getValues();
 }
