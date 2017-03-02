@@ -1,12 +1,13 @@
 <?php
 namespace EventFarm\Restforce\Tests;
 
-use EventFarm\Restforce\RestforceClientInterface;
+use EventFarm\Restforce\RestforceClient;
 use stdClass;
 
-class FakeRestforceClient implements RestforceClientInterface
+class FakeRestforceClient extends RestforceClient
 {
     const DUMMY_SOBJECT_ID = 'DUMMYSOBJECTID';
+    const DUMMY_NAME = 'My First Whizbang';
     /** @var int */
     private $responseStatusCode;
 
