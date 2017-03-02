@@ -122,11 +122,8 @@ class RestforceClient implements RestforceClientInterface
         $uri = 'query?q=' . urlencode($queryString);
         $response = $this->request('GET', $uri);
 
-        if ($response->getStatusCode() !== 200) {
-            throw RestforceClientException::queryError($response->getBody());
-        }
-
         $responseBody = $this->getBodyObjectFromResponse($response);
+
         $records = $responseBody->records;
 
         while (isset($responseBody->nextRecordsUrl) && $responseBody->nextRecordsUrl !== null) {
@@ -205,6 +202,7 @@ class RestforceClient implements RestforceClientInterface
             ],
             'json' => $data,
         ]);
+
         return $response->getStatusCode() === 201 ?
             $this->getBodyObjectFromResponse($response)->id :
             false;
@@ -232,10 +230,15 @@ class RestforceClient implements RestforceClientInterface
     }
 
 
-    private function request(string $method, string $uri, array $options = []):ResponseInterface
+    private function request(string $method, string $uri, array $options = []): ResponseInterface
     {
         $url = $this->cleanRequestUrl($uri);
         $response = $this->client->request($method, $url, $options);
+
+        if (! $this->isValidResponse($response)) {
+            throw RestforceClientException::invalidResponse($response->getBody());
+        }
+
         return $response;
     }
 
@@ -248,8 +251,17 @@ class RestforceClient implements RestforceClientInterface
         return $uri;
     }
 
-    private function getBodyObjectFromResponse(ResponseInterface $request)
+    private function getBodyObjectFromResponse(ResponseInterface $request): stdClass
     {
-        return (object) json_decode($request->getBody()->__toString());
+        try {
+            return (object) json_decode($request->getBody()->__toString());
+        } catch (\Throwable $e) {
+            throw RestforceClientException::invalidJsonResponse($e->getMessage());
+        };
+    }
+
+    private function isValidResponse(ResponseInterface $response): bool
+    {
+        return ($response->getStatusCode() >= 200 && $response->getStatusCode() <= 399);
     }
 }

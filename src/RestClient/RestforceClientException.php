@@ -5,8 +5,13 @@ use Psr\Http\Message\StreamInterface;
 
 class RestforceClientException extends \Exception
 {
-    public static function queryError(StreamInterface $responseBody)
+    public static function invalidResponse(StreamInterface $response)
     {
-        return new self($responseBody->getContents(), 500);
+        return new self($response->getContents(), 500);
+    }
+
+    public static function invalidJsonResponse(string $message)
+    {
+        return new self('Invalid JSON Response: ' . $message);
     }
 }
