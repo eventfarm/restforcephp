@@ -31,6 +31,12 @@ class StevenMaguireSalesforceProvider implements SalesforceProviderInterface
         $this->salesforce = $salesforce;
     }
 
+    public function getAuthorizationUrl(array $options = []): string
+    {
+        return $this->salesforce->getAuthorizationUrl($options);
+    }
+
+
     /**
      * Requests an access token using a specified grant and option set.
      *
