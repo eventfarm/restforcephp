@@ -9,7 +9,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class SalesforceRestClient
 {
-    const ONE_TENTH_SECOND = 100000;
     const HALF_SECOND = 500000;
 
     /**
@@ -159,6 +158,6 @@ class SalesforceRestClient
 
     private function delayRetry(int $attempt)
     {
-        usleep(self::HALF_SECOND + self::ONE_TENTH_SECOND * pow(2, $attempt));
+        usleep(self::HALF_SECOND + log($attempt));
     }
 }
