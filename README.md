@@ -115,7 +115,7 @@ $limits = $restforce->limits();
 
 #### UserInfo
 
-[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_limits.htm?search_text=limits) Get info about the logged-in user.
+[Docs](https://developer.salesforce.com/docs/atlas.en-us.mobile_sdk.meta/mobile_sdk/oauth_using_identity_urls.htm) Get info about the logged-in user.
 
 `public function limits():stdClass`
 
