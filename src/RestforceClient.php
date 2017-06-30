@@ -233,13 +233,7 @@ class RestforceClient implements RestforceClientInterface
     private function request(string $method, string $uri, array $options = []): ResponseInterface
     {
         $url = $this->cleanRequestUrl($uri);
-        $response = $this->client->request($method, $url, $options);
-
-        if (! $this->isValidResponse($response)) {
-            throw RestforceClientException::invalidResponse($response->getBody());
-        }
-
-        return $response;
+        return $this->client->request($method, $url, $options);
     }
 
     private function cleanRequestUrl(string $uri):string
@@ -257,11 +251,6 @@ class RestforceClient implements RestforceClientInterface
             return (object) json_decode($request->getBody()->__toString());
         } catch (\Throwable $e) {
             throw RestforceClientException::invalidJsonResponse($e->getMessage());
-        };
-    }
-
-    private function isValidResponse(ResponseInterface $response): bool
-    {
-        return ($response->getStatusCode() >= 200 && $response->getStatusCode() <= 399);
+        }
     }
 }

@@ -71,11 +71,23 @@ class SalesforceRestClient
 
     public function request(string $method, string $uri = '', array $options = []): ResponseInterface
     {
-        return $this->retryRequest(
+        $response = $this->retryRequest(
             $method,
             $this->constructUrl($uri),
             $this->mergeOptions($options)
         );
+
+
+        if (! $this->isValidResponse($response)) {
+            throw RestforceClientException::invalidResponse(
+                json_encode([
+                    'url' => $this->constructUrl($uri),
+                    'responseBody' => $response->getBody()->getContents()
+                ], JSON_UNESCAPED_UNICODE)
+            );
+        }
+
+        return $response;
     }
 
     public function getResourceOwnerUrl(): string
@@ -163,5 +175,10 @@ class SalesforceRestClient
         $attemptIncrement = floor(log($attempt) * self::ONE_SECOND);
         $sleepTimeInMicroSeconds = (int) ($baseSleep + $attemptIncrement);
         usleep($sleepTimeInMicroSeconds);
+    }
+
+    private function isValidResponse(ResponseInterface $response): bool
+    {
+        return ($response->getStatusCode() >= 200 && $response->getStatusCode() <= 399);
     }
 }

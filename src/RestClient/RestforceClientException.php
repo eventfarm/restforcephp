@@ -1,13 +1,16 @@
 <?php
 namespace EventFarm\Restforce\RestClient;
 
-use Psr\Http\Message\StreamInterface;
-
 class RestforceClientException extends \Exception
 {
-    public static function invalidResponse(StreamInterface $response)
+    public function __construct($message, $code = 500, \Throwable $previous = null)
     {
-        return new self($response->getContents(), 500);
+        parent::__construct($message, $code, $previous);
+    }
+
+    public static function invalidResponse(string $message)
+    {
+        return new self('Invalid Response: ' . $message);
     }
 
     public static function invalidJsonResponse(string $message)
