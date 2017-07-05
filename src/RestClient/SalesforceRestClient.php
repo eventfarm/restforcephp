@@ -163,7 +163,7 @@ class SalesforceRestClient
         }
 
         if ($beginsWithServicesData = substr($endpoint, 0, 15) === '/services/data/') {
-            return $this->accessToken->getInstanceUrl() . $endpoint;
+            return $this->accessToken->getInstanceUrl() . '/' . $endpoint;
         }
 
         return $this->accessToken->getInstanceUrl() . '/services/data/' . $this->apiVersion . '/' . $endpoint;
