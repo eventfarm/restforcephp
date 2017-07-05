@@ -130,7 +130,7 @@ class RestforceClient implements RestforceClientInterface
             $paginationResponse = $this->request('GET', $responseBody->nextRecordsUrl);
             $paginationData = $this->getBodyObjectFromResponse($paginationResponse);
             $records = array_merge_recursive($records, $paginationData->records);
-            $responseBody->nextnextRecordsUrl = $paginationData->nextRecordsUrl ?? null;
+            $responseBody->nextRecordsUrl = $paginationData->nextRecordsUrl ?? null;
         }
 
         $responseBody->records = $records;
