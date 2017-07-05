@@ -77,7 +77,6 @@ class SalesforceRestClient
             $this->mergeOptions($options)
         );
 
-
         if (! $this->isValidResponse($response)) {
             throw RestforceClientException::invalidResponse(
                 json_encode([
@@ -159,14 +158,15 @@ class SalesforceRestClient
 
     private function constructUrl(string $endpoint): string
     {
-        $beginsWithHttp = (substr($endpoint, 0, 7) === "http://") || (substr($endpoint, 0, 8) === "https://");
-
-        if ($beginsWithHttp) {
+        if ($beginsWithHttp = (substr($endpoint, 0, 7) === "http://") || (substr($endpoint, 0, 8) === "https://")) {
             return $endpoint;
         }
 
-        $baseUrl = $this->accessToken->getInstanceUrl() . '/services/data/' . $this->apiVersion . '/';
-        return $baseUrl . $endpoint;
+        if ($beginsWithServicesData = substr($endpoint, 0, 15) === '/services/data/') {
+            return $this->accessToken->getInstanceUrl() . $endpoint;
+        }
+
+        return $this->accessToken->getInstanceUrl() . '/services/data/' . $this->apiVersion . '/';
     }
 
     private function delayRetry(int $attempt)
