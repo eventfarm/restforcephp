@@ -166,7 +166,7 @@ class SalesforceRestClient
             return $this->accessToken->getInstanceUrl() . $endpoint;
         }
 
-        return $this->accessToken->getInstanceUrl() . '/services/data/' . $this->apiVersion . '/';
+        return $this->accessToken->getInstanceUrl() . '/services/data/' . $this->apiVersion . '/' . $endpoint;
     }
 
     private function delayRetry(int $attempt)
