@@ -158,12 +158,12 @@ class SalesforceRestClient
 
     private function constructUrl(string $endpoint): string
     {
-        if ($beginsWithHttp = (substr($endpoint, 0, 7) === "http://") || (substr($endpoint, 0, 8) === "https://")) {
+        if ((substr($endpoint, 0, 7) === "http://") || (substr($endpoint, 0, 8) === "https://")) {
             return $endpoint;
         }
 
-        if ($beginsWithServicesData = substr($endpoint, 0, 15) === '/services/data/') {
-            return $this->accessToken->getInstanceUrl() . '/' . $endpoint;
+        if (strpos($endpoint, 'services/data') !== false) {
+            return $this->accessToken->getInstanceUrl() . $endpoint;
         }
 
         return $this->accessToken->getInstanceUrl() . '/services/data/' . $this->apiVersion . '/' . $endpoint;
