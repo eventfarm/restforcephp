@@ -163,7 +163,7 @@ class SalesforceRestClient
         }
 
         if (strpos($endpoint, 'services/data') !== false) {
-            return $this->accessToken->getInstanceUrl() . $endpoint;
+            return $this->accessToken->getInstanceUrl() . '/' . $endpoint;
         }
 
         return $this->accessToken->getInstanceUrl() . '/services/data/' . $this->apiVersion . '/' . $endpoint;
