@@ -10,7 +10,7 @@ This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejh
 
 ## Installation
 
-This library requires PHP 7.0 or later; we recommend using the latest available version of PHP.
+This library requires PHP 7.1 or later; we recommend using the latest available version of PHP.
 
 ```
 $ composer require eventfarm/restforcephp
@@ -34,54 +34,26 @@ $ composer install
 
 ## Project Defaults
 
-In order to get you up and running as easily as possible, we provide default implementations of a Rest Client and Salesforce Provider to use in combination with this package. 
-* We've chosen to use [GuzzleHttp](https://github.com/guzzle/guzzle) for sending Http requests by default
-* We've chosen to use [The PHP League's Oauth Client](https://github.com/thephpleague/oauth2-client) and [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) for Salesforce Authentication.
-
-### GuzzleRestClient
-
-Our rest client implements the PSR-7 HTTP message interface.
-
-You can either use the provided [GuzzleRestClient](./src/RestClient/GuzzleRestClient.php) or have your own that implements our [RestClientInterface](./src/RestClient/RestClientInterface.php).
-
-### StevenMaguireSalesforceProvider
-
-Our Default Salesforce Provider is using [Steven Maguires Salesforce Provider](https://github.com/stevenmaguire/oauth2-salesforce) library. We chose this library as it is on the list of The PHP Leagues Oauth Client. 
-
-You can either use the provided [StevenMaguireSalesforceProvider](./src/Oauth/StevenMaguireSalesforceProvider.php) or have your own that implements our [SalesforceProviderInterface](./src/Oauth/SalesforceProviderInterface.php).
-
-## Example Client Implementation
-
 ```php
 <?php
 namespace App;
 
-use EventFarm\Restforce\Oauth\AccessToken;
-use EventFarm\Restforce\RestforceClient;
-use EventFarm\Restforce\TokenRefreshCallbackInterface;
+use EventFarm\Restforce\Restforce;
 
-class DemoSalesforceClient implements TokenRefreshInterface
+class DemoSalesforceApi
 {
-    public function getRestforceClient():RestforceClient
+    public function getRestforceClient(): Restforce
     {
         if (empty($this->restforce)) {
-            $this->restforce = RestforceClient::withDefaults(
-                'ACCESS_TOKEN',
-                'REFRESH_TOKEN',
-                'INSTANCE_URL',
-                'RESOURCE_OWNER_URL',
+            $this->restforce = new Restforce(
                 'CLIENT_ID',
                 'CLIENT_SECRET',
-                'REDIRECT_URL',
-                $this // TokenRefreshInterface
+                OAuthAccessToken || null,
+                'USERNAME',
+                'PASSWORD'
             );
         }
         return $this->restforce;
-    }
-
-    public function tokenRefreshCallback(AccessToken $token)
-    {
-        // CALLBACK FUNCTION TO STORE THE REFRESHED $token TO PERSISTANCE LAYER
     }
 }
 ```
@@ -102,14 +74,14 @@ Links to Salesforce documentation pages can be found in each section. Alternativ
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_limits.htm?search_text=limits) Returns a list of daily API limits for the salesforce api. Refer to the docs for the full list of options.
 
-`public function limits():stdClass`
+`public function limits(): \Psr\Http\Message\ResponseInterface`
 
 ```php
 <?php
-$demoSalesforceClient = new DemoSalesforceClient();
-$restforce = $demoSalesforceClient->getClient();
-$limits = $restforce->limits();
-// $limits = { ... }
+/** @var \EventFarm\Restforce\RestforceInterface $restforce */
+$restforce = (new DemoSalesforceApi())->getClient();
+/** @var \Psr\Http\Message\ResponseInterface $responseInterface */
+$responseInterface = $restforce->limits();
 ```
 
 
@@ -117,114 +89,99 @@ $limits = $restforce->limits();
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.mobile_sdk.meta/mobile_sdk/oauth_using_identity_urls.htm) Get info about the logged-in user.
 
-`public function limits():stdClass`
+`public function limits(): \Psr\Http\Message\ResponseInterface`
 
 ```php
 <?php
-$demoSalesforceClient = new DemoSalesforceClient();
-$restforce = $demoSalesforceClient->getClient();
-$user = $restforce->userInfo();
-// $user = { ... }
+/** @var \EventFarm\Restforce\RestforceInterface $restforce */
+$restforce = (new DemoSalesforceApi())->getClient();
+/** @var \Psr\Http\Message\ResponseInterface $responseInterface */
+$responseInterface = $restforce->userInfo();
 ```
 
 #### Query
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm) Use the Query resource to execute a SOQL query that returns all the results in a single response.
 
-`public function query(string $query):stdClass`
+`public function query(string $query): \Psr\Http\Message\ResponseInterface`
 
 ```php
 <?php
-$demoSalesforceClient = new DemoSalesforceClient();
-$restforce = $demoSalesforceClient->getClient();
-$results = $restforce->query('SELECT Id, Name FROM Account');
-// $results = { ... }
+/** @var \EventFarm\Restforce\RestforceInterface $restforce */
+$restforce = (new DemoSalesforceApi())->getClient();
+/** @var \Psr\Http\Message\ResponseInterface $responseInterface */
+$responseInterface = $restforce->query('SELECT Id, Name FROM Account');
 ```
 
 #### QueryAll
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_queryall.htm) Include SOQL that includes deleted items.
 
-`public function queryAll(string $query):stdClass`
+`public function queryAll(string $query): \Psr\Http\Message\ResponseInterface`
 
 ```php
 <?php
-$demoSalesforceClient = new DemoSalesforceClient();
-$restforce = $demoSalesforceClient->getClient();
-$results = $restforce->queryAll('SELECT Id, Name FROM Account');
-// $results = { ... }
+/** @var \EventFarm\Restforce\RestforceInterface $restforce */
+$restforce = (new DemoSalesforceApi())->getClient();
+/** @var \Psr\Http\Message\ResponseInterface $responseInterface */
+$responseInterface = $restforce->queryAll('SELECT Id, Name FROM Account');
 ```
 
 #### Explain
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query_explain.htm) Get feedback on how Salesforce will execute your query, report, or list view.
 
-`public function explain(string $query):stdClass`
+`public function explain(string $query): \Psr\Http\Message\ResponseInterface`
 
 ```php
 <?php
-$demoSalesforceClient = new DemoSalesforceClient();
-$restforce = $demoSalesforceClient->getClient();
-$explaination = $restforce->explain('SELECT Id, Name FROM Account');
-// $explaination = { ... }
+/** @var \EventFarm\Restforce\RestforceInterface $restforce */
+$restforce = (new DemoSalesforceApi())->getClient();
+/** @var \Psr\Http\Message\ResponseInterface $responseInterface */
+$responseInterface = $restforce->explain('SELECT Id, Name FROM Account');
 ```
 
 #### Find
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_field_values.htm?search_text=limits) Find resource `$id` of `$sobject`, optionally specify the fields you want to retrieve in the fields parameter and use the GET method of the resource.
 
-`public function find(string $sobject, string $id, array $fields = []):stdClass`
+`public function find(string $sobject, string $id, array $fields = []): \Psr\Http\Message\ResponseInterface`
 
 ```php
 <?php
-$demoSalesforceClient = new DemoSalesforceClient();
-$restforce = $demoSalesforceClient->getClient();
-$object = $restforce->find('Account', '001410000056Kf0AAE');
-// $object = { ... }
+/** @var \EventFarm\Restforce\RestforceInterface $restforce */
+$restforce = (new DemoSalesforceApi())->getClient();
+/** @var \Psr\Http\Message\ResponseInterface $responseInterface */
+$responseInterface= $restforce->find('Account', '001410000056Kf0AAE');
 ```
 
 #### Describe
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm?search_text=describe) Completely describes the individual metadata at all levels for the specified object.
 
-`public function describe(string $sobject):stdClass`
+`public function describe(string $sobject): \Psr\Http\Message\ResponseInterface`
 
 ```php
 <?php
-$demoSalesforceClient = new DemoSalesforceClient();
-$restforce = $demoSalesforceClient->getClient();
-$description = $restforce->describe('Account');
-// $description = { ... }
+/** @var \EventFarm\Restforce\RestforceInterface $restforce */
+$restforce = (new DemoSalesforceApi())->getClient();
+/** @var \Psr\Http\Message\ResponseInterface $responseInterface */
+$responseInterface = $restforce->describe('Account');
 ```
-
-#### Picklist Values
-
-[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_sobject_describe.htm?search_text=describe) Uses the [describe](#describe) endpoint and extracts out the picklist values for the specified object and field.
-
-`public function picklistValues(string $sobject, string $field):array`
-
-```php
-<?php
-$demoSalesforceClient = new DemoSalesforceClient();
-$restforce = $demoSalesforceClient->getClient();
-$picklistValues = $restforce->describe('Task', 'Type');
-// $picklistValues = { ... }
-```
-
 
 #### Create
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_sobject_create.htm) Create new records of `$sobject`. The response body will contain the ID of the created record if the call is successful.
 
-`public function create(string $sobject, array $data):stdClass`
+`public function create(string $sobject, array $data): \Psr\Http\Message\ResponseInterface`
 
 ```php
 <?php
-$demoSalesforceClient = new DemoSalesforceClient();
-$restforce = $demoSalesforceClient->getClient();
-$id = $restforce->create('Account', [
+/** @var \EventFarm\Restforce\RestforceInterface $restforce */
+$restforce = (new DemoSalesforceApi())->getClient();
+/** @var \Psr\Http\Message\ResponseInterface $responseInterface */
+$responseInterface = $restforce->create('Account', [
     'Name' => 'Foo Bar'
 ]);
-// $id = '001i000001ysdBGAAY'` 
 ```
 
 #### Update
@@ -235,26 +192,12 @@ $id = $restforce->create('Account', [
 
 ```php
 <?php
-$demoSalesforceClient = new DemoSalesforceClient();
-$restforce = $demoSalesforceClient->getClient();
-$success = $restforce->update('Account', '001i000001ysdBGAAY', [
+/** @var \EventFarm\Restforce\RestforceInterface $restforce */
+$restforce = (new DemoSalesforceApi())->getClient();
+/** @var \Psr\Http\Message\ResponseInterface $responseInterface */
+$responseInterface = $restforce->update('Account', '001i000001ysdBGAAY', [
     'Name' => 'Foo Bar Two'
 ]);
-// $success = true|false
-```
-
-#### Destroy
-
-[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_delete_record.htm?search_text=describe) Delete record of `$sobject` and `$id`. The response will be the a bool of `$success`.
-
-`public function destroy(string $sobject, string $id):bool`
-
-```php
-<?php
-$demoSalesforceClient = new DemoSalesforceClient();
-$restforce = $demoSalesforceClient->getClient();
-$success = $restforce->destroy('Account', '001i000001ysdBGAAY');
-// $success = true|false
 ```
 
 ## Contributing

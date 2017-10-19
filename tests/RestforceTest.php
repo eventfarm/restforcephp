@@ -22,6 +22,7 @@ class RestforceTest extends AbstractRestforceTestCase
             getenv('SALESFORCE_PASSWORD')
         );
         $this->assertSame(200, $restforce->limits()->getStatusCode());
+        $this->assertSame(200, $restforce->getNext(Restforce::USER_INFO_ENDPOINT)->getStatusCode());
         $this->assertSame(200, $restforce->userInfo()->getStatusCode());
         $this->assertSame(200, $restforce->describe('Lead')->getStatusCode());
         $this->assertSame(200, $restforce->query('SELECT Id FROM Campaign')->getStatusCode());
