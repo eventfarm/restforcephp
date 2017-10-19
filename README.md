@@ -121,33 +121,6 @@ $restforce = (new DemoSalesforceApi())->getClient();
 $responseInterface = $restforce->query('SELECT Id, Name FROM Account');
 ```
 
-#### QueryAll
-
-[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_queryall.htm) Include SOQL that includes deleted items.
-
-`public function queryAll(string $query): \Psr\Http\Message\ResponseInterface`
-
-```php
-<?php
-/** @var \EventFarm\Restforce\RestforceInterface $restforce */
-$restforce = (new DemoSalesforceApi())->getClient();
-/** @var \Psr\Http\Message\ResponseInterface $responseInterface */
-$responseInterface = $restforce->queryAll('SELECT Id, Name FROM Account');
-```
-
-#### Explain
-[Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query_explain.htm) Get feedback on how Salesforce will execute your query, report, or list view.
-
-`public function explain(string $query): \Psr\Http\Message\ResponseInterface`
-
-```php
-<?php
-/** @var \EventFarm\Restforce\RestforceInterface $restforce */
-$restforce = (new DemoSalesforceApi())->getClient();
-/** @var \Psr\Http\Message\ResponseInterface $responseInterface */
-$responseInterface = $restforce->explain('SELECT Id, Name FROM Account');
-```
-
 #### Find
 
 [Docs](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_get_field_values.htm?search_text=limits) Find resource `$id` of `$sobject`, optionally specify the fields you want to retrieve in the fields parameter and use the GET method of the resource.
