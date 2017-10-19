@@ -23,7 +23,7 @@ Add the following lines to your ``composer.json`` file.
 ```json
 {
     "require": {
-        "eventfarm/restforcephp": "dev-master"
+        "eventfarm/restforcephp": "^2.0.0"
     }
 }
 ```
