@@ -44,17 +44,21 @@ use EventFarm\Restforce\RestforceInterface;
 
 class DemoSalesforceApi
 {
-    /** @var RestforceInterface $restforce */
+    /** @var null|RestforceInterface $restforce */
     private $restforce;
+    
     public function getRestforceClient(): RestforceInterface
     {
         if ($this->restforce === null) {
+            // You need either the OAuthAccessToken
+            // or the Username & Password,
+            // the other(s) can be null.
             $this->restforce = new Restforce(
-                'CLIENT_ID',
-                'CLIENT_SECRET',
+                getenv('SF_CLIENT_ID'),
+                getenv('SF_CLIENT_SECRET'),
                 new OAuthAccessToken(...),
-                'USERNAME',
-                'PASSWORD'
+                getenv('SF_USERNAME'),
+                getenv('SF_PASSWORD')
             );
         }
         return $this->restforce;
