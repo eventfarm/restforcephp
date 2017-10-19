@@ -1,6 +1,0 @@
-[
-    {
-        "message":"No such column 'foo' on sobject of type Bar",
-        "errorCode":"INVALID_FIELD"
-    }
-]

@@ -3,8 +3,11 @@ namespace EventFarm\RestforceV2\Rest;
 
 use Psr\Http\Message\ResponseInterface;
 
-interface RestClientInterface
+interface SalesforceRestClientInterface extends RestClientInterface
 {
+    public function setResourceOwnerUrl(string $resourceOwnerUrl): void;
+    public function setBaseUriForRestClient(string $baseUri): void;
+
     public function get(
         string $path,
         array $queryParameters = [],

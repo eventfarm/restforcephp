@@ -1,5 +1,5 @@
 <?php
-namespace EventFarm\Restforce\Rest;
+namespace EventFarm\RestforceV2\Rest;
 
 use Exception;
 

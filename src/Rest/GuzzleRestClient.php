@@ -1,26 +1,34 @@
 <?php
-namespace EventFarm\Restforce\Rest;
+namespace EventFarm\RestforceV2\Rest;
 
 use Psr\Http\Message\ResponseInterface;
 
-final class GuzzleRestClient implements RestClientInterface
+class GuzzleRestClient implements RestClientInterface
 {
     const DEFAULT_TIMEOUT_SECONDS = 20.0;
 
     /** @var \GuzzleHttp\Client */
     private $client;
+    /** @var bool */
+    private $enableDebugging;
 
     public function __construct(
         string $baseUri,
         bool $enableDebugging = false
     ) {
+        $this->enableDebugging = $enableDebugging;
+        $this->setBaseUriForRestClient($baseUri);
+    }
+
+    public function setBaseUriForRestClient(string $baseUri): void
+    {
         if (!$this->containsTrailingSlash($baseUri)) {
             $baseUri .= '/';
         }
 
         $config = [
             'base_uri' => $baseUri,
-            'debug' => $enableDebugging
+            'debug' => $this->enableDebugging
         ];
 
         $this->client = new \GuzzleHttp\Client($config);
@@ -61,11 +69,48 @@ final class GuzzleRestClient implements RestClientInterface
             ]
         );
     }
-    /**
-     * @param string $baseUri
-     * @return bool
-     */
-    private function containsTrailingSlash($baseUri)
+
+    public function postJson(
+        string $path,
+        array $jsonArray = [],
+        array $headers = [],
+        ?float $timeoutSeconds = null
+    ): ResponseInterface {
+        $headers['Content-Type'] = 'application/json';
+
+        return $this->client->request(
+            'POST',
+            $path,
+            [
+                'timeout' => $timeoutSeconds,
+                'headers' => $headers,
+                'json' => $jsonArray,
+                'http_errors' => false,
+            ]
+        );
+    }
+
+    public function patchJson(
+        string $path,
+        array $jsonArray = [],
+        array $headers = [],
+        ?float $timeoutSeconds = null
+    ): ResponseInterface {
+        $headers['Content-Type'] = 'application/json';
+
+        return $this->client->request(
+            'PATCH',
+            $path,
+            [
+                'timeout' => $timeoutSeconds,
+                'headers' => $headers,
+                'json' => $jsonArray,
+                'http_errors' => false,
+            ]
+        );
+    }
+
+    private function containsTrailingSlash(string $baseUri): bool
     {
         return substr($baseUri, -1) === '/';
     }
