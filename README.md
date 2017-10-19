@@ -38,17 +38,21 @@ $ composer install
 <?php
 namespace App;
 
+use EventFarm\Restforce\Rest\OAuthAccessToken;
 use EventFarm\Restforce\Restforce;
+use EventFarm\Restforce\RestforceInterface;
 
 class DemoSalesforceApi
 {
-    public function getRestforceClient(): Restforce
+    /** @var RestforceInterface $restforce */
+    private $restforce;
+    public function getRestforceClient(): RestforceInterface
     {
-        if (empty($this->restforce)) {
+        if ($this->restforce === null) {
             $this->restforce = new Restforce(
                 'CLIENT_ID',
                 'CLIENT_SECRET',
-                OAuthAccessToken || null,
+                new OAuthAccessToken(...),
                 'USERNAME',
                 'PASSWORD'
             );
