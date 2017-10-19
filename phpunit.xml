@@ -14,9 +14,6 @@
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
-    <listeners>
-        <listener class="\Mockery\Adapter\Phpunit\TestListener"/>
-    </listeners>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory>src</directory>
@@ -25,4 +22,10 @@
     <logging>
         <log type="coverage-clover" target="build/logs/clover.xml"/>
     </logging>
+    <php>
+        <env name="SALESFORCE_OAUTH_CLIENT" value="enter-here"/>
+        <env name="SALESFORCE_OAUTH_SECRET" value="enter-here"/>
+        <env name="SALESFORCE_USERNAME" value="enter-here"/>
+        <env name="SALESFORCE_PASSWORD" value="enter-here"/>
+    </php>
 </phpunit>

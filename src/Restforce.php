@@ -1,11 +1,11 @@
 <?php
-namespace EventFarm\RestforceV2;
+namespace EventFarm\Restforce;
 
-use EventFarm\RestforceV2\Rest\GuzzleRestClient;
-use EventFarm\RestforceV2\Rest\OAuthAccessToken;
-use EventFarm\RestforceV2\Rest\OAuthRestClient;
-use EventFarm\RestforceV2\Rest\RestClientInterface;
-use EventFarm\RestforceV2\Rest\SalesforceRestClient;
+use EventFarm\Restforce\Rest\GuzzleRestClient;
+use EventFarm\Restforce\Rest\OAuthAccessToken;
+use EventFarm\Restforce\Rest\OAuthRestClient;
+use EventFarm\Restforce\Rest\RestClientInterface;
+use EventFarm\Restforce\Rest\SalesforceRestClient;
 use Psr\Http\Message\ResponseInterface;
 
 class Restforce implements RestforceInterface
@@ -37,6 +37,10 @@ class Restforce implements RestforceInterface
         ?string $password = null,
         ?string $apiVersion = null
     ) {
+        if ($accessToken === null && $username === null && $password === null) {
+            throw RestforceException::minimumRequiredFieldsNotMet();
+        }
+
         if ($apiVersion === null) {
             $apiVersion = self::DEFAULT_API_VERSION;
         }

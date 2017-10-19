@@ -1,5 +1,5 @@
 <?php
-namespace EventFarm\RestforceV2;
+namespace EventFarm\Restforce;
 
 use Psr\Http\Message\ResponseInterface;
 

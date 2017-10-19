@@ -1,9 +1,7 @@
 <?php
-namespace EventFarm\RestforceV2\Rest;
+namespace EventFarm\Restforce\Rest;
 
-use EventFarm\RestforceV2\Api\ApiFactory;
-use EventFarm\RestforceV2\Api\UserInfo;
-use EventFarm\RestforceV2\Restforce;
+use EventFarm\Restforce\Restforce;
 use Psr\Http\Message\ResponseInterface;
 
 class SalesforceRestClient implements SalesforceRestClientInterface
@@ -93,12 +91,12 @@ class SalesforceRestClient implements SalesforceRestClientInterface
             return $this->resourceOwnerUrl;
         }
 
-        if ((substr($endpoint, 0, 1) === '/')) {
-            $endpoint = substr($endpoint, 1);
-        }
-
         if ((substr($endpoint, 0, 4) === 'http')) {
             return $endpoint;
+        }
+
+        if ((substr($endpoint, 0, 1) === '/')) {
+            $endpoint = substr($endpoint, 1);
         }
 
         if (strpos($endpoint, 'services/data') !== false) {
