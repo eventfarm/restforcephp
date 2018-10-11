@@ -21,8 +21,8 @@ class OAuthAccessToken
         string $accessToken,
         string $instanceUrl,
         string $resourceOwnerUrl,
-        ?string $refreshToken = null,
-        ?int $expiresAt = null
+        string $refreshToken = null,
+        int $expiresAt = null
     ) {
         $this->tokenType = $tokenType;
         $this->accessToken = $accessToken;
@@ -42,7 +42,7 @@ class OAuthAccessToken
         return $this->accessToken;
     }
 
-    public function getRefreshToken(): ?string
+    public function getRefreshToken()
     {
         return $this->refreshToken;
     }
@@ -62,7 +62,7 @@ class OAuthAccessToken
         return $this->resourceOwnerUrl;
     }
 
-    public function getExpiresAt(): ?int
+    public function getExpiresAt()
     {
         return $this->expiresAt;
     }

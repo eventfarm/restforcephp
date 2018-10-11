@@ -1,7 +1,7 @@
 <?php
 namespace EventFarm\Restforce\Rest;
 
-use EventFarm\Restforce\Restforce;
+use Vpg\Turbo\Library\Salesforce\Restforce;
 use Psr\Http\Message\ResponseInterface;
 
 class SalesforceRestClient implements SalesforceRestClientInterface
@@ -19,12 +19,12 @@ class SalesforceRestClient implements SalesforceRestClientInterface
         $this->apiVersion = $apiVersion;
     }
 
-    public function setResourceOwnerUrl(string $resourceOwnerUrl): void
+    public function setResourceOwnerUrl(string $resourceOwnerUrl)
     {
         $this->resourceOwnerUrl = $resourceOwnerUrl;
     }
 
-    public function setBaseUriForRestClient(string $baseUri): void
+    public function setBaseUriForRestClient(string $baseUri)
     {
         $this->restClient->setBaseUriForRestClient($baseUri);
     }
@@ -33,8 +33,8 @@ class SalesforceRestClient implements SalesforceRestClientInterface
         string $path,
         array $queryParameters = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface {
+        float $timeoutSeconds = null
+    ) {
         return $this->restClient->get(
             $this->constructUrl($path),
             $queryParameters,
@@ -47,8 +47,8 @@ class SalesforceRestClient implements SalesforceRestClientInterface
         string $path,
         array $formParameters = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface {
+        float $timeoutSeconds = null
+    ) {
         return $this->restClient->post(
             $this->constructUrl($path),
             $formParameters,
@@ -61,8 +61,8 @@ class SalesforceRestClient implements SalesforceRestClientInterface
         string $path,
         array $jsonArray = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface {
+        float $timeoutSeconds = null
+    ) {
         return $this->restClient->postJson(
             $this->constructUrl($path),
             $jsonArray,
@@ -75,8 +75,8 @@ class SalesforceRestClient implements SalesforceRestClientInterface
         string $path,
         array $jsonArray = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface {
+        float $timeoutSeconds = null
+    ) {
         return $this->restClient->patchJson(
             $this->constructUrl($path),
             $jsonArray,

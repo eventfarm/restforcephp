@@ -5,12 +5,18 @@ use Psr\Http\Message\ResponseInterface;
 
 interface RestforceInterface
 {
-    public function userInfo(): ResponseInterface;
-    public function limits(): ResponseInterface;
-    public function query(string $soqlQuery): ResponseInterface;
-    public function create(string $sobjectType, array $data): ResponseInterface;
-    public function update(string $sobjectType, string $sobjectId, array $data): ResponseInterface;
-    public function describe(string $sobjectType): ResponseInterface;
-    public function find(string $sobjectType, string $sobjectId, array $fields = []): ResponseInterface;
-    public function getNext(string $url): ResponseInterface;
+    public function userInfo();
+    public function limits();
+    public function query(string $soqlQuery);
+    public function create(string $sobjectType, array $data);
+    public function update(string $sobjectType, string $sobjectId, array $data);
+    public function describe(string $sobjectType);
+    public function find(string $sobjectType, string $sobjectId, array $fields = []);
+    public function getNext(string $url);
+    public function parameterizedSearch(
+        string $sobjectType,
+        string $search,
+        array $fields = [],
+        string $whereQuery = null
+    );
 }

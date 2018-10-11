@@ -9,27 +9,27 @@ interface RestClientInterface
         string $path,
         array $queryParameters = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface;
+        float $timeoutSeconds = null
+    );
 
     public function post(
         string $path,
         array $formParameters = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface;
+        float $timeoutSeconds = null
+    );
 
     public function postJson(
         string $path,
         array $jsonArray = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface;
+        float $timeoutSeconds = null
+    );
 
     public function patchJson(
         string $path,
         array $jsonArray = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface;
+        float $timeoutSeconds = null
+    );
 }

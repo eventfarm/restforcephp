@@ -27,9 +27,9 @@ final class OAuthRestClient implements RestClientInterface
         RestClientInterface $authRestClient,
         string $clientId,
         string $clientSecret,
-        ?string $username = null,
-        ?string $password = null,
-        ?OAuthAccessToken $oAuthAccessToken = null
+        string $username = null,
+        string $password = null,
+        OAuthAccessToken $oAuthAccessToken = null
     ) {
         $this->apiRestClient = $apiRestClient;
         $this->authRestClient = $authRestClient;
@@ -44,8 +44,8 @@ final class OAuthRestClient implements RestClientInterface
         string $path,
         array $queryParameters = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface {
+        float $timeoutSeconds = null
+    ) {
         $this->setParamsFromAccessToken();
         return $this->apiRestClient->get(
             $path,
@@ -59,8 +59,8 @@ final class OAuthRestClient implements RestClientInterface
         string $path,
         array $formParameters = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface {
+        float $timeoutSeconds = null
+    ) {
         $this->setParamsFromAccessToken();
         return $this->apiRestClient->post(
             $path,
@@ -74,8 +74,8 @@ final class OAuthRestClient implements RestClientInterface
         string $path,
         array $jsonArray = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface {
+        float $timeoutSeconds = null
+    ) {
         $this->setParamsFromAccessToken();
         return $this->apiRestClient->postJson(
             $path,
@@ -89,8 +89,8 @@ final class OAuthRestClient implements RestClientInterface
         string $path,
         array $jsonArray = [],
         array $headers = [],
-        ?float $timeoutSeconds = null
-    ): ResponseInterface {
+        float $timeoutSeconds = null
+    ) {
         $this->setParamsFromAccessToken();
         return $this->apiRestClient->patchJson(
             $path,
@@ -100,7 +100,7 @@ final class OAuthRestClient implements RestClientInterface
         );
     }
 
-    private function setParamsFromAccessToken(): void
+    private function setParamsFromAccessToken()
     {
         $this->apiRestClient->setBaseUriForRestClient($this->getOAuthAccessToken()->getInstanceUrl());
         $this->apiRestClient->setResourceOwnerUrl($this->getOAuthAccessToken()->getResourceOwnerUrl());
@@ -108,6 +108,7 @@ final class OAuthRestClient implements RestClientInterface
 
     private function getOAuthAccessToken(): OAuthAccessToken
     {
+        //error_log('getting token');
         if ($this->oAuthAccessToken === null) {
             $this->oAuthAccessToken = $this->getNewToken();
         }
@@ -125,7 +126,6 @@ final class OAuthRestClient implements RestClientInterface
                 $this->oAuthAccessToken = $this->getNewToken();
             }
         }
-
         return $this->oAuthAccessToken;
     }
 
@@ -186,11 +186,10 @@ final class OAuthRestClient implements RestClientInterface
             throw OAuthRestClientException::unableToLoadAccessToken();
         }
 
-        $response = json_decode($response->getBody()->__toString(), true);
+        $response = json_decode($response->getBody(), true);
 
         try {
             $resourceOwnerUrl = $response['id'];
-
             return new OAuthAccessToken(
                 self::TOKEN_TYPE,
                 $response['access_token'],

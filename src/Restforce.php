@@ -10,9 +10,9 @@ use Psr\Http\Message\ResponseInterface;
 
 class Restforce implements RestforceInterface
 {
-    public const USER_INFO_ENDPOINT = 'RESOURCE_OWNER';
-
-    private const DEFAULT_API_VERSION = 'v38.0';
+    const USER_INFO_ENDPOINT = 'RESOURCE_OWNER';
+    const SALESFORCE_API_ENDPOINT = 'https://voyageprive--preprod.cs100.my.salesforce.com';
+    const DEFAULT_API_VERSION = 'v41.0';
 
     /** @var string */
     private $clientId;
@@ -32,10 +32,10 @@ class Restforce implements RestforceInterface
     public function __construct(
         string $clientId,
         string $clientSecret,
-        ?OAuthAccessToken $accessToken = null,
-        ?string $username = null,
-        ?string $password = null,
-        ?string $apiVersion = null
+        OAuthAccessToken $accessToken = null,
+        string $username = null,
+        string $password = null,
+        string $apiVersion = null
     ) {
         if ($accessToken === null && $username === null && $password === null) {
             throw RestforceException::minimumRequiredFieldsNotMet();
@@ -53,28 +53,28 @@ class Restforce implements RestforceInterface
         $this->password = $password;
     }
 
-    public function create(string $sobjectType, array $data): ResponseInterface
+    public function create(string $sobjectType, array $data)
     {
         $uri = 'sobjects/' . $sobjectType;
 
         return $this->getOAuthRestClient()->postJson($uri, $data);
     }
 
-    public function update(string $sobjectType, string $sobjectId, array $data): ResponseInterface
+    public function update(string $sobjectType, string $sobjectId, array $data)
     {
         $uri = 'sobjects/' . $sobjectType . '/' . $sobjectId;
 
         return $this->getOAuthRestClient()->patchJson($uri, $data);
     }
 
-    public function describe(string $sobject): ResponseInterface
+    public function describe(string $sobject)
     {
         $uri = 'sobjects/' . $sobject . '/describe';
 
         return $this->getOAuthRestClient()->get($uri);
     }
 
-    public function find(string $sobjectType, string $sobjectId, array $fields = []): ResponseInterface
+    public function find(string $sobjectType, string $sobjectId, array $fields = [])
     {
         $uri = 'sobjects/' . $sobjectType . '/' . $sobjectId;
 
@@ -88,24 +88,44 @@ class Restforce implements RestforceInterface
         return $this->getOAuthRestClient()->get($uri, $queryParams);
     }
 
-    public function limits(): ResponseInterface
+    public function parameterizedSearch(
+        string $sobjectType,
+        string $search,
+        array $fields = [],
+        string $whereQuery = null
+    ) {
+        $uri = 'parameterizedSearch';
+
+        return $this->getOAuthRestClient()->postJson($uri, [
+            "q" => $search,
+            "fields" => $fields,
+            "sobjects" => [
+                [
+                    "name" => $sobjectType,
+                    "where" => "Open_Date__c>=2018-10-10"
+                ]
+            ]
+        ]);
+    }
+
+    public function limits()
     {
         return $this->getOAuthRestClient()->get('/limits');
     }
 
-    public function getNext(string $url): ResponseInterface
+    public function getNext(string $url)
     {
         return $this->getOAuthRestClient()->get($url);
     }
 
-    public function query(string $queryString): ResponseInterface
+    public function query(string $queryString)
     {
         return $this->getOAuthRestClient()->get('query', [
             'q' => $queryString,
         ]);
     }
 
-    public function userInfo(): ResponseInterface
+    public function userInfo()
     {
         return $this->getOAuthRestClient()->get(self::USER_INFO_ENDPOINT);
     }
@@ -115,10 +135,10 @@ class Restforce implements RestforceInterface
         if ($this->oAuthRestClient === null) {
             $this->oAuthRestClient = new OAuthRestClient(
                 new SalesforceRestClient(
-                    new GuzzleRestClient('https://na1.salesforce.com'),
+                    new GuzzleRestClient(self::SALESFORCE_API_ENDPOINT),
                     $this->apiVersion
                 ),
-                new GuzzleRestClient('https://login.salesforce.com'),
+                new GuzzleRestClient(self::SALESFORCE_API_ENDPOINT),
                 $this->clientId,
                 $this->clientSecret,
                 $this->username,
@@ -126,7 +146,6 @@ class Restforce implements RestforceInterface
                 $this->accessToken
             );
         }
-
         return $this->oAuthRestClient;
     }
 }
