@@ -106,9 +106,8 @@ final class OAuthRestClient implements RestClientInterface
         $this->apiRestClient->setResourceOwnerUrl($this->getOAuthAccessToken()->getResourceOwnerUrl());
     }
 
-    private function getOAuthAccessToken(): OAuthAccessToken
+    private function getOAuthAccessToken()
     {
-        //error_log('getting token');
         if ($this->oAuthAccessToken === null) {
             $this->oAuthAccessToken = $this->getNewToken();
         }
@@ -139,7 +138,7 @@ final class OAuthRestClient implements RestClientInterface
         );
     }
 
-    private function getClientCredentialsAccessToken(): OAuthAccessToken
+    private function getClientCredentialsAccessToken()
     {
         $response = $this->authRestClient->post('/services/oauth2/token', [
             'grant_type' => 'client_credentials',
@@ -150,7 +149,7 @@ final class OAuthRestClient implements RestClientInterface
         return $this->getOAuthAccessTokenFromResponse($response);
     }
 
-    private function getPasswordAccessToken(): OAuthAccessToken
+    private function getPasswordAccessToken()
     {
         $response = $this->authRestClient->post('/services/oauth2/token', [
             'grant_type' => 'password',
@@ -163,7 +162,7 @@ final class OAuthRestClient implements RestClientInterface
         return $this->getOAuthAccessTokenFromResponse($response);
     }
 
-    private function getRefreshToken(string $refreshToken): OAuthAccessToken
+    private function getRefreshToken(string $refreshToken)
     {
         $response = $this->authRestClient->post('/services/oauth2/token', [
             'grant_type' => 'refresh_token',
@@ -180,7 +179,7 @@ final class OAuthRestClient implements RestClientInterface
      * @return OAuthAccessToken
      * @throws OAuthRestClientException
      */
-    private function getOAuthAccessTokenFromResponse(ResponseInterface $response): OAuthAccessToken
+    private function getOAuthAccessTokenFromResponse(ResponseInterface $response)
     {
         if ($response->getStatusCode() !== 200) {
             throw OAuthRestClientException::unableToLoadAccessToken();
@@ -203,7 +202,7 @@ final class OAuthRestClient implements RestClientInterface
         }
     }
 
-    private function getNewToken(): OAuthAccessToken
+    private function getNewToken()
     {
         if ($this->username === null && $this->password === null) {
             return $this->getClientCredentialsAccessToken();

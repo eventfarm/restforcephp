@@ -32,12 +32,12 @@ class OAuthAccessToken
         $this->expiresAt = $expiresAt;
     }
 
-    public function getTokenType(): string
+    public function getTokenType()
     {
         return $this->tokenType;
     }
 
-    public function getAccessToken(): string
+    public function getAccessToken()
     {
         return $this->accessToken;
     }
@@ -47,17 +47,17 @@ class OAuthAccessToken
         return $this->refreshToken;
     }
 
-    public function getInstanceUrl(): string
+    public function getInstanceUrl()
     {
         return $this->instanceUrl;
     }
 
-    public function getHeaderString(): string
+    public function getHeaderString()
     {
         return $this->tokenType . ' ' . $this->accessToken;
     }
 
-    public function getResourceOwnerUrl(): string
+    public function getResourceOwnerUrl()
     {
         return $this->resourceOwnerUrl;
     }
@@ -67,7 +67,7 @@ class OAuthAccessToken
         return $this->expiresAt;
     }
 
-    public function isExpired(): bool
+    public function isExpired()
     {
         if ($this->expiresAt === null) {
             return false;

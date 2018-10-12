@@ -28,6 +28,8 @@ class Restforce implements RestforceInterface
     private $apiVersion;
     /** @var OAuthRestClient|null */
     private $oAuthRestClient;
+    /** @var string */
+    private $apiEndpoint;
 
     public function __construct(
         string $clientId,
@@ -35,7 +37,8 @@ class Restforce implements RestforceInterface
         OAuthAccessToken $accessToken = null,
         string $username = null,
         string $password = null,
-        string $apiVersion = null
+        string $apiVersion = null,
+        string $apiEndpoint = null
     ) {
         if ($accessToken === null && $username === null && $password === null) {
             throw RestforceException::minimumRequiredFieldsNotMet();
@@ -45,6 +48,11 @@ class Restforce implements RestforceInterface
             $apiVersion = self::DEFAULT_API_VERSION;
         }
 
+        if ($apiEndpoint == null) {
+            $apiEndpoint = self::SALESFORCE_API_ENDPOINT;
+        }
+
+        $this->apiEndpoint = $apiEndpoint;
         $this->apiVersion = $apiVersion;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
@@ -102,7 +110,7 @@ class Restforce implements RestforceInterface
             "sobjects" => [
                 [
                     "name" => $sobjectType,
-                    "where" => "Open_Date__c>=2018-10-10"
+                    "where" => $whereQuery
                 ]
             ]
         ]);
@@ -130,15 +138,15 @@ class Restforce implements RestforceInterface
         return $this->getOAuthRestClient()->get(self::USER_INFO_ENDPOINT);
     }
 
-    private function getOAuthRestClient(): RestClientInterface
+    private function getOAuthRestClient()
     {
         if ($this->oAuthRestClient === null) {
             $this->oAuthRestClient = new OAuthRestClient(
                 new SalesforceRestClient(
-                    new GuzzleRestClient(self::SALESFORCE_API_ENDPOINT),
+                    new GuzzleRestClient($this->apiEndpoint),
                     $this->apiVersion
                 ),
-                new GuzzleRestClient(self::SALESFORCE_API_ENDPOINT),
+                new GuzzleRestClient($this->apiEndpoint),
                 $this->clientId,
                 $this->clientSecret,
                 $this->username,

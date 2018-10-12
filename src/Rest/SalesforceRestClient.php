@@ -1,7 +1,7 @@
 <?php
 namespace EventFarm\Restforce\Rest;
 
-use Vpg\Turbo\Library\Salesforce\Restforce;
+use EventFarm\Restforce\Restforce;
 use Psr\Http\Message\ResponseInterface;
 
 class SalesforceRestClient implements SalesforceRestClientInterface
@@ -85,7 +85,7 @@ class SalesforceRestClient implements SalesforceRestClientInterface
         );
     }
 
-    private function constructUrl(string $endpoint): string
+    private function constructUrl(string $endpoint)
     {
         if ($endpoint === Restforce::USER_INFO_ENDPOINT) {
             return $this->resourceOwnerUrl;

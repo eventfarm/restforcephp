@@ -109,7 +109,7 @@ class GuzzleRestClient implements RestClientInterface
         );
     }
 
-    private function containsTrailingSlash(string $baseUri): bool
+    private function containsTrailingSlash(string $baseUri)
     {
         return substr($baseUri, -1) === '/';
     }
