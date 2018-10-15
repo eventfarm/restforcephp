@@ -74,8 +74,7 @@ class GuzzleRestClient implements RestClientInterface
             [
                 'timeout' => $timeoutSeconds,
                 'headers' => $headers,
-                'query' => $queryParameters,
-                'http_errors' => false,
+                'query' => $queryParameters
             ]
         );
     }
@@ -102,8 +101,7 @@ class GuzzleRestClient implements RestClientInterface
             [
                 'timeout' => $timeoutSeconds,
                 'headers' => $headers,
-                'form_params' => $formParameters,
-                'http_errors' => false,
+                'form_params' => $formParameters
             ]
         );
     }
@@ -131,8 +129,7 @@ class GuzzleRestClient implements RestClientInterface
             [
                 'timeout' => $timeoutSeconds,
                 'headers' => $headers,
-                'json' => $jsonArray,
-                'http_errors' => false,
+                'json' => $jsonArray
             ]
         );
     }
@@ -161,8 +158,7 @@ class GuzzleRestClient implements RestClientInterface
             [
                 'timeout' => $timeoutSeconds,
                 'headers' => $headers,
-                'json' => $jsonArray,
-                'http_errors' => false,
+                'json' => $jsonArray
             ]
         );
     }
