@@ -8,6 +8,11 @@ use EventFarm\Restforce\Rest\RestClientInterface;
 use EventFarm\Restforce\Rest\SalesforceRestClient;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class Restforce
+ *
+ * @package EventFarm\Restforce
+ */
 class Restforce implements RestforceInterface
 {
     const USER_INFO_ENDPOINT = 'RESOURCE_OWNER';
@@ -31,6 +36,17 @@ class Restforce implements RestforceInterface
     /** @var string */
     private $apiEndpoint;
 
+    /**
+     * Restforce constructor.
+     *
+     * @param string                $clientId     client id
+     * @param string                $clientSecret client secret
+     * @param OAuthAccessToken|null $accessToken  access token
+     * @param string|null           $username     username
+     * @param string|null           $password     password
+     * @param string|null           $apiVersion   api version
+     * @param string|null           $apiEndpoint  api endpoint
+     */
     public function __construct(
         string $clientId,
         string $clientSecret,
@@ -61,6 +77,14 @@ class Restforce implements RestforceInterface
         $this->password = $password;
     }
 
+    /**
+     * Create method
+     *
+     * @param string $sobjectType object type
+     * @param array  $data        data
+     *
+     * @return mixed
+     */
     public function create(string $sobjectType, array $data)
     {
         $uri = 'sobjects/' . $sobjectType;
@@ -68,6 +92,15 @@ class Restforce implements RestforceInterface
         return $this->getOAuthRestClient()->postJson($uri, $data);
     }
 
+    /**
+     * Update method
+     *
+     * @param string $sobjectType object type
+     * @param string $sobjectId   object id
+     * @param array  $data        data
+     *
+     * @return mixed
+     */
     public function update(string $sobjectType, string $sobjectId, array $data)
     {
         $uri = 'sobjects/' . $sobjectType . '/' . $sobjectId;
@@ -75,6 +108,13 @@ class Restforce implements RestforceInterface
         return $this->getOAuthRestClient()->patchJson($uri, $data);
     }
 
+    /**
+     * Describe method
+     *
+     * @param string $sobject object
+     *
+     * @return mixed
+     */
     public function describe(string $sobject)
     {
         $uri = 'sobjects/' . $sobject . '/describe';
@@ -82,6 +122,15 @@ class Restforce implements RestforceInterface
         return $this->getOAuthRestClient()->get($uri);
     }
 
+    /**
+     * Find method
+     *
+     * @param string $sobjectType object type
+     * @param string $sobjectId   object id
+     * @param array  $fields      fields
+     *
+     * @return mixed
+     */
     public function find(string $sobjectType, string $sobjectId, array $fields = [])
     {
         $uri = 'sobjects/' . $sobjectType . '/' . $sobjectId;
@@ -96,6 +145,16 @@ class Restforce implements RestforceInterface
         return $this->getOAuthRestClient()->get($uri, $queryParams);
     }
 
+    /**
+     * Parameterized search method
+     *
+     * @param string      $sobjectType object type
+     * @param string      $search      search query
+     * @param array       $fields      fields
+     * @param string|null $whereQuery  where query
+     *
+     * @return mixed
+     */
     public function parameterizedSearch(
         string $sobjectType,
         string $search,
@@ -116,16 +175,35 @@ class Restforce implements RestforceInterface
         ]);
     }
 
+    /**
+     * Limits method
+     *
+     * @return mixed
+     */
     public function limits()
     {
         return $this->getOAuthRestClient()->get('/limits');
     }
 
+    /**
+     * GetNext method
+     *
+     * @param string $url url
+     *
+     * @return mixed
+     */
     public function getNext(string $url)
     {
         return $this->getOAuthRestClient()->get($url);
     }
 
+    /**
+     * Query method
+     *
+     * @param string $queryString query string
+     *
+     * @return mixed
+     */
     public function query(string $queryString)
     {
         return $this->getOAuthRestClient()->get('query', [
@@ -133,11 +211,21 @@ class Restforce implements RestforceInterface
         ]);
     }
 
+    /**
+     * UserInfo method
+     *
+     * @return mixed
+     */
     public function userInfo()
     {
         return $this->getOAuthRestClient()->get(self::USER_INFO_ENDPOINT);
     }
 
+    /**
+     * Get OAuth rest client
+     *
+     * @return OAuthRestClient|null
+     */
     private function getOAuthRestClient()
     {
         if ($this->oAuthRestClient === null) {

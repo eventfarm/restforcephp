@@ -1,8 +1,14 @@
 <?php
+
 namespace EventFarm\Restforce\Rest;
 
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class GuzzleRestClient
+ *
+ * @package EventFarm\Restforce\Rest
+ */
 class GuzzleRestClient implements RestClientInterface
 {
     const DEFAULT_TIMEOUT_SECONDS = 20.0;
@@ -12,6 +18,11 @@ class GuzzleRestClient implements RestClientInterface
     /** @var bool */
     private $enableDebugging;
 
+    /**
+     * GuzzleRestClient constructor.
+     * @param string $baseUri         base uri
+     * @param bool   $enableDebugging debugging status
+     */
     public function __construct(
         string $baseUri,
         bool $enableDebugging = false
@@ -20,6 +31,13 @@ class GuzzleRestClient implements RestClientInterface
         $this->setBaseUriForRestClient($baseUri);
     }
 
+    /**
+     * Set base uri for client
+     *
+     * @param string $baseUri base uri
+     *
+     * @return void
+     */
     public function setBaseUriForRestClient(string $baseUri)
     {
         if (!$this->containsTrailingSlash($baseUri)) {
@@ -34,6 +52,16 @@ class GuzzleRestClient implements RestClientInterface
         $this->client = new \GuzzleHttp\Client($config);
     }
 
+    /**
+     * Get method
+     *
+     * @param string     $path            path
+     * @param array      $queryParameters parameters
+     * @param array      $headers         headers
+     * @param float|null $timeoutSeconds  timeout
+     *
+     * @return mixed
+     */
     public function get(
         string $path,
         array $queryParameters = [],
@@ -52,6 +80,16 @@ class GuzzleRestClient implements RestClientInterface
         );
     }
 
+    /**
+     * Post method
+     *
+     * @param string     $path           path
+     * @param array      $formParameters parameters
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     */
     public function post(
         string $path,
         array $formParameters = [],
@@ -70,6 +108,16 @@ class GuzzleRestClient implements RestClientInterface
         );
     }
 
+    /**
+     * Post method JSON formatted
+     *
+     * @param string     $path           path
+     * @param array      $jsonArray      parameters
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     */
     public function postJson(
         string $path,
         array $jsonArray = [],
@@ -89,6 +137,16 @@ class GuzzleRestClient implements RestClientInterface
         );
     }
 
+    /**
+     * Patch method JSON formatted
+     *
+     * @param string     $path           path
+     * @param array      $jsonArray      parameters
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     */
     public function patchJson(
         string $path,
         array $jsonArray = [],
@@ -109,6 +167,13 @@ class GuzzleRestClient implements RestClientInterface
         );
     }
 
+    /**
+     * Check if contains trailing slash
+     *
+     * @param string $baseUri base uri
+     *
+     * @return bool
+     */
     private function containsTrailingSlash(string $baseUri)
     {
         return substr($baseUri, -1) === '/';

@@ -4,6 +4,11 @@ namespace EventFarm\Restforce\Rest;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
+/**
+ * Class OAuthRestClient
+ *
+ * @package EventFarm\Restforce\Rest
+ */
 final class OAuthRestClient implements RestClientInterface
 {
     const TOKEN_TYPE = 'Bearer';
@@ -22,6 +27,17 @@ final class OAuthRestClient implements RestClientInterface
     /** @var null|string */
     private $password;
 
+    /**
+     * OAuthRestClient constructor.
+     *
+     * @param SalesforceRestClientInterface $apiRestClient    api rest client
+     * @param RestClientInterface           $authRestClient   auth rest client
+     * @param string                        $clientId         client id
+     * @param string                        $clientSecret     client secret
+     * @param string|null                   $username         username
+     * @param string|null                   $password         password
+     * @param OAuthAccessToken|null         $oAuthAccessToken access token
+     */
     public function __construct(
         SalesforceRestClientInterface $apiRestClient,
         RestClientInterface $authRestClient,
@@ -40,6 +56,16 @@ final class OAuthRestClient implements RestClientInterface
         $this->password = $password;
     }
 
+    /**
+     * Get method
+     *
+     * @param string     $path            path
+     * @param array      $queryParameters parameters
+     * @param array      $headers         headers
+     * @param float|null $timeoutSeconds  timeout
+     *
+     * @return mixed
+     */
     public function get(
         string $path,
         array $queryParameters = [],
@@ -55,6 +81,16 @@ final class OAuthRestClient implements RestClientInterface
         );
     }
 
+    /**
+     * Post method
+     *
+     * @param string     $path           path
+     * @param array      $formParameters parameters
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     */
     public function post(
         string $path,
         array $formParameters = [],
@@ -70,6 +106,16 @@ final class OAuthRestClient implements RestClientInterface
         );
     }
 
+    /**
+     * Post method JSON formatted
+     *
+     * @param string     $path           path
+     * @param array      $jsonArray      parameters
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     */
     public function postJson(
         string $path,
         array $jsonArray = [],
@@ -85,6 +131,16 @@ final class OAuthRestClient implements RestClientInterface
         );
     }
 
+    /**
+     * Patch method JSON formatted
+     *
+     * @param string     $path           path
+     * @param array      $jsonArray      parameters
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     */
     public function patchJson(
         string $path,
         array $jsonArray = [],
@@ -100,12 +156,22 @@ final class OAuthRestClient implements RestClientInterface
         );
     }
 
+    /**
+     * Set params from access token
+     *
+     * @return void
+     */
     private function setParamsFromAccessToken()
     {
         $this->apiRestClient->setBaseUriForRestClient($this->getOAuthAccessToken()->getInstanceUrl());
         $this->apiRestClient->setResourceOwnerUrl($this->getOAuthAccessToken()->getResourceOwnerUrl());
     }
 
+    /**
+     * Get OAuth access token
+     *
+     * @return OAuthAccessToken
+     */
     private function getOAuthAccessToken()
     {
         if ($this->oAuthAccessToken === null) {
@@ -128,6 +194,13 @@ final class OAuthRestClient implements RestClientInterface
         return $this->oAuthAccessToken;
     }
 
+    /**
+     * Get authorization header
+     *
+     * @param array $headers headers
+     *
+     * @return array
+     */
     private function getAuthorizationHeader(array $headers = [])
     {
         return array_merge(
@@ -138,6 +211,11 @@ final class OAuthRestClient implements RestClientInterface
         );
     }
 
+    /**
+     * Get client credentials access token
+     *
+     * @return OAuthAccessToken
+     */
     private function getClientCredentialsAccessToken()
     {
         $response = $this->authRestClient->post('/services/oauth2/token', [
@@ -149,6 +227,11 @@ final class OAuthRestClient implements RestClientInterface
         return $this->getOAuthAccessTokenFromResponse($response);
     }
 
+    /**
+     * Get password access token
+     *
+     * @return OAuthAccessToken
+     */
     private function getPasswordAccessToken()
     {
         $response = $this->authRestClient->post('/services/oauth2/token', [
@@ -162,6 +245,13 @@ final class OAuthRestClient implements RestClientInterface
         return $this->getOAuthAccessTokenFromResponse($response);
     }
 
+    /**
+     * Get refresh token
+     *
+     * @param string $refreshToken refresh token
+     *
+     * @return OAuthAccessToken
+     */
     private function getRefreshToken(string $refreshToken)
     {
         $response = $this->authRestClient->post('/services/oauth2/token', [
@@ -175,7 +265,10 @@ final class OAuthRestClient implements RestClientInterface
     }
 
     /**
-     * @param ResponseInterface $response
+     * Get OAuth access token from response
+     *
+     * @param ResponseInterface $response response
+     *
      * @return OAuthAccessToken
      * @throws OAuthRestClientException
      */
@@ -202,6 +295,11 @@ final class OAuthRestClient implements RestClientInterface
         }
     }
 
+    /**
+     * Get new token
+     *
+     * @return OAuthAccessToken
+     */
     private function getNewToken()
     {
         if ($this->username === null && $this->password === null) {
