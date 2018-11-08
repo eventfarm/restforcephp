@@ -218,12 +218,6 @@ final class OAuthRestClient implements RestClientInterface
      */
     private function getClientCredentialsAccessToken()
     {
-        error_log(print_r([
-            'grant_type' => 'client_credentials',
-            'client_id' => $this->clientId,
-            'client_secret' => $this->clientSecret,
-        ], true));
-        
         $response = $this->authRestClient->post('/services/oauth2/token', [
             'grant_type' => 'client_credentials',
             'client_id' => $this->clientId,
@@ -240,15 +234,6 @@ final class OAuthRestClient implements RestClientInterface
      */
     private function getPasswordAccessToken()
     {
-        
-        error_log(print_r([
-            'grant_type' => 'password',
-            'client_id' => $this->clientId,
-            'client_secret' => $this->clientSecret,
-            'username' => $this->username,
-            'password' => $this->password
-        ], true));
-        
         $response = $this->authRestClient->post('/services/oauth2/token', [
             'grant_type' => 'password',
             'client_id' => $this->clientId,
