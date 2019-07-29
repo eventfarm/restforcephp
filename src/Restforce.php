@@ -1,12 +1,11 @@
 <?php
 namespace EventFarm\Restforce;
 
-use EventFarm\Restforce\Rest\GuzzleRestClient;
-use EventFarm\Restforce\Rest\OAuthAccessToken;
-use EventFarm\Restforce\Rest\OAuthRestClient;
-use EventFarm\Restforce\Rest\RestClientInterface;
-use EventFarm\Restforce\Rest\SalesforceRestClient;
-use Psr\Http\Message\ResponseInterface;
+use \EventFarm\Restforce\Rest\GuzzleRestClient;
+use \EventFarm\Restforce\Rest\OAuthAccessToken;
+use \EventFarm\Restforce\Rest\OAuthRestClient;
+use \EventFarm\Restforce\Rest\SalesforceRestClient;
+use \Vpg\Exception;
 
 /**
  * Class Restforce
@@ -16,8 +15,12 @@ use Psr\Http\Message\ResponseInterface;
 class Restforce implements RestforceInterface
 {
     const USER_INFO_ENDPOINT = 'RESOURCE_OWNER';
-    const SALESFORCE_API_ENDPOINT = 'https://voyageprive--preprod.cs100.my.salesforce.com';
+    const SALESFORCE_API_ENDPOINT = 'https://voyageprive--preprod.cs109.my.salesforce.com';
     const DEFAULT_API_VERSION = 'v41.0';
+    const CSV_EXTENSION = '.csv';
+    const FILE_APPEND = 'a';
+    const FILE_READONLY = 'r';
+    const FILE_WRITE = 'w';
 
     /** @var string */
     private $clientId;
@@ -46,6 +49,8 @@ class Restforce implements RestforceInterface
      * @param string|null           $password     password
      * @param string|null           $apiVersion   api version
      * @param string|null           $apiEndpoint  api endpoint
+     *
+     * @throws RestforceException
      */
     public function __construct(
         string $clientId,
@@ -90,6 +95,114 @@ class Restforce implements RestforceInterface
         $uri = 'sobjects/' . $sobjectType;
 
         return $this->getOAuthRestClient()->postJson($uri, $data);
+    }
+
+    /**
+     * Create bulk job
+     *
+     * @param string $object    object to work with
+     * @param string $operation operation
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function createJob(string $object, string $operation)
+    {
+        $uri = 'jobs/ingest';
+
+        $job = $this->getOAuthRestClient()->postJson($uri, [
+            'operation' => $operation,
+            'object' => $object,
+            'contentType' => 'CSV'
+        ]);
+
+        $jobResponse = json_decode($job->getBody());
+
+        if (!$jobResponse->id) {
+            throw new Exception(
+                'An error occurred while creating bulk job of type ' . $operation . ' on object ' . $object
+            );
+        }
+
+        fopen($jobResponse->id . self::CSV_EXTENSION, self::FILE_WRITE);
+
+        return $jobResponse->id;
+    }
+
+    /**
+     * Add batch to bulk job
+     *
+     * @param string $jobId    job id
+     * @param array  $dataHash data hash
+     * @param bool   $newFile  is it a new file?
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function addBatchToJob(string $jobId, array $dataHash, bool $newFile = false)
+    {
+        $filePath = $jobId . self::CSV_EXTENSION;
+
+        if (!file_exists($filePath)) {
+            throw new Exception('File ' . $filePath . ' has not been found. Cannot add batch to job ' . $jobId);
+        }
+
+        $fp = fopen($filePath, self::FILE_APPEND);
+
+        // Add fields as the first line only once
+        if ($newFile) {
+            $lines[] = array_keys($dataHash);
+        }
+
+        $lines[] = array_values($dataHash);
+        foreach ($lines as $line) {
+            fputcsv($fp, $line);
+        }
+        fclose($fp);
+    }
+
+    /**
+     * Execute bulk job
+     *
+     * @param string $jobId job id
+     *
+     * @return mixed
+     */
+    public function executeJob(string $jobId)
+    {
+        $uri = 'jobs/ingest/' . $jobId . '/batches';
+        return $this->getOAuthRestClient()->putCsv($uri, $jobId . self::CSV_EXTENSION);
+    }
+
+    /**
+     * Check bulk job status
+     *
+     * @param string $jobId job id
+     *
+     * @return mixed
+     */
+    public function checkJob(string $jobId)
+    {
+        $uri = 'jobs/ingest/' . $jobId;
+        return $this->getOAuthRestClient()->get($uri);
+    }
+
+    /**
+     * Close bulk job
+     *
+     * @param string $jobId job id
+     *
+     * @return void
+     */
+    public function closeJob(string $jobId)
+    {
+        $uri = 'jobs/ingest/' . $jobId;
+
+        $this->getOAuthRestClient()->patchJson($uri, [
+            'state' => 'UploadComplete'
+        ]);
+
+        unlink($jobId . self::CSV_EXTENSION);
     }
 
     /**

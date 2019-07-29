@@ -2,8 +2,6 @@
 
 namespace EventFarm\Restforce\Rest;
 
-use Psr\Http\Message\ResponseInterface;
-
 /**
  * Class GuzzleRestClient
  *
@@ -61,6 +59,7 @@ class GuzzleRestClient implements RestClientInterface
      * @param float|null $timeoutSeconds  timeout
      *
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function get(
         string $path,
@@ -88,6 +87,7 @@ class GuzzleRestClient implements RestClientInterface
      * @param float|null $timeoutSeconds timeout
      *
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function post(
         string $path,
@@ -115,6 +115,7 @@ class GuzzleRestClient implements RestClientInterface
      * @param float|null $timeoutSeconds timeout
      *
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function postJson(
         string $path,
@@ -143,6 +144,7 @@ class GuzzleRestClient implements RestClientInterface
      * @param float|null $timeoutSeconds timeout
      *
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function patchJson(
         string $path,
@@ -159,6 +161,36 @@ class GuzzleRestClient implements RestClientInterface
                 'timeout' => $timeoutSeconds,
                 'headers' => $headers,
                 'json' => $jsonArray
+            ]
+        );
+    }
+
+    /**
+     * Put method CSV formatted
+     *
+     * @param string     $path           path
+     * @param string     $filePath       file path
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function putCsv(
+        string $path,
+        string $filePath,
+        array $headers = [],
+        float $timeoutSeconds = null
+    ) {
+        $headers['Content-Type'] = 'text/csv';
+
+        return $this->client->request(
+            'PUT',
+            $path,
+            [
+                'timeout' => $timeoutSeconds,
+                'headers' => $headers,
+                'body' => fopen($filePath, 'r')
             ]
         );
     }

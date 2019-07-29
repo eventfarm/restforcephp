@@ -157,6 +157,32 @@ final class OAuthRestClient implements RestClientInterface
     }
 
     /**
+     * Put method CSV formatted
+     *
+     * @param string     $path           path
+     * @param string     $filePath       file path
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     */
+    public function putCsv(
+        string $path,
+        string $filePath,
+        array $headers = [],
+        float $timeoutSeconds = null
+    )
+    {
+        $this->setParamsFromAccessToken();
+        return $this->apiRestClient->putCsv(
+            $path,
+            $filePath,
+            $this->getAuthorizationHeader($headers),
+            $timeoutSeconds
+        );
+    }
+
+    /**
      * Set params from access token
      *
      * @return void

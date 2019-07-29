@@ -63,6 +63,7 @@ class SalesforceRestClient implements SalesforceRestClientInterface
      * @param float|null $timeoutSeconds  timeout
      *
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function get(
         string $path,
@@ -87,6 +88,7 @@ class SalesforceRestClient implements SalesforceRestClientInterface
      * @param float|null $timeoutSeconds timeout
      *
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function post(
         string $path,
@@ -111,6 +113,7 @@ class SalesforceRestClient implements SalesforceRestClientInterface
      * @param float|null $timeoutSeconds timeout
      *
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function postJson(
         string $path,
@@ -135,6 +138,7 @@ class SalesforceRestClient implements SalesforceRestClientInterface
      * @param float|null $timeoutSeconds timeout
      *
      * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function patchJson(
         string $path,
@@ -145,6 +149,32 @@ class SalesforceRestClient implements SalesforceRestClientInterface
         return $this->restClient->patchJson(
             $this->constructUrl($path),
             $jsonArray,
+            $headers,
+            $timeoutSeconds
+        );
+    }
+
+    /**
+     * Put method CSV formatted
+     *
+     * @param string     $path           path
+     * @param string     $filePath       file path
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function putCsv(
+        string $path,
+        string $filePath,
+        array $headers = [],
+        float $timeoutSeconds = null
+    )
+    {
+        return $this->restClient->putCsv(
+            $this->constructUrl($path),
+            $filePath,
             $headers,
             $timeoutSeconds
         );

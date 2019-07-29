@@ -95,4 +95,21 @@ interface SalesforceRestClientInterface extends RestClientInterface
         array $headers = [],
         float $timeoutSeconds = null
     );
+
+    /**
+     * Put method CSV formatted
+     *
+     * @param string     $path           path
+     * @param string     $filePath       file path
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     */
+    public function putCsv(
+        string $path,
+        string $filePath,
+        array $headers = [],
+        float $timeoutSeconds = null
+    );
 }
