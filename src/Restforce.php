@@ -21,6 +21,7 @@ class Restforce implements RestforceInterface
     const FILE_APPEND = 'a';
     const FILE_READONLY = 'r';
     const FILE_WRITE = 'w';
+    const BULK_JOB_OPERATION_UPDATE = 'update';
 
     /** @var string */
     private $clientId;
