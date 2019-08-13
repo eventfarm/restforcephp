@@ -5,7 +5,6 @@ use \EventFarm\Restforce\Rest\GuzzleRestClient;
 use \EventFarm\Restforce\Rest\OAuthAccessToken;
 use \EventFarm\Restforce\Rest\OAuthRestClient;
 use \EventFarm\Restforce\Rest\SalesforceRestClient;
-use \Vpg\Exception;
 
 /**
  * Class Restforce
@@ -101,14 +100,20 @@ class Restforce implements RestforceInterface
     /**
      * Create bulk job
      *
-     * @param string $object    object to work with
-     * @param string $operation operation
+     * @param string $object           object to work with
+     * @param string $operation        operation
+     * @param array  $headerColumnList column names for header
      *
      * @return string
-     * @throws Exception
+     * @throws \Exception
      */
-    public function createJob(string $object, string $operation)
+    public function createJob(string $object, string $operation, $headerColumnList)
     {
+        if (empty($headerColumnList)) {
+            throw new \Exception(
+                'header columns are missing on csv file for operation ' . $operation . ' on object ' . $object
+            );
+        }
         $uri = 'jobs/ingest';
 
         $job = $this->getOAuthRestClient()->postJson($uri, [
@@ -120,45 +125,38 @@ class Restforce implements RestforceInterface
         $jobResponse = json_decode($job->getBody());
 
         if (!$jobResponse->id) {
-            throw new Exception(
+            throw new \Exception(
                 'An error occurred while creating bulk job of type ' . $operation . ' on object ' . $object
             );
         }
 
-        fopen($jobResponse->id . self::CSV_EXTENSION, self::FILE_WRITE);
+        $fp = fopen($jobResponse->id . self::CSV_EXTENSION, self::FILE_WRITE);
+        fputcsv($fp, $headerColumnList);
+        fclose($fp);
 
         return $jobResponse->id;
     }
 
     /**
-     * Add batch to bulk job
+     * Add record to bulk job (csv file)
      *
      * @param string $jobId    job id
      * @param array  $dataHash data hash
-     * @param bool   $newFile  is it a new file?
      *
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
-    public function addBatchToJob(string $jobId, array $dataHash, bool $newFile = false)
+    public function addRecordLineToJob(string $jobId, array $dataHash)
     {
         $filePath = $jobId . self::CSV_EXTENSION;
 
         if (!file_exists($filePath)) {
-            throw new Exception('File ' . $filePath . ' has not been found. Cannot add batch to job ' . $jobId);
+            throw new \Exception('File ' . $filePath . ' has not been found. Cannot add batch to job ' . $jobId);
         }
 
         $fp = fopen($filePath, self::FILE_APPEND);
+        fputcsv($fp, array_values($dataHash));
 
-        // Add fields as the first line only once
-        if ($newFile) {
-            $lines[] = array_keys($dataHash);
-        }
-
-        $lines[] = array_values($dataHash);
-        foreach ($lines as $line) {
-            fputcsv($fp, $line);
-        }
         fclose($fp);
     }
 
