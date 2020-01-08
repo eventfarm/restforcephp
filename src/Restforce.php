@@ -13,6 +13,7 @@ class Restforce implements RestforceInterface
     public const USER_INFO_ENDPOINT = 'RESOURCE_OWNER';
 
     private const DEFAULT_API_VERSION = 'v38.0';
+    private const DEFAULT_AUTH_URL = 'https://login.salesforce.com';
 
     /** @var string */
     private $clientId;
@@ -26,6 +27,8 @@ class Restforce implements RestforceInterface
     private $accessToken;
     /** @var string */
     private $apiVersion;
+    /** @var string */
+    private $authUrl;
     /** @var OAuthRestClient|null */
     private $oAuthRestClient;
 
@@ -35,7 +38,8 @@ class Restforce implements RestforceInterface
         ?OAuthAccessToken $accessToken = null,
         ?string $username = null,
         ?string $password = null,
-        ?string $apiVersion = null
+        ?string $apiVersion = null,
+        ?string $authUrl = null
     ) {
         if ($accessToken === null && $username === null && $password === null) {
             throw RestforceException::minimumRequiredFieldsNotMet();
@@ -45,12 +49,17 @@ class Restforce implements RestforceInterface
             $apiVersion = self::DEFAULT_API_VERSION;
         }
 
+        if ($authUrl === null) {
+            $authUrl = self::DEFAULT_AUTH_URL;
+        }
+
         $this->apiVersion = $apiVersion;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->accessToken = $accessToken;
         $this->username = $username;
         $this->password = $password;
+        $this->authUrl = $authUrl;
     }
 
     public function create(string $sobjectType, array $data): ResponseInterface
@@ -118,7 +127,7 @@ class Restforce implements RestforceInterface
                     new GuzzleRestClient('https://na1.salesforce.com'),
                     $this->apiVersion
                 ),
-                new GuzzleRestClient('https://login.salesforce.com'),
+                new GuzzleRestClient($this->authUrl),
                 $this->clientId,
                 $this->clientSecret,
                 $this->username,
