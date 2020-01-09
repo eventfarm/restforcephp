@@ -129,7 +129,7 @@ class Restforce implements RestforceInterface
         if ($this->oAuthRestClient === null) {
             $this->oAuthRestClient = new OAuthRestClient(
                 new SalesforceRestClient(
-                    new GuzzleRestClient('https://na1.salesforce.com'),
+                    new GuzzleRestClient($this->guzzleUrl),
                     $this->apiVersion
                 ),
                 new GuzzleRestClient($this->authUrl),
