@@ -14,6 +14,7 @@ class Restforce implements RestforceInterface
 
     private const DEFAULT_API_VERSION = 'v38.0';
     private const DEFAULT_AUTH_URL = 'https://login.salesforce.com';
+    private const DEFAULT_GUZZLE_URL = 'https://na1.salesforce.com';
 
     /** @var string */
     private $clientId;
@@ -29,6 +30,8 @@ class Restforce implements RestforceInterface
     private $apiVersion;
     /** @var string */
     private $authUrl;
+    /** @var string */
+    private $guzzleUrl;
     /** @var OAuthRestClient|null */
     private $oAuthRestClient;
 
@@ -51,6 +54,7 @@ class Restforce implements RestforceInterface
 
         if ($authUrl === null) {
             $authUrl = self::DEFAULT_AUTH_URL;
+            $guzzleUrl = self::DEFAULT_GUZZLE_URL;
         }
 
         $this->apiVersion = $apiVersion;
@@ -60,6 +64,7 @@ class Restforce implements RestforceInterface
         $this->username = $username;
         $this->password = $password;
         $this->authUrl = $authUrl;
+        $this->guzzleUrl = isset($guzzleUrl) ? $guzzleUrl : $authUrl;
     }
 
     public function create(string $sobjectType, array $data): ResponseInterface
