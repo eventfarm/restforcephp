@@ -19,7 +19,9 @@ class RestforceTest extends AbstractRestforceTestCase
             getenv('SALESFORCE_OAUTH_SECRET'),
             self::NULL_ACCESS_TOKEN,
             getenv('SALESFORCE_USERNAME'),
-            getenv('SALESFORCE_PASSWORD')
+            getenv('SALESFORCE_PASSWORD'),
+            null,
+            "https://test.salesforce.com/"
         );
         $this->assertSame(200, $restforce->limits()->getStatusCode());
         $this->assertSame(200, $restforce->getNext(Restforce::USER_INFO_ENDPOINT)->getStatusCode());
