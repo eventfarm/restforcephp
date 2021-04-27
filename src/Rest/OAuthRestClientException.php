@@ -10,7 +10,7 @@ class OAuthRestClientException extends Exception
         $errorMessage = 'Unable to load access token';
         
         if ($message) {
-            $errorMessage . ': ' . $message;
+            $errorMessage = $errorMessage . ': ' . $message;
         }
 
         return new self($errorMessage);
