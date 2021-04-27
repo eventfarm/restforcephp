@@ -183,7 +183,8 @@ final class OAuthRestClient implements RestClientInterface
     private function getOAuthAccessTokenFromResponse(ResponseInterface $response): OAuthAccessToken
     {
         if ($response->getStatusCode() !== 200) {
-            throw OAuthRestClientException::unableToLoadAccessToken();
+            $message = '(' . $response->getStatusCode() . ') ' . $response->getBody()->__toString();
+            throw OAuthRestClientException::unableToLoadAccessToken($message);
         }
 
         $response = json_decode($response->getBody()->__toString(), true);
