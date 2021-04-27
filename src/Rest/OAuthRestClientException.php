@@ -5,8 +5,14 @@ use Exception;
 
 class OAuthRestClientException extends Exception
 {
-    public static function unableToLoadAccessToken()
+    public static function unableToLoadAccessToken(?string $message = null)
     {
-        return new self('Unable to load access token');
+        $errorMessage = 'Unable to load access token';
+        
+        if ($message) {
+            $errorMessage . ': ' . $message;
+        }
+
+        return new self($errorMessage);
     }
 }
