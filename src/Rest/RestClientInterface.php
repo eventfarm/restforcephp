@@ -32,4 +32,6 @@ interface RestClientInterface
         array $headers = [],
         ?float $timeoutSeconds = null
     ): ResponseInterface;
+
+    public function refreshToken(): OAuthAccessToken;
 }

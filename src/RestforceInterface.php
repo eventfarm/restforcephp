@@ -1,6 +1,7 @@
 <?php
 namespace EventFarm\Restforce;
 
+use EventFarm\Restforce\Rest\OAuthAccessToken;
 use Psr\Http\Message\ResponseInterface;
 
 interface RestforceInterface
@@ -13,4 +14,5 @@ interface RestforceInterface
     public function describe(string $sobjectType): ResponseInterface;
     public function find(string $sobjectType, string $sobjectId, array $fields = []): ResponseInterface;
     public function getNext(string $url): ResponseInterface;
+    public function refreshToken(): OAuthAccessToken;
 }
