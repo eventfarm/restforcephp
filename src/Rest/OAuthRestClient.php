@@ -100,7 +100,7 @@ final class OAuthRestClient implements RestClientInterface
         );
     }
 
-    public function refreshToken(): OAuthAccessToken
+    public function refreshToken(): ?OAuthAccessToken
     {
         $refreshToken = $this->oAuthAccessToken->getRefreshToken();
         $refreshedToken = $this->getRefreshToken($refreshToken);
@@ -108,7 +108,7 @@ final class OAuthRestClient implements RestClientInterface
         return $refreshedToken;
     }
 
-    
+
     private function setParamsFromAccessToken(): void
     {
         $this->apiRestClient->setBaseUriForRestClient($this->getOAuthAccessToken()->getInstanceUrl());

@@ -105,4 +105,9 @@ class SalesforceRestClient implements SalesforceRestClientInterface
 
         return '/services/data/' . $this->apiVersion . '/' . $endpoint;
     }
+
+    public function refreshToken(): ?OAuthAccessToken
+    {
+        return null;
+    }
 }

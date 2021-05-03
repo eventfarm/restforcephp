@@ -33,5 +33,5 @@ interface RestClientInterface
         ?float $timeoutSeconds = null
     ): ResponseInterface;
 
-    public function refreshToken(): OAuthAccessToken;
+    public function refreshToken(): ?OAuthAccessToken;
 }
