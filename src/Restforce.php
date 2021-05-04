@@ -119,7 +119,7 @@ class Restforce implements RestforceInterface
         ]);
     }
 
-    public function refreshToken(): OAuthAccessToken
+    public function refreshToken(): ?OAuthAccessToken
     {
         return $this->getOAuthRestClient()->refreshToken();
     }

@@ -14,5 +14,5 @@ interface RestforceInterface
     public function describe(string $sobjectType): ResponseInterface;
     public function find(string $sobjectType, string $sobjectId, array $fields = []): ResponseInterface;
     public function getNext(string $url): ResponseInterface;
-    public function refreshToken(): OAuthAccessToken;
+    public function refreshToken(): ?OAuthAccessToken;
 }
