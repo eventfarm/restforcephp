@@ -114,4 +114,9 @@ class GuzzleRestClient implements RestClientInterface
     {
         return substr($baseUri, -1) === '/';
     }
+
+    public function refreshToken(): ?OAuthAccessToken
+    {
+        return null;
+    }
 }
