@@ -12,22 +12,22 @@ class Account
 {
     const SF_OBJECT = 'Account';
 
-    const SF_ACCOUNT_ID = 'Id';
-    const SF_ACCOUNT_NAME = 'Name';
-    const SF_ACCOUNT_COUNTRY = 'Account_Country__c';
-    const SF_ACCOUNT_CITY = 'Account_City__c';
-    const SF_ACCOUNT_STREET = 'Account_Street__c';
-    const SF_ACCOUNT_ZIPCODE = 'Account_Zip_Postal_code__c';
+    const SF_ID = 'Id';
+    const SF_NAME = 'Name';
+    const SF_COUNTRY = 'Account_Country__c';
+    const SF_CITY = 'Account_City__c';
+    const SF_STREET = 'Account_Street__c';
+    const SF_ZIPCODE = 'Account_Zip_Postal_code__c';
 
     /**
      * Query fields available in SF for an Account
      */
     const SF_FIELD_LIST = [
-        self::SF_ACCOUNT_ID,
-        self::SF_ACCOUNT_NAME,
-        self::SF_ACCOUNT_COUNTRY,
-        self::SF_ACCOUNT_CITY,
-        self::SF_ACCOUNT_STREET,
-        self::SF_ACCOUNT_ZIPCODE
+        self::SF_ID,
+        self::SF_NAME,
+        self::SF_COUNTRY,
+        self::SF_CITY,
+        self::SF_STREET,
+        self::SF_ZIPCODE
     ];
 }
