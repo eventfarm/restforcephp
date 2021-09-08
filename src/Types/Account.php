@@ -21,6 +21,7 @@ class Account
     const SF_STATUS = 'Global_Account_Status';
 
     const SF_ACTIVE_STATUS = 'Active Account';
+    const SF_INACTIVE_STATUS = 'Inactive Account';
 
     /**
      * Query fields available in SF for an Account
