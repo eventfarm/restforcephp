@@ -14,6 +14,7 @@ class City
 
     const SF_ID = 'Id';
     const SF_NAME = 'Name';
+    const SF_COUNTRY = 'Country__c';
 
     /**
      * Query fields available in SF for a City
@@ -21,5 +22,6 @@ class City
     const SF_FIELD_LIST = [
         self::SF_ID,
         self::SF_NAME,
+        self::SF_COUNTRY,
     ];
 }
