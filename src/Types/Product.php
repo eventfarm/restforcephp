@@ -12,7 +12,7 @@ class Product
 {
     const SF_OBJECT = 'Product__c';
 
-    const SF_ID = 'ID_Product__c';
+    const SF_ID = 'Id';
     const SF_NAME = 'Name';
     const SF_COUNTRY = 'Product_Country__c';
     const SF_CITY = 'Product_City__c';
