@@ -14,6 +14,7 @@ class Account
 
     const SF_ID = 'Id';
     const SF_NAME = 'Name';
+    const SF_CORPORATE_NAME = 'Company_s_Corporate_Name__c';
     const SF_COUNTRY = 'Account_Country__c';
     const SF_CITY = 'Account_City__c';
     const SF_STREET = 'Account_Street__c';
