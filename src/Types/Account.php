@@ -20,9 +20,13 @@ class Account
     const SF_STREET = 'Account_Street__c';
     const SF_ZIPCODE = 'Account_Zip_Postal_code__c';
     const SF_STATUS = 'Global_Account_Status';
+    const SF_SAT_STATUS = 'SAT_validation__c';
 
     const SF_ACTIVE_STATUS = 'Active Account';
     const SF_INACTIVE_STATUS = 'Inactive Account';
+
+    const SF_SAT_ACTIVE_STATUS = 'Approved';
+    const SF_SAT_INACTIVE_STATUS = 'Refused';
 
     /**
      * Query fields available in SF for an Account
