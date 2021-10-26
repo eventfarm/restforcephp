@@ -23,6 +23,7 @@ class BongCity
     const SF_FIELD_LIST = [
         self::SF_ID,
         self::SF_NAME,
-        self::SF_ID_BONG
+        self::SF_ID_BONG,
+        self::SF_COUNTRY_NAME,
     ];
 }
