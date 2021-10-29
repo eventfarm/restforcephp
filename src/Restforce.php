@@ -202,7 +202,7 @@ class Restforce implements RestforceInterface
             'state' => 'UploadComplete'
         ]);
 
-        unlink($jobId . self::CSV_EXTENSION);
+        //unlink($jobId . self::CSV_EXTENSION);
     }
 
     /**
