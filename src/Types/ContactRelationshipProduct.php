@@ -9,7 +9,7 @@ namespace EventFarm\Restforce\Types;
  * @package EventFarm\Restforce\Types
  * @author  Nils Peritore <nperitore@voyageprive.com>
  */
-class ContactRelationshipAccount
+class ContactRelationshipProduct
 {
     const SF_OBJECT = 'ProductVP_Contact_Relationship__c';
 
