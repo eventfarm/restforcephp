@@ -19,7 +19,7 @@ class Account
     const SF_CITY = 'Account_City__c';
     const SF_STREET = 'Account_Street__c';
     const SF_ZIPCODE = 'Account_Zip_Postal_code__c';
-    const SF_STATUS = 'Global_Account_Status';
+    const SF_STATUS = 'Global_Account_Status__c';
     const SF_SAT_STATUS = 'SAT_validation__c';
 
     const SF_ACTIVE_STATUS = 'Active Account';
