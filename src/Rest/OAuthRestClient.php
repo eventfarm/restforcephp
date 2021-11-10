@@ -107,6 +107,31 @@ final class OAuthRestClient implements RestClientInterface
     }
 
     /**
+     * Post method
+     *
+     * @param string     $path           path
+     * @param array      $formParameters parameters
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     */
+    public function delete(
+        string $path,
+        array $formParameters = [],
+        array $headers = [],
+        float $timeoutSeconds = null
+    ) {
+        $this->setParamsFromAccessToken();
+        return $this->apiRestClient->delete(
+            $path,
+            $formParameters,
+            $this->getAuthorizationHeader($headers),
+            $timeoutSeconds
+        );
+    }
+
+    /**
      * Post method JSON formatted
      *
      * @param string     $path           path
