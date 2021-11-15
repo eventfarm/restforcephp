@@ -107,6 +107,34 @@ class GuzzleRestClient implements RestClientInterface
     }
 
     /**
+     * Delete method
+     *
+     * @param string     $path           path
+     * @param array      $formParameters parameters
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function delete(
+        string $path,
+        array $formParameters = [],
+        array $headers = [],
+        float $timeoutSeconds = null
+    ) {
+        return $this->client->request(
+            'DELETE',
+            $path,
+            [
+                'timeout' => $timeoutSeconds,
+                'headers' => $headers,
+                'form_params' => $formParameters
+            ]
+        );
+    }
+
+    /**
      * Post method JSON formatted
      *
      * @param string     $path           path
