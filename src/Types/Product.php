@@ -19,7 +19,7 @@ class Product
     const SF_STREET = 'Product_Street__c';
     const SF_ZIPCODE = 'Product_Zip_Postal_code__c';
     const SF_STATUS = 'Validation_Status__c';
-    const SF_RECORD_TYPE = 'RecordType.Name';
+    const SF_RECORD_TYPE = 'RecordTypeId';
     const SF_CAPACITY = 'Capacity__c';
     const SF_TYPE = 'RecordTypeId';
     const SF_FRONT_EMAIL = 'Front_Desk_Email__c';
