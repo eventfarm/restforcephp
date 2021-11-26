@@ -15,7 +15,7 @@ class ContactRelationshipAccount
 
     const SF_ID = 'Id';
     const SF_ACCOUNT = 'Account__c';
-    const SF_NAME = 'Name';
+    const SF_NAME = 'Relation_Name__c';
     const SF_CONTACT = 'Contact__c';
     const SF_ROLE = 'Contact_Roles__c';
 
