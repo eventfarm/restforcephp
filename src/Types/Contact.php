@@ -13,6 +13,7 @@ class Contact
     const SF_OBJECT = 'Contact';
 
     const SF_ID = 'Id';
+    const SF_TITLE = 'Title';
     const SF_FIRST_NAME = 'FirstName';
     const SF_LAST_NAME = 'LastName';
     const SF_EMAIL = 'Email';
@@ -23,6 +24,7 @@ class Contact
      */
     const SF_FIELD_LIST = [
         self::SF_ID,
+        self::SF_TITLE,
         self::SF_FIRST_NAME,
         self::SF_LAST_NAME,
         self::SF_EMAIL,
