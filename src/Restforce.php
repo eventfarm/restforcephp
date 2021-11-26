@@ -20,6 +20,7 @@ class Restforce implements RestforceInterface
     const FILE_APPEND = 'a';
     const FILE_READONLY = 'r';
     const FILE_WRITE = 'w';
+    const BULK_JOB_OPERATION_DELETE = 'delete';
     const BULK_JOB_OPERATION_UPDATE = 'update';
     const BULK_JOB_OPERATION_INSERT = 'insert';
 
@@ -202,7 +203,7 @@ class Restforce implements RestforceInterface
             'state' => 'UploadComplete'
         ]);
 
-        unlink($jobId . self::CSV_EXTENSION);
+        //unlink($jobId . self::CSV_EXTENSION);
     }
 
     /**
@@ -322,6 +323,18 @@ class Restforce implements RestforceInterface
         return $this->getOAuthRestClient()->get('query', [
             'q' => $queryString,
         ]);
+    }
+
+    /**
+     * Query method
+     *
+     * @param string $queryString query string
+     *
+     * @return mixed
+     */
+    public function delete(string $queryString)
+    {
+        return $this->getOAuthRestClient()->delete('sobjects/' . $queryString);
     }
 
     /**

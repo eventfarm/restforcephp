@@ -105,6 +105,31 @@ class SalesforceRestClient implements SalesforceRestClientInterface
     }
 
     /**
+     * Post method
+     *
+     * @param string     $path           path
+     * @param array      $formParameters parameters
+     * @param array      $headers        headers
+     * @param float|null $timeoutSeconds timeout
+     *
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function delete(
+        string $path,
+        array $formParameters = [],
+        array $headers = [],
+        float $timeoutSeconds = null
+    ) {
+        return $this->restClient->delete(
+            $this->constructUrl($path),
+            $formParameters,
+            $headers,
+            $timeoutSeconds
+        );
+    }
+
+    /**
      * Post method JSON formatted
      *
      * @param string     $path           path
