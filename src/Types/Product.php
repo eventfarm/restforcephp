@@ -30,7 +30,10 @@ class Product
     const SF_GPS_LAT = 'GPS_coordinates__Latitude__s';
     const SF_GPS_LNG = 'GPS_coordinates__Longitude__s';
     const SF_ACCOUNT = 'Account__c';
-    const SF_BOOKING_OR_TRIP_URL = 'Booking_or_Trip__c';
+    const SF_BOOKING_URL = 'Booking_or_Trip__c';
+    const SF_TRIPADVISOR_URL = 'Tripadvisor_link__c';
+    const SF_BOOKING_SCORE = 'Market_Score__c';
+    const SF_TRIPDVISOR_SCORE = 'Market_Score_TripAdvisor__c';
 
     const SF_PENDING_STATUS = 'Pending';
     const SF_ACTIVE_STATUS = 'Approved';
