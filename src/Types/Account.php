@@ -21,6 +21,8 @@ class Account
     const SF_ZIPCODE = 'Account_Zip_Postal_code__c';
     const SF_STATUS = 'Global_Account_Status__c';
     const SF_SAT_STATUS = 'SAT_validation__c';
+    const SF_NUMBER_ROOMING_LIST_CONTACT = 'Number_of_Rooming_List_Contact__c';
+    const SF_NUMBER_COMMERCIAL_CONTACT = 'Number_of_commercial_contact__c';
 
     const SF_ACTIVE_STATUS = 'Active Account';
     const SF_INACTIVE_STATUS = 'Inactive Account';
