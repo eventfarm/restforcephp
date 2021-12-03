@@ -34,6 +34,7 @@ class Product
     const SF_TRIPADVISOR_URL = 'Tripadvisor_link__c';
     const SF_BOOKING_SCORE = 'Market_Score__c';
     const SF_TRIPDVISOR_SCORE = 'Market_Score_TripAdvisor__c';
+    const SF_ROOMING_LIST_CONTACT = 'Number_of_Rooming_List_Contact__c';
 
     const SF_PENDING_STATUS = 'Pending';
     const SF_ACTIVE_STATUS = 'Approved';
