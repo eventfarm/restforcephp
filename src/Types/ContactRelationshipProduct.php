@@ -15,9 +15,10 @@ class ContactRelationshipProduct
 
     const SF_ID = 'Id';
     const SF_PRODUCT = 'Product_VP__c';
-    const SF_NAME = 'Name';
+    const SF_NAME = 'Relation_Name__c';
     const SF_CONTACT = 'Contact__c';
     const SF_ROLE = 'Contact_Roles__c';
+    const SF_LONG_NAME = 'Relation_Name__c';
 
     /**
      * Query fields available in SF for a Contact
