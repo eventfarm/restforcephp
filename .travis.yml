@@ -8,5 +8,3 @@ before_script:
 script:
   - vendor/bin/phpcs --standard=PSR2 src/
   - vendor/bin/phpunit -c phpunit.xml
-after_script:
-  - ./bin/codeclimate.sh

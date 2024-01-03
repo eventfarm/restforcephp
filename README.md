@@ -3,14 +3,12 @@
 [![Travis](https://img.shields.io/travis/eventfarm/restforcephp.svg?maxAge=2592000?style=flat-square)](https://travis-ci.org/eventfarm/restforcephp)
 [![Downloads](https://img.shields.io/packagist/dt/eventfarm/restforcephp.svg?style=flat-square)](https://packagist.org/packages/eventfarm/restforcephp)
 [![Packagist](https://img.shields.io/packagist/l/eventfarm/restforcephp.svg?maxAge=2592000?style=flat-square)](https://packagist.org/packages/eventfarm/restforcephp)
-[![Code Climate](https://codeclimate.com/github/eventfarm/restforcephp/badges/gpa.svg)](https://codeclimate.com/github/eventfarm/restforcephp)
-[![Test Coverage](https://codeclimate.com/github/eventfarm/restforcephp/badges/coverage.svg)](https://codeclimate.com/github/eventfarm/restforcephp/coverage)
 
 This is meant to emulate what the [ejhomes/restforce gem](https://github.com/ejholmes/restforce) is doing for rails.
 
 ## Installation
 
-This library requires PHP 7.1 or later; we recommend using the latest available version of PHP.
+This library requires PHP 7.1 or later; we recommend using the latest available version of PHP.  It has been test through the latest version of PHP (v8.3 as of this writing)
 
 ```
 $ composer require eventfarm/restforcephp
@@ -46,7 +44,7 @@ class DemoSalesforceApi
 {
     /** @var null|RestforceInterface $restforce */
     private $restforce;
-    
+
     public function getRestforceClient(): RestforceInterface
     {
         if ($this->restforce === null) {
@@ -74,7 +72,7 @@ Consult the [Salesforce OAuth 2.0 Documentation](https://developer.salesforce.co
 
 ## Salesforce Documentation
 
-Links to Salesforce documentation pages can be found in each section. Alternatively, here is the [holy grail of the Saleforce endpoints.](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_list.htm) 
+Links to Salesforce documentation pages can be found in each section. Alternatively, here is the [holy grail of the Saleforce endpoints.](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_list.htm)
 
 ## Usage
 
@@ -184,7 +182,7 @@ $responseInterface = $restforce->update('Account', '001i000001ysdBGAAY', [
 ## Contributing
 
 Thanks for considering contributing to our Restforcephp project. Just a few things:
- 
+
 - Make sure your commit conforms to the PSR-2 coding standard.
 - Make sure your commit messages are well defined.
 - Make sure you have added the necessary unit tests for your changes.
@@ -214,5 +212,11 @@ $ vendor/bin/phpcs -p --standard=PSR2 src/ tests/
 Auto runs and resolves some low hanging PSR2 fixes, this might not get all of them, so rerun the check after.
 
 ```bash
-$ vendor/bin/phpcbf --standard=PSR2 src/ tests/ 
+$ vendor/bin/phpcbf --standard=PSR2 src/ tests/
+```
+
+#### Check Compatability for PHP Version:
+
+```bash
+$ vendor/bin/phpcs -p ./src/ --standard=PHPCompatibility --runtime-set testVersion 7.1-8.4
 ```
