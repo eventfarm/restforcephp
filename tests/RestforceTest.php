@@ -29,9 +29,9 @@ class RestforceTest extends AbstractRestforceTestCase
         $this->assertSame(200, $restforce->describe('Lead')->getStatusCode());
         $this->assertSame(200, $restforce->query('SELECT Id FROM Campaign')->getStatusCode());
         $this->assertNotNull($restforce->create('Contact', [
-            'FirstName' => 'Jason',
-            'LastName' => 'Raimondi',
-            'Email' => 'jason@raimondi.us',
+            'FirstName' => 'Bob',
+            'LastName' => 'belcher',
+            'Email' => 'bob@bobsburgers.com',
         ]));
     }
 
