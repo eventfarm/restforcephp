@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="vendor/autoload.php"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false">
-    <testsuites>
-        <testsuite name="Test Suite">
-            <directory suffix="Test.php">./tests</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory>src</directory>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
-    </logging>
-    <php>
-        <env name="SALESFORCE_OAUTH_CLIENT" value="enter-here"/>
-        <env name="SALESFORCE_OAUTH_SECRET" value="enter-here"/>
-        <env name="SALESFORCE_USERNAME" value="enter-here"/>
-        <env name="SALESFORCE_PASSWORD" value="enter-here"/>
-    </php>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    backupGlobals="false"
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+    cacheDirectory=".phpunit.cache">
+  <coverage includeUncoveredFiles="true">
+    <report>
+      <clover outputFile="build/logs/clover.xml"/>
+    </report>
+  </coverage>
+  <testsuites>
+    <testsuite name="Test Suite">
+      <directory suffix="Test.php">./tests</directory>
+    </testsuite>
+  </testsuites>
+  <logging/>
+  <php>
+    <env name="SALESFORCE_OAUTH_CLIENT" value="3MVG9HB6vm3GZZR.Bal8BIgC_.AY8Zpr32pTxAXWg_yewxyoVz.ZJL948ee2G.G4ypEmmVWgbKg629VhoLr5S"/>
+    <env name="SALESFORCE_OAUTH_SECRET" value="F0E7AFA12EC4FCD9B3CA371C9D9599E23F31DF064C99700B9DBC2E46056BAE99"/>
+    <env name="SALESFORCE_USERNAME" value="developer@eventfarm.sandbox"/>
+    <env name="SALESFORCE_PASSWORD" value="BmkDweQb7WhMuWbsb"/>
+  </php>
+  <source>
+    <include>
+      <directory>src</directory>
+    </include>
+  </source>
 </phpunit>
